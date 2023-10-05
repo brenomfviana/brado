@@ -3,30 +3,33 @@ use crate::docs::doc::Document;
 use std::collections::HashSet;
 
 fn generate_digit(
-    document: &Vec<u8>,
+    document: &[u8],
     max: usize,
     weights: Vec<u16>,
 ) -> u8 {
     let mut sum: u16 = 0;
+
     for i in 0..max {
         let digit = document[i] as u16;
         sum += digit * weights[i];
     }
-    sum = sum % 11;
+
+    sum %= 11;
+
     if sum < 10 {
         sum = 0;
     } else {
         sum = 11 - sum;
     }
-    let sum: u8 = sum as u8;
-    return sum;
+
+    sum as u8
 }
 
 pub fn validate(
     document: Document,
     is_masked: bool,
 ) -> bool {
-    let symbols = HashSet::from_iter(vec!['.', '/', '-'].iter().cloned());
+    let symbols = HashSet::from_iter(['.', '/', '-'].iter().cloned());
 
     if is_masked && !valid_symbols(&document, symbols) {
         return false;
@@ -55,5 +58,5 @@ pub fn validate(
     let check_digit13 = digit13 == generated_digit13;
     let check_digit14 = digit14 == generated_digit14;
 
-    return check_digit13 && check_digit14;
+    check_digit13 && check_digit14
 }

@@ -10,17 +10,21 @@ impl Document {
     }
 
     pub fn len(&self) -> usize {
-        return self.document.chars().count();
+        self.document.chars().count()
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.document.chars().count() == 0
     }
 
     pub fn chars(&self) -> Vec<char> {
-        return self.document.chars().collect();
+        self.document.chars().collect()
     }
 
     pub fn get_char(
         &self,
         index: usize,
     ) -> char {
-        return self.document.chars().nth(index).unwrap();
+        self.document.chars().nth(index).unwrap()
     }
 }
