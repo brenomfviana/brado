@@ -4,7 +4,9 @@ pub struct Document {
 
 impl Document {
     pub fn new(document: &str) -> Document {
-        Document { document: document.to_string() }
+        Document {
+            document: document.to_string(),
+        }
     }
 
     pub fn len(&self) -> usize {
@@ -15,7 +17,10 @@ impl Document {
         return self.document.chars().collect();
     }
 
-    pub fn get_char(&self, index: usize) -> char {
+    pub fn get_char(
+        &self,
+        index: usize,
+    ) -> char {
         return self.document.chars().nth(index).unwrap();
     }
 }

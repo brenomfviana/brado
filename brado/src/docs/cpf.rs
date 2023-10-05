@@ -1,8 +1,11 @@
-use std::collections::HashSet;
-use crate::docs::doc::Document;
 use crate::docs::common::*;
+use crate::docs::doc::Document;
+use std::collections::HashSet;
 
-fn generate_digit(document: &Vec<u8>, max: u16) -> u8 {
+fn generate_digit(
+    document: &Vec<u8>,
+    max: u16,
+) -> u8 {
     let mut sum: u16 = 0;
     for i in (2..=max).rev() {
         let aux = (max - i) as usize;
@@ -14,7 +17,7 @@ fn generate_digit(document: &Vec<u8>, max: u16) -> u8 {
         sum = 0;
     }
     let sum: u8 = sum as u8;
-    return sum
+    return sum;
 }
 
 pub fn is_repeated(digits: &Vec<u8>) -> bool {
@@ -22,7 +25,11 @@ pub fn is_repeated(digits: &Vec<u8>) -> bool {
     return a_set.len() == 1;
 }
 
-pub fn validate(document: Document, is_masked: bool, ignore_repeated: bool) -> bool {
+pub fn validate(
+    document: Document,
+    is_masked: bool,
+    ignore_repeated: bool,
+) -> bool {
     let symbols = HashSet::from_iter(vec!['.', '-'].iter().cloned());
     if is_masked && !valid_symbols(&document, symbols) {
         return false;
