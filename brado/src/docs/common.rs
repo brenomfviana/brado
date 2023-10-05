@@ -4,14 +4,11 @@ use std::collections::HashSet;
 const RADIX: u32 = 10;
 
 pub fn to_digit(document: &Document) -> Vec<u8> {
-    return document
+    document
         .chars()
         .into_iter()
-        .filter_map(|c| match c.to_digit(RADIX) {
-            Some(c) => Some(c as u8),
-            None => None,
-        })
-        .collect();
+        .filter_map(|c| c.to_digit(RADIX).map(|c| c as u8))
+        .collect()
 }
 
 pub fn valid_symbols(
@@ -21,10 +18,8 @@ pub fn valid_symbols(
     let symbols: HashSet<char> = document
         .chars()
         .into_iter()
-        .filter_map(|c| match c.to_digit(RADIX) {
-            Some(_c) => None,
-            None => Some(c),
-        })
+        .filter(|c| c.to_digit(RADIX).is_none())
         .collect();
-    return valid_symbols == symbols;
+
+    valid_symbols == symbols
 }
