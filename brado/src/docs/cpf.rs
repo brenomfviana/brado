@@ -9,11 +9,13 @@ fn generate_digit(
     let mut sum: u16 = 0;
 
     for i in (2..=max).rev() {
-        let aux = (max - i) as usize;
-        let digit = document[aux] as u16;
+        let idx = (max - i) as usize;
+        let digit = document[idx] as u16;
         sum += digit * i;
     }
+
     sum = (sum * 10) % 11;
+
     if sum == 10 {
         sum = 0;
     }
