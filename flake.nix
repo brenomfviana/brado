@@ -22,7 +22,7 @@
     devShell = pkgs.mkShell {
       CARGO_INSTALL_ROOT = "${toString ./.}/.cargo";
 
-      buildInputs = with pkgs; [ cargo rustc git ];
+      buildInputs = with pkgs; [ cargo rustc rustfmt clippy git ];
     };
   });
 }
