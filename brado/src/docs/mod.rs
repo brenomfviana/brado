@@ -1,4 +1,4 @@
-pub mod common;
-pub mod doc;
-pub mod cpf;
 pub mod cnpj;
+pub mod common;
+pub mod cpf;
+pub mod doc;

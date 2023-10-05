@@ -1,8 +1,12 @@
-use std::collections::HashSet;
-use crate::docs::doc::Document;
 use crate::docs::common::*;
+use crate::docs::doc::Document;
+use std::collections::HashSet;
 
-fn generate_digit(document: &Vec<u8>, max: usize, weights: Vec<u16>) -> u8 {
+fn generate_digit(
+    document: &Vec<u8>,
+    max: usize,
+    weights: Vec<u16>,
+) -> u8 {
     let mut sum: u16 = 0;
     for i in 0..max {
         let digit = document[i] as u16;
@@ -15,10 +19,13 @@ fn generate_digit(document: &Vec<u8>, max: usize, weights: Vec<u16>) -> u8 {
         sum = 11 - sum;
     }
     let sum: u8 = sum as u8;
-    return sum
+    return sum;
 }
 
-pub fn validate(document: Document, is_masked: bool) -> bool {
+pub fn validate(
+    document: Document,
+    is_masked: bool,
+) -> bool {
     let symbols = HashSet::from_iter(vec!['.', '/', '-'].iter().cloned());
 
     if is_masked && !valid_symbols(&document, symbols) {
@@ -40,8 +47,10 @@ pub fn validate(document: Document, is_masked: bool) -> bool {
     let digit13 = digits[12];
     let digit14 = digits[13];
 
-    let generated_digit13 = generate_digit(&digits, 12, vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
-    let generated_digit14 = generate_digit(&digits, 13, vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]);
+    let weights = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let generated_digit13 = generate_digit(&digits, 12, weights);
+    let weights = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let generated_digit14 = generate_digit(&digits, 13, weights);
 
     let check_digit13 = digit13 == generated_digit13;
     let check_digit14 = digit14 == generated_digit14;
