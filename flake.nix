@@ -13,12 +13,6 @@
     pkgs = nixpkgs.legacyPackages.${system};
     gitignoreSrc = pkgs.callPackage inputs.gitignore { };
   in rec {
-    packages.hello = pkgs.callPackage ./default.nix { inherit gitignoreSrc; };
-
-    legacyPackages = packages;
-
-    defaultPackage = packages.hello;
-
     devShell = pkgs.mkShell {
       CARGO_INSTALL_ROOT = "${toString ./.}/.cargo";
 
