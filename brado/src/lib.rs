@@ -28,6 +28,32 @@ mod cpf_tests {
         let doc: Document = Document::new("639.292.470-11");
         assert_eq!(true, docs::cpf::validate(doc, true, false));
     }
+
+    #[test]
+    fn validate_str_cpf_1() {
+        assert_eq!(false, docs::cpf::validate_str("11111111111", false, false));
+    }
+
+    #[test]
+    fn validate_str_cpf_2() {
+        assert_eq!(
+            false,
+            docs::cpf::validate_str("111.111.111-11", true, false)
+        );
+    }
+
+    #[test]
+    fn validate_str_cpf_3() {
+        assert_eq!(true, docs::cpf::validate_str("63929247011", false, true));
+    }
+
+    #[test]
+    fn validate_str_cpf_4() {
+        assert_eq!(
+            true,
+            docs::cpf::validate_str("639.292.470-11", true, false)
+        );
+    }
 }
 
 #[cfg(test)]
@@ -45,5 +71,15 @@ mod cnpj_tests {
     fn validate_cnpj_2() {
         let doc: Document = Document::new("05.200.851/0001-00");
         assert_eq!(true, docs::cnpj::validate(doc, true));
+    }
+
+    #[test]
+    fn validate_str_cnpj_1() {
+        assert_eq!(true, docs::cnpj::validate_str("05200851000100", false));
+    }
+
+    #[test]
+    fn validate_str_cnpj_2() {
+        assert_eq!(true, docs::cnpj::validate_str("05.200.851/0001-00", true));
     }
 }
