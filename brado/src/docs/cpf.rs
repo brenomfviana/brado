@@ -29,16 +29,16 @@ pub fn is_repeated(digits: &[u8]) -> bool {
 }
 
 pub fn validate(
-    document: Document,
+    document: &Document,
     is_masked: bool,
     ignore_repeated: bool,
 ) -> bool {
     let symbols = HashSet::from_iter(['.', '-'].iter().cloned());
-    if is_masked && !valid_symbols(&document, symbols) {
+    if is_masked && !valid_symbols(document, symbols) {
         return false;
     }
 
-    let digits: Vec<u8> = to_digit(&document);
+    let digits: Vec<u8> = to_digit(document);
 
     if digits.len() != 11 {
         return false;
@@ -65,5 +65,5 @@ pub fn validate_str(
     is_masked: bool,
     ignore_repeated: bool,
 ) -> bool {
-    return validate(Document::new(document), is_masked, ignore_repeated);
+    validate(&Document::new(document), is_masked, ignore_repeated)
 }
