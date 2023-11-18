@@ -60,3 +60,10 @@ pub fn validate(
 
     check_digit13 && check_digit14
 }
+
+pub fn validate_str(
+    document: &str,
+    is_masked: bool,
+) -> bool {
+    return validate(Document::new(document), is_masked);
+}

@@ -59,3 +59,11 @@ pub fn validate(
 
     check_digit10 && check_digit11
 }
+
+pub fn validate_str(
+    document: &str,
+    is_masked: bool,
+    ignore_repeated: bool,
+) -> bool {
+    return validate(Document::new(document), is_masked, ignore_repeated);
+}
