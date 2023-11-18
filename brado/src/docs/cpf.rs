@@ -23,7 +23,7 @@ fn generate_digit(
     sum as u8
 }
 
-pub fn is_repeated(digits: &[u8]) -> bool {
+fn is_repeated(digits: &[u8]) -> bool {
     let a_set: HashSet<u8> = HashSet::from_iter(digits.iter().cloned());
     a_set.len() == 1
 }
