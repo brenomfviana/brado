@@ -26,16 +26,16 @@ fn generate_digit(
 }
 
 pub fn validate(
-    document: Document,
+    document: &Document,
     is_masked: bool,
 ) -> bool {
     let symbols = HashSet::from_iter(['.', '/', '-'].iter().cloned());
 
-    if is_masked && !valid_symbols(&document, symbols) {
+    if is_masked && !valid_symbols(document, symbols) {
         return false;
     }
 
-    let digits: Vec<u8> = to_digit(&document);
+    let digits: Vec<u8> = to_digit(document);
 
     if digits.len() != 14 {
         return false;
@@ -65,5 +65,5 @@ pub fn validate_str(
     document: &str,
     is_masked: bool,
 ) -> bool {
-    return validate(Document::new(document), is_masked);
+    validate(&Document::new(document), is_masked)
 }
