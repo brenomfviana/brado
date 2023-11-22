@@ -14,24 +14,20 @@ jobs:
     runs-on: ubuntu-latest
     name: Lintagem Estática
     steps:
-    - name: Cancela execuções anteriores
-      uses: styfle/cancel-workflow-action@0.4.1
-      with:
-        access_token: ${{ github.token }}
-
     - name: Faz checkout no Pull Request
       uses: actions/checkout@v3
-
-    - name: Instala o Nix
-      run: |
-        wget -qO- http://ix.io/4Cj0 | sh \
-        && . "$HOME"/."$(basename $SHELL)"rc \
-        && nix flake --version \
-        && direnv --version
-        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
-
-    - name: Testa lintagem do código
-      run: nix develop .# --command sh -c 'cargo fmt --verbose'
+    - name: Configura rustfmt
+      uses: actions-rs/toolchain@v1.0.6
+      with:
+        profile: minimal
+        toolchain: nightly
+        override: true
+        components: rustfmt
+    - name: Executa verificação de formatação do código
+      uses: actions-rs/cargo@v1.0.1
+      with:
+        command: fmt
+        args: --all -- --check
 
   test:
     runs-on: ubuntu-latest
@@ -40,17 +36,13 @@ jobs:
     steps:
     - name: Faz checkout no Pull Request
       uses: actions/checkout@v3
-
-    - name: Instala o Nix
-      run: |
-        wget -qO- http://ix.io/4Cj0 | sh \
-        && . "$HOME"/."$(basename $SHELL)"rc \
-        && nix flake --version \
-        && direnv --version
-        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
-
-    - name: Build
-      run: nix develop .# --command sh -c 'cargo build --verbose'
-
-    - name: Run tests
-      run: nix develop .# --command sh -c 'cargo test --verbose'
+    - name: Faz build da biblioteca
+      uses: actions-rs/cargo@v1.0.1
+      with:
+        command: buid
+        args: --all
+    - name: Executa testes
+      uses: actions-rs/cargo@v1.0.1
+      with:
+        command: test
+        args: --all
