@@ -53,4 +53,23 @@ jobs:
       run: nix develop .# --command sh -c 'cd brado && cargo build --verbose'
 
     - name: Run tests
-      run: nix develop .# --command sh -c 'cd brado && cargo test --verbose'
+      run: nix develop .# --command sh -c 'cd brado && cargo test  --verbose'
+
+  clippy:
+    runs-on: ubuntu-latest
+    needs: lint
+    name: Testes
+    steps:
+    - name: Faz checkout no Pull Request
+      uses: actions/checkout@v3
+
+    - name: Instala o Nix
+      run: |
+        wget -qO- http://ix.io/4Cj0 | sh \
+        && . "$HOME"/."$(basename $SHELL)"rc \
+        && nix flake --version \
+        && direnv --version
+        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
+
+    - name: Verifica qualidade do código
+      run: nix develop .# --command sh -c 'cd brado && cargo clippy --verbose'
