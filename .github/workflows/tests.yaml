@@ -30,9 +30,6 @@ jobs:
         && direnv --version
         echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
 
-    - name: Abre subdiretório com código-fonte
-      run: cd brado
-
     - name: Testa lintagem do código
       run: nix develop .# --command sh -c 'cd brado && cargo fmt --verbose'
 
@@ -51,9 +48,6 @@ jobs:
         && nix flake --version \
         && direnv --version
         echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
-
-    - name: Abre subdiretório com código-fonte
-      run: cd brado
 
     - name: Build
       run: nix develop .# --command sh -c 'cd brado && cargo build --verbose'
