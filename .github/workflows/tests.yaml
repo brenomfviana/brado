@@ -34,7 +34,7 @@ jobs:
       run: cd brado
 
     - name: Testa lintagem do código
-      run: nix develop .# --command sh -c 'cargo fmt --verbose'
+      run: nix develop .# --command sh -c 'ls -alh && cd src && cargo fmt --verbose'
 
   test:
     runs-on: ubuntu-latest
