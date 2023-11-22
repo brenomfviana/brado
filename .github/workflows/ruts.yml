@@ -1,0 +1,56 @@
+name: tests
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "feature/**", "refactor/**", "fix/**", "hotfix/**",  ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lintagem Estática
+    steps:
+    - name: Cancela execuções anteriores
+      uses: styfle/cancel-workflow-action@0.4.1
+      with:
+        access_token: ${{ github.token }}
+
+    - name: Faz checkout no Pull Request
+      uses: actions/checkout@v3
+
+    - name: Instala o Nix
+      run: |
+        wget -qO- http://ix.io/4Cj0 | sh \
+        && . "$HOME"/."$(basename $SHELL)"rc \
+        && nix flake --version \
+        && direnv --version
+        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
+
+    - name: Testa lintagem do código
+      run: nix develop .# --command sh -c 'cargo fmt --verbose'
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    name: Testes
+    steps:
+    - name: Faz checkout no Pull Request
+      uses: actions/checkout@v3
+
+    - name: Instala o Nix
+      run: |
+        wget -qO- http://ix.io/4Cj0 | sh \
+        && . "$HOME"/."$(basename $SHELL)"rc \
+        && nix flake --version \
+        && direnv --version
+        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
+
+    - name: Build
+      run: nix develop .# --command sh -c 'cargo build --verbose'
+
+    - name: Run tests
+      run: nix develop .# --command sh -c 'cargo test --verbose'
