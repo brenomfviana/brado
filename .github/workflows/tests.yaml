@@ -41,7 +41,7 @@ jobs:
     - name: Testa lintagem do código
       run: nix develop .# --command sh -c 'cd brado && cargo fmt --verbose'
 
-  test:
+  tests:
     runs-on: ubuntu-latest
     needs: lint
     name: Testes
