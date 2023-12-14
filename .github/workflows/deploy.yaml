@@ -8,31 +8,32 @@ env:
   CARGO_TERM_COLOR: always
 
 jobs:
-  runs-on: ubuntu-latest
-  steps:
-  - name: Faz checkout no Pull Request
-    uses: actions/checkout@v3
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Faz checkout no Pull Request
+      uses: actions/checkout@v3
 
-  - name: Instala o Nix
-    run: |
-      BASE_URL='https://raw.githubusercontent.com/ES-Nix/get-nix/' \
-      && SHA256=87fa0f1dbfdd28a1f99b39d5bd4dcc39de97bc64 \
-      && NIX_RELEASE_VERSION='2.10.2' \
-      && curl -fsSL "${BASE_URL}""$SHA256"/get-nix.sh | sh -s -- ${NIX_RELEASE_VERSION} \
-      && . "$HOME"/.nix-profile/etc/profile.d/nix.sh \
-      && . ~/."$(basename $SHELL)"rc \
-      && export TMPDIR=/tmp \
-      && nix flake --version \
-      && nix registry pin nixpkgs github:NixOS/nixpkgs/ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b \
-      && curl -fsSL https://raw.githubusercontent.com/ES-Nix/get-nix/"$SHA256"/install_direnv_and_nix_direnv.sh | sh \
-      && . ~/."$(basename $SHELL)"rc \
-      && direnv --version
-      echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
+    - name: Instala o Nix
+      run: |
+        BASE_URL='https://raw.githubusercontent.com/ES-Nix/get-nix/' \
+        && SHA256=87fa0f1dbfdd28a1f99b39d5bd4dcc39de97bc64 \
+        && NIX_RELEASE_VERSION='2.10.2' \
+        && curl -fsSL "${BASE_URL}""$SHA256"/get-nix.sh | sh -s -- ${NIX_RELEASE_VERSION} \
+        && . "$HOME"/.nix-profile/etc/profile.d/nix.sh \
+        && . ~/."$(basename $SHELL)"rc \
+        && export TMPDIR=/tmp \
+        && nix flake --version \
+        && nix registry pin nixpkgs github:NixOS/nixpkgs/ea4c80b39be4c09702b0cb3b42eab59e2ba4f24b \
+        && curl -fsSL https://raw.githubusercontent.com/ES-Nix/get-nix/"$SHA256"/install_direnv_and_nix_direnv.sh | sh \
+        && . ~/."$(basename $SHELL)"rc \
+        && direnv --version
+        echo "$HOME"/.nix-profile/bin >> $GITHUB_PATH
 
-  - name: Build
-    run: nix develop .# --command sh -c 'cd brado && cargo build --release --verbose'
+    - name: Build
+      run: nix develop .# --command sh -c 'cd brado && cargo build --release --verbose'
 
-  - name: Deploy
-    env:
-      CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-    run: nix develop .# --command sh -c 'cd brado && cargo login --registry $CARGO_REGISTRY_TOKEN && cargo publish'
+    - name: Deploy
+      env:
+        CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
+      run: nix develop .# --command sh -c 'cd brado && cargo login --registry $CARGO_REGISTRY_TOKEN && cargo publish'
