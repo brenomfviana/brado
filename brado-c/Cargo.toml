@@ -1,0 +1,20 @@
+[package]
+name = "brado-c"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+readme = "../README.md"
+description = "brado is a brazilian docs validator"
+homepage = "https://github.com/brenomfviana/brado"
+documentation = "https://docs.rs/brado"
+repository = "https://github.com/brenomfviana/brado"
+keywords = ["brazilian", "docs", "validator"]
+authors = ["Breno Viana", "Pedro Regis"]
+
+[lib]
+name = "brado"
+crate-type = ["cdylib"]
+
+[dependencies]
+brado = "*"
+libc = "0.2.151"
