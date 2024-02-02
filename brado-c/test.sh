@@ -2,7 +2,7 @@
 
 cargo build
 
-export LD_LIBRARY_PATH=/home/breno/Desktop/Projects/brado/brado-c/target/debug:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH="$(pwd)"/target/debug:$LD_LIBRARY_PATH
 
 cbindgen --config cbindgen.toml --crate brado-c  --output include/brado.h
 
