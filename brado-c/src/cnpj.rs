@@ -5,10 +5,9 @@ use std::ffi::{CStr};
 use brado;
 
 #[no_mangle]
-pub extern "C" fn cpf_validate_str(
+pub extern "C" fn cnpj_validate_str(
     document: *const c_char,
     is_masked: bool,
-    ignore_repeated: bool,
 ) -> bool {
     let s = unsafe {
          match CStr::from_ptr(document).to_str() {
@@ -16,5 +15,5 @@ pub extern "C" fn cpf_validate_str(
             _ => &"",
         }
     };
-    brado::cpf::validate_str(s, is_masked, ignore_repeated)
+    brado::cnpj::validate_str(s, is_masked)
 }

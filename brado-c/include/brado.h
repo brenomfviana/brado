@@ -6,6 +6,8 @@
 
 extern "C" {
 
-bool validate_str(const char *document, bool is_masked, bool ignore_repeated);
+bool cpf_validate_str(const char *document, bool is_masked, bool ignore_repeated);
+
+bool cnpj_validate_str(const char *document, bool is_masked);
 
 } // extern "C"
