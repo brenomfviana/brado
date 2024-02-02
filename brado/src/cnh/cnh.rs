@@ -1,5 +1,4 @@
-use crate::docs::common::*;
-use crate::docs::doc::Document;
+use crate::common::utils::{is_repeated, to_digit, valid_symbols};
 use std::collections::HashSet;
 
 fn generate_digits(document: &[u8]) -> (u8, u8) {
@@ -35,9 +34,8 @@ fn generate_digits(document: &[u8]) -> (u8, u8) {
 }
 
 pub fn validate(
-    document: &Document,
+    document: &String,
     is_masked: bool,
-    ignore_repeated: bool,
 ) -> bool {
     println!("{:?}", document.chars());
     let symbols = HashSet::from_iter([' '].iter().cloned());
@@ -52,7 +50,8 @@ pub fn validate(
         return false;
     }
 
-    if !ignore_repeated && is_repeated(&digits) {
+    #[cfg(not(ignore_repeated))]
+    if is_repeated(&digits) {
         return false;
     }
 
@@ -71,7 +70,6 @@ pub fn validate(
 pub fn validate_str(
     document: &str,
     is_masked: bool,
-    ignore_repeated: bool,
 ) -> bool {
-    validate(&Document::new(document), is_masked, ignore_repeated)
+    validate(&String::from(document), is_masked)
 }

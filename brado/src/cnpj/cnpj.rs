@@ -1,5 +1,4 @@
-use crate::docs::common::*;
-use crate::docs::doc::Document;
+use crate::common::utils::{to_digit, valid_symbols};
 use std::collections::HashSet;
 
 fn generate_digit(
@@ -26,7 +25,7 @@ fn generate_digit(
 }
 
 pub fn validate(
-    document: &Document,
+    document: &String,
     is_masked: bool,
 ) -> bool {
     let symbols = HashSet::from_iter(['.', '/', '-'].iter().cloned());
@@ -65,5 +64,5 @@ pub fn validate_str(
     document: &str,
     is_masked: bool,
 ) -> bool {
-    validate(&Document::new(document), is_masked)
+    validate(&String::from(document), is_masked)
 }

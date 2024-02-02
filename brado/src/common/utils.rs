@@ -1,4 +1,3 @@
-use crate::docs::doc::Document;
 use std::collections::HashSet;
 
 const RADIX: u32 = 10;
@@ -8,7 +7,7 @@ pub fn is_repeated(digits: &[u8]) -> bool {
     a_set.len() == 1
 }
 
-pub fn to_digit(document: &Document) -> Vec<u8> {
+pub fn to_digit(document: &String) -> Vec<u8> {
     document
         .chars()
         .into_iter()
@@ -17,7 +16,7 @@ pub fn to_digit(document: &Document) -> Vec<u8> {
 }
 
 pub fn valid_symbols(
-    document: &Document,
+    document: &String,
     valid_symbols: HashSet<char>,
 ) -> bool {
     let symbols: HashSet<char> = document
