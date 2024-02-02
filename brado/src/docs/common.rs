@@ -3,6 +3,11 @@ use std::collections::HashSet;
 
 const RADIX: u32 = 10;
 
+pub fn is_repeated(digits: &[u8]) -> bool {
+    let a_set: HashSet<u8> = HashSet::from_iter(digits.iter().cloned());
+    a_set.len() == 1
+}
+
 pub fn to_digit(document: &Document) -> Vec<u8> {
     document
         .chars()
