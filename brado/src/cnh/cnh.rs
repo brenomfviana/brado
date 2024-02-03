@@ -1,4 +1,4 @@
-use crate::common::utils::{is_repeated, to_digit, valid_symbols};
+use crate::common::utils::{get_digits, is_repeated, valid_symbols};
 use std::collections::HashSet;
 
 fn generate_digits(document: &[u8]) -> (u8, u8) {
@@ -44,13 +44,12 @@ pub fn validate(
         return false;
     }
 
-    let digits: Vec<u8> = to_digit(document);
+    let digits: Vec<u8> = get_digits(document);
 
     if digits.len() != 11 {
         return false;
     }
 
-    #[cfg(not(ignore_repeated))]
     if is_repeated(&digits) {
         return false;
     }

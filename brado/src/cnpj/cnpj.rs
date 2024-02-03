@@ -1,4 +1,4 @@
-use crate::common::utils::{to_digit, valid_symbols};
+use crate::common::utils::{get_digits, valid_symbols};
 use std::collections::HashSet;
 
 fn generate_digit(
@@ -34,7 +34,7 @@ pub fn validate(
         return false;
     }
 
-    let digits: Vec<u8> = to_digit(document);
+    let digits: Vec<u8> = get_digits(document);
 
     if digits.len() != 14 {
         return false;
