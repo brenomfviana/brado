@@ -1,2 +1,2 @@
-mod cnpj;
-pub use cnpj::*;
+mod utils;
+pub use utils::*;

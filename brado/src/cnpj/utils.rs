@@ -1,13 +1,13 @@
 use crate::common::utils::{get_digits, get_symbols};
 
-pub fn validate(cnpj: &String) -> bool {
+pub fn validate(cnpj: &str) -> bool {
     let size: usize = cnpj.chars().count();
 
-    if size != 14 && !is_masked(&cnpj) {
+    if size != 14 && !is_masked(cnpj) {
         return false;
     }
 
-    let digits: Vec<u8> = get_digits(&cnpj);
+    let digits: Vec<u8> = get_digits(cnpj);
 
     if digits.len() != 14 {
         return false;
@@ -25,10 +25,13 @@ pub fn validate(cnpj: &String) -> bool {
 }
 
 fn generate_digits(cnpj_slice: &[u8]) -> (u8, u8) {
+    let mut cnpj_slice = cnpj_slice.to_vec();
+
     let weights = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     let d13 = generate_digit(&cnpj_slice, 12, weights);
 
-    let cnpj_slice = [&cnpj_slice[..], &vec![d13]].concat();
+    cnpj_slice.push(d13);
+
     let weights = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     let d14 = generate_digit(&cnpj_slice, 13, weights);
 
@@ -58,12 +61,12 @@ fn generate_digit(
     sum as u8
 }
 
-pub fn is_bare(cnpj: &String) -> bool {
+pub fn is_bare(cnpj: &str) -> bool {
     cnpj.chars().count() == 14 && get_digits(cnpj).len() == 14
 }
 
-pub fn is_masked(cnpj: &String) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(&cnpj);
+pub fn is_masked(cnpj: &str) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(cnpj);
     if symbols.len() != 4 {
         return false;
     }
@@ -73,8 +76,8 @@ pub fn is_masked(cnpj: &String) -> bool {
         && symbols[3] == (15, '-')
 }
 
-pub fn mask(cnpj: &String) -> String {
-    if !is_bare(&cnpj) {
+pub fn mask(cnpj: &str) -> String {
+    if !is_bare(cnpj) {
         panic!("The given string cannot be masked as CNPJ!")
     }
     format!(

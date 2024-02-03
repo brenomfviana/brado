@@ -1,9 +1,9 @@
 use crate::common::utils::{get_digits, get_symbols, is_repeated};
 
-pub fn validate(cnh: &String) -> bool {
+pub fn validate(cnh: &str) -> bool {
     let size: usize = cnh.chars().count();
 
-    if size != 11 && !is_masked(&cnh) {
+    if size != 11 && !is_masked(cnh) {
         return false;
     }
 
@@ -54,20 +54,20 @@ fn generate_digits(cnh: &[u8]) -> (u8, u8) {
     (first as u8, second as u8)
 }
 
-pub fn is_bare(cnh: &String) -> bool {
+pub fn is_bare(cnh: &str) -> bool {
     cnh.chars().count() == 11 && get_digits(cnh).len() == 11
 }
 
-pub fn is_masked(cnh: &String) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(&cnh);
+pub fn is_masked(cnh: &str) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(cnh);
     if symbols.len() != 3 {
         return false;
     }
     symbols[0] == (3, ' ') && symbols[1] == (7, ' ') && symbols[2] == (11, ' ')
 }
 
-pub fn mask(cnh: &String) -> String {
-    if !is_bare(&cnh) {
+pub fn mask(cnh: &str) -> String {
+    if !is_bare(cnh) {
         panic!("The given string cannot be masked as CNH!")
     }
     format!(

@@ -7,3 +7,7 @@ fmt:
 test:
 	reset
 	cargo test
+
+clippy:
+	reset
+	cargo clippy

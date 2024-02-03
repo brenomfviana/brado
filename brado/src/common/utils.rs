@@ -7,18 +7,16 @@ pub fn is_repeated(digits: &[u8]) -> bool {
     a_set.len() == 1
 }
 
-pub fn get_digits(document: &String) -> Vec<u8> {
+pub fn get_digits(document: &str) -> Vec<u8> {
     document
         .chars()
-        .into_iter()
         .filter_map(|c| c.to_digit(RADIX).map(|c| c as u8))
         .collect()
 }
 
-pub fn get_symbols(document: &String) -> Vec<(usize, char)> {
+pub fn get_symbols(document: &str) -> Vec<(usize, char)> {
     document
         .chars()
-        .into_iter()
         .enumerate()
         .filter_map(|(i, c)| match c.to_digit(RADIX) {
             Some(_) => None,
@@ -27,23 +25,9 @@ pub fn get_symbols(document: &String) -> Vec<(usize, char)> {
         .collect()
 }
 
-pub fn valid_symbols(
-    document: &String,
-    valid_symbols: HashSet<char>,
-) -> bool {
-    let symbols: HashSet<char> = document
-        .chars()
-        .into_iter()
-        .filter(|c| c.to_digit(RADIX).is_none())
-        .collect();
-
-    valid_symbols == symbols
-}
-
-pub fn unmask(document: &String) -> String {
+pub fn unmask(document: &str) -> String {
     document
         .chars()
-        .into_iter()
         .filter_map(|c| c.to_digit(RADIX).map(|c| c.to_string()))
         .collect::<Vec<String>>()
         .join("")
