@@ -2,12 +2,12 @@ SHELL := /bin/bash
 
 fmt:
 	reset
-	cargo fmt
+	cargo fmt $(args)
 
 test:
 	reset
-	cargo test
+	cargo test $(args)
 
 clippy:
 	reset
-	cargo clippy
+	cargo clippy $(args)

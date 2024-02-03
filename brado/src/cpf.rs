@@ -1,4 +1,4 @@
-use crate::common::utils::{get_digits, get_symbols, is_repeated};
+use crate::common::{get_digits, get_symbols, is_repeated};
 
 pub fn validate(cpf: &str) -> bool {
     let size: usize = cpf.chars().count();
@@ -7,34 +7,33 @@ pub fn validate(cpf: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u8> = get_digits(cpf);
+    let digits: Vec<u16> = get_digits(cpf);
 
     if digits.len() != 11 || is_repeated(&digits) {
         return false;
     }
 
-    let (d10, d11): (u8, u8) = generate_digits(&digits[..10]);
+    let (d10, d11): (u16, u16) = generate_digits(&digits[..10]);
 
     (d10, d11) == (digits[9], digits[10])
 }
 
-fn generate_digits(cpf_slice: &[u8]) -> (u8, u8) {
-    let d10 = generate_digit(cpf_slice, 10);
-    let d11 = generate_digit(cpf_slice, 11);
+fn generate_digits(cpf_slice: &[u16]) -> (u16, u16) {
+    let d10: u16 = generate_digit(cpf_slice, 10);
+    let d11: u16 = generate_digit(cpf_slice, 11);
 
     (d10, d11)
 }
 
 fn generate_digit(
-    cpf_slice: &[u8],
+    cpf_slice: &[u16],
     max: u16,
-) -> u8 {
+) -> u16 {
     let mut sum: u16 = 0;
 
     for i in (2..=max).rev() {
-        let idx = (max - i) as usize;
-        let digit = cpf_slice[idx] as u16;
-        sum += digit * i;
+        let idx: usize = (max - i) as usize;
+        sum += cpf_slice[idx] * i;
     }
 
     sum = (sum * 10) % 11;
@@ -43,7 +42,7 @@ fn generate_digit(
         sum = 0;
     }
 
-    sum as u8
+    sum
 }
 
 pub fn is_bare(cpf: &str) -> bool {
@@ -52,9 +51,11 @@ pub fn is_bare(cpf: &str) -> bool {
 
 pub fn is_masked(cpf: &str) -> bool {
     let symbols: Vec<(usize, char)> = get_symbols(cpf);
+
     if symbols.len() != 3 {
         return false;
     }
+
     symbols[0] == (3, '.') && symbols[1] == (7, '.') && symbols[2] == (11, '-')
 }
 
@@ -62,6 +63,7 @@ pub fn mask(cpf: &str) -> String {
     if !is_bare(cpf) {
         panic!("The given string cannot be masked as CPF!")
     }
+
     format!(
         "{}.{}.{}-{}",
         &cpf[0..3],
