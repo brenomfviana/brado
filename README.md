@@ -1,5 +1,16 @@
 # brado
-Bradova (BRAzilian DOcs validator) é um pacote Rust para validação de documentos brasileiros.
+<a href="https://crates.io/crates/brado">
+  <img src="https://img.shields.io/crates/v/brado.svg" alt="latest release" />
+</a>
+<a href="https://crates.io/crates/brado">
+  <img src="https://img.shields.io/crates/d/brado" alt="latest release" />
+</a>
+</a>
+<a href="https://github.com/brenomfviana/brado/issues">
+  <img src="https://img.shields.io/github/issues/brenomfviana/brado" alt="latest release" />
+</a>
+
+Brado (BRAzilian DOcs validator) é um pacote Rust para validação de documentos brasileiros.
 
 Este projeto é inspirado no [validate-docbr](https://github.com/alvarofpp/validate-docbr).
 
