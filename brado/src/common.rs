@@ -2,15 +2,15 @@ use std::collections::HashSet;
 
 const RADIX: u32 = 10;
 
-pub fn is_repeated(digits: &[u8]) -> bool {
-    let a_set: HashSet<u8> = HashSet::from_iter(digits.iter().cloned());
+pub fn is_repeated(digits: &[u16]) -> bool {
+    let a_set: HashSet<u16> = HashSet::from_iter(digits.iter().cloned());
     a_set.len() == 1
 }
 
-pub fn get_digits(document: &str) -> Vec<u8> {
+pub fn get_digits(document: &str) -> Vec<u16> {
     document
         .chars()
-        .filter_map(|c| c.to_digit(RADIX).map(|c| c as u8))
+        .filter_map(|c| c.to_digit(RADIX).map(|c| c as u16))
         .collect()
 }
 
