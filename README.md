@@ -1,4 +1,8 @@
 # brado
+<a href="https://crates.io/crates/brado">
+  <img src="https://img.shields.io/crates/v/brado.svg" alt="latest release" />
+</a>
+
 Brado (BRAzilian DOcs validator) é um pacote Rust para validação de documentos brasileiros.
 
 Este projeto é inspirado no [validate-docbr](https://github.com/alvarofpp/validate-docbr).
