@@ -26,14 +26,14 @@ make test
 
 ## Documentos
 
--[x] CPF: Cadastro de Pessoas Físicas;
--[x] CNH: Carteira Nacional de Habilitação;
--[x] CNPJ: Cadastro Nacional da Pessoa Jurídica;
--[ ] CNS: Cartão Nacional de Saúde;
--[ ] PIS: PIS/NIS/PASEP/NIT;
--[ ] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
--[ ] RENAVAM: Registro Nacional de Veículos Automotores;
--[ ] Certidão de Nascimento/Casamento/Óbito.
+- [x] CPF: Cadastro de Pessoas Físicas;
+- [x] CNH: Carteira Nacional de Habilitação;
+- [x] CNPJ: Cadastro Nacional da Pessoa Jurídica;
+- [ ] CNS: Cartão Nacional de Saúde;
+- [ ] PIS: PIS/NIS/PASEP/NIT;
+- [ ] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
+- [ ] RENAVAM: Registro Nacional de Veículos Automotores;
+- [ ] Certidão de Nascimento/Casamento/Óbito.
 
 
 ## Funções
