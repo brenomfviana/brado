@@ -1,15 +1,49 @@
-use crate::common::utils::{get_digits, valid_symbols};
-use std::collections::HashSet;
+use crate::common::utils::{get_digits, get_symbols};
+
+pub fn validate(cnpj: &String) -> bool {
+    let size: usize = cnpj.chars().count();
+
+    if size != 14 && !is_masked(&cnpj) {
+        return false;
+    }
+
+    let digits: Vec<u8> = get_digits(&cnpj);
+
+    if digits.len() != 14 {
+        return false;
+    }
+
+    for i in 0..10 {
+        if digits.iter().filter(|&n| *n == i).count() == 14 {
+            return false;
+        }
+    }
+
+    let (d13, d14): (u8, u8) = generate_digits(&digits[..12]);
+
+    (d13, d14) == (digits[12], digits[13])
+}
+
+fn generate_digits(cnpj_slice: &[u8]) -> (u8, u8) {
+    let weights = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let d13 = generate_digit(&cnpj_slice, 12, weights);
+
+    let cnpj_slice = [&cnpj_slice[..], &vec![d13]].concat();
+    let weights = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let d14 = generate_digit(&cnpj_slice, 13, weights);
+
+    (d13, d14)
+}
 
 fn generate_digit(
-    document: &[u8],
+    cnpj_slice: &[u8],
     max: usize,
     weights: Vec<u16>,
 ) -> u8 {
     let mut sum: u16 = 0;
 
     for i in 0..max {
-        let digit = document[i] as u16;
+        let digit = cnpj_slice[i] as u16;
         sum += digit * weights[i];
     }
 
@@ -24,45 +58,31 @@ fn generate_digit(
     sum as u8
 }
 
-pub fn validate(
-    document: &String,
-    is_masked: bool,
-) -> bool {
-    let symbols = HashSet::from_iter(['.', '/', '-'].iter().cloned());
-
-    if is_masked && !valid_symbols(document, symbols) {
-        return false;
-    }
-
-    let digits: Vec<u8> = get_digits(document);
-
-    if digits.len() != 14 {
-        return false;
-    }
-
-    for i in 0..10 {
-        if digits.iter().filter(|&n| *n == i).count() == 14 {
-            return false;
-        }
-    }
-
-    let digit13 = digits[12];
-    let digit14 = digits[13];
-
-    let weights = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let generated_digit13 = generate_digit(&digits, 12, weights);
-    let weights = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let generated_digit14 = generate_digit(&digits, 13, weights);
-
-    let check_digit13 = digit13 == generated_digit13;
-    let check_digit14 = digit14 == generated_digit14;
-
-    check_digit13 && check_digit14
+pub fn is_bare(cnpj: &String) -> bool {
+    cnpj.chars().count() == 14 && get_digits(cnpj).len() == 14
 }
 
-pub fn validate_str(
-    document: &str,
-    is_masked: bool,
-) -> bool {
-    validate(&String::from(document), is_masked)
+pub fn is_masked(cnpj: &String) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(&cnpj);
+    if symbols.len() != 4 {
+        return false;
+    }
+    symbols[0] == (2, '.')
+        && symbols[1] == (6, '.')
+        && symbols[2] == (10, '/')
+        && symbols[3] == (15, '-')
+}
+
+pub fn mask(cnpj: &String) -> String {
+    if !is_bare(&cnpj) {
+        panic!("The given string cannot be masked as CNPJ!")
+    }
+    format!(
+        "{}.{}.{}/{}-{}",
+        &cnpj[0..2],
+        &cnpj[2..5],
+        &cnpj[5..8],
+        &cnpj[8..12],
+        &cnpj[12..14],
+    )
 }
