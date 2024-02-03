@@ -1,13 +1,34 @@
-use crate::common::utils::{get_digits, is_repeated, valid_symbols};
-use std::collections::HashSet;
+use crate::common::utils::{get_digits, get_symbols, is_repeated};
 
-fn generate_digits(document: &[u8]) -> (u8, u8) {
+pub fn validate(cnh: &String) -> bool {
+    let size: usize = cnh.chars().count();
+
+    if size != 11 && !is_masked(&cnh) {
+        return false;
+    }
+
+    let digits: Vec<u8> = get_digits(cnh);
+
+    if digits.len() != 11 {
+        return false;
+    }
+
+    if is_repeated(&digits) {
+        return false;
+    }
+
+    let (d10, d11) = generate_digits(&digits);
+
+    (d10, d11) == (digits[9], digits[10])
+}
+
+fn generate_digits(cnh: &[u8]) -> (u8, u8) {
     // First Digit
     let mut sum: u16 = 0;
     let mut dsc: u16 = 0;
 
     for i in (0..=9).rev() {
-        sum += (document[9 - i] as u16) * (i as u16);
+        sum += (cnh[9 - i] as u16) * (i as u16);
     }
 
     let mut first = sum % 11;
@@ -20,7 +41,7 @@ fn generate_digits(document: &[u8]) -> (u8, u8) {
     let mut sum: u16 = 0;
 
     for i in 1..=9 {
-        sum += (document[i - 1] as u16) * (i as u16);
+        sum += (cnh[i - 1] as u16) * (i as u16);
     }
 
     let mut second: i16 = (sum % 11) as i16 - dsc as i16;
@@ -33,42 +54,27 @@ fn generate_digits(document: &[u8]) -> (u8, u8) {
     (first as u8, second as u8)
 }
 
-pub fn validate(
-    document: &String,
-    is_masked: bool,
-) -> bool {
-    println!("{:?}", document.chars());
-    let symbols = HashSet::from_iter([' '].iter().cloned());
-
-    if is_masked && !valid_symbols(document, symbols) {
-        return false;
-    }
-
-    let digits: Vec<u8> = get_digits(document);
-
-    if digits.len() != 11 {
-        return false;
-    }
-
-    if is_repeated(&digits) {
-        return false;
-    }
-
-    let digit10 = digits[9];
-    let digit11 = digits[10];
-
-    let (generated_digit10, generated_digit11) = generate_digits(&digits);
-    println!("{} {}", generated_digit10, generated_digit11);
-
-    let check_digit10 = digit10 == generated_digit10;
-    let check_digit11 = digit11 == generated_digit11;
-
-    check_digit10 && check_digit11
+pub fn is_bare(cnh: &String) -> bool {
+    cnh.chars().count() == 11 && get_digits(cnh).len() == 11
 }
 
-pub fn validate_str(
-    document: &str,
-    is_masked: bool,
-) -> bool {
-    validate(&String::from(document), is_masked)
+pub fn is_masked(cnh: &String) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(&cnh);
+    if symbols.len() != 3 {
+        return false;
+    }
+    symbols[0] == (3, ' ') && symbols[1] == (7, ' ') && symbols[2] == (11, ' ')
+}
+
+pub fn mask(cnh: &String) -> String {
+    if !is_bare(&cnh) {
+        panic!("The given string cannot be masked as CNH!")
+    }
+    format!(
+        "{} {} {} {}",
+        &cnh[0..3],
+        &cnh[3..6],
+        &cnh[6..9],
+        &cnh[9..11],
+    )
 }
