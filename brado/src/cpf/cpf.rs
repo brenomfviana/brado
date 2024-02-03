@@ -18,19 +18,22 @@ pub fn validate(cpf: &String) -> bool {
     (d10, d11) == (digits[9], digits[10])
 }
 
-fn generate_digits(cpf: &[u8]) -> (u8, u8) {
-    (generate_digit(&cpf, 10), generate_digit(&cpf, 11))
+fn generate_digits(cpf_slice: &[u8]) -> (u8, u8) {
+    let d10 = generate_digit(&cpf_slice, 10);
+    let d11 = generate_digit(&cpf_slice, 11);
+
+    (d10, d11)
 }
 
 fn generate_digit(
-    cpf: &[u8],
+    cpf_slice: &[u8],
     max: u16,
 ) -> u8 {
     let mut sum: u16 = 0;
 
     for i in (2..=max).rev() {
         let idx = (max - i) as usize;
-        let digit = cpf[idx] as u16;
+        let digit = cpf_slice[idx] as u16;
         sum += digit * i;
     }
 

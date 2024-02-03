@@ -71,7 +71,7 @@ mod cpf_tests {
     }
 
     #[test]
-    fn cpf_mask_1_valid_cpf() {
+    fn cpf_mask_1_bare_cpf() {
         let bare_cpf = String::from("63929247011");
         assert_eq!(brado::cpf::mask(&bare_cpf), String::from("639.292.470-11"),);
     }
