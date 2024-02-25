@@ -1,4 +1,4 @@
-use crate::common::{get_digits, get_symbols, is_repeated};
+use crate::common::{get_digits, get_symbols, is_repeated, random_digits};
 
 pub fn validate(cnh: &str) -> bool {
     let size: usize = cnh.chars().count();
@@ -22,9 +22,9 @@ pub fn validate(cnh: &str) -> bool {
     (d10, d11) == (digits[9], digits[10])
 }
 
-fn generate_digits(cpf_slice: &[u16]) -> (u16, u16) {
-    let (d10, dsc): (u16, u16) = generate_first_digit(cpf_slice);
-    let d11: u16 = generate_second_digit(cpf_slice, dsc);
+fn generate_digits(cnh_slice: &[u16]) -> (u16, u16) {
+    let (d10, dsc): (u16, u16) = generate_first_digit(cnh_slice);
+    let d11: u16 = generate_second_digit(cnh_slice, dsc);
 
     (d10, d11)
 }
@@ -33,7 +33,7 @@ fn generate_first_digit(cnh: &[u16]) -> (u16, u16) {
     let mut sum: u16 = 0;
     let mut dsc: u16 = 0;
 
-    for i in (0..=9).rev() {
+    for i in (1..=9).rev() {
         sum += cnh[9 - i] * (i as u16);
     }
 
@@ -66,6 +66,19 @@ fn generate_second_digit(
     }
 
     second as u16
+}
+
+pub fn generate() -> String {
+    let mut cnh: Vec<u16> = random_digits(9);
+    let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
+    cnh.push(d10);
+    let d11: u16 = generate_second_digit(&cnh, dsc);
+    cnh.push(d11);
+
+    cnh.iter()
+        .map(|d| d.to_string())
+        .collect::<Vec<String>>()
+        .join("")
 }
 
 pub fn is_bare(cnh: &str) -> bool {

@@ -81,4 +81,10 @@ mod cnh_tests {
         let document = String::from("847187352");
         brado::cnh::mask(&document);
     }
+
+    #[test]
+    fn cnh_generate_1() {
+        let cnh = brado::cnh::generate();
+        assert_eq!(brado::cnh::validate(&cnh), true);
+    }
 }
