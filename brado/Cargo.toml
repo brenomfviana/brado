@@ -12,3 +12,4 @@ keywords = ["brazilian", "docs", "validator"]
 authors = ["Breno Viana", "Pedro Regis"]
 
 [dependencies]
+rand = "0.8.5"

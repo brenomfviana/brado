@@ -1,3 +1,4 @@
+use rand::Rng;
 use std::collections::HashSet;
 
 const RADIX: u32 = 10;
@@ -31,4 +32,13 @@ pub fn unmask(document: &str) -> String {
         .filter_map(|c| c.to_digit(RADIX).map(|c| c.to_string()))
         .collect::<Vec<String>>()
         .join("")
+}
+
+pub fn random_digit_vector(size: usize) -> Vec<u16> {
+    let mut rng = rand::thread_rng();
+    let mut digits: Vec<u16> = vec![];
+    for _ in 0..size {
+        digits.push(rng.gen_range(0..10));
+    }
+    digits
 }

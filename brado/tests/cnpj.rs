@@ -84,4 +84,18 @@ mod cnpj_tests {
         let document: &str = "052008510001";
         brado::cnpj::mask(document);
     }
+
+    #[test]
+    fn cnpj_generate_1() {
+        let cnpj = brado::cnpj::generate();
+        assert_eq!(brado::cnpj::validate(&cnpj), true);
+        assert_eq!(brado::cnpj::is_bare(&cnpj), true);
+    }
+
+    #[test]
+    fn cpf_generate_masked_1() {
+        let cnpj = brado::cnpj::generate_masked();
+        assert_eq!(brado::cnpj::validate(&cnpj), true);
+        assert_eq!(brado::cnpj::is_masked(&cnpj), true);
+    }
 }
