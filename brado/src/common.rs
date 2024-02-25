@@ -34,7 +34,7 @@ pub fn unmask(document: &str) -> String {
         .join("")
 }
 
-pub fn random_digits(size: usize) -> Vec<u16> {
+pub fn random_digit_vector(size: usize) -> Vec<u16> {
     let mut rng = rand::thread_rng();
     let mut digits: Vec<u16> = vec![];
     for _ in 0..size {

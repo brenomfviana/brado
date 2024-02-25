@@ -1,4 +1,6 @@
-use crate::common::{get_digits, get_symbols, is_repeated, random_digits};
+use crate::common::{
+    get_digits, get_symbols, is_repeated, random_digit_vector,
+};
 
 pub fn validate(cnh: &str) -> bool {
     let size: usize = cnh.chars().count();
@@ -69,7 +71,7 @@ fn generate_second_digit(
 }
 
 pub fn generate() -> String {
-    let mut cnh: Vec<u16> = random_digits(9);
+    let mut cnh: Vec<u16> = random_digit_vector(9);
     let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
     cnh.push(d10);
     let d11: u16 = generate_second_digit(&cnh, dsc);

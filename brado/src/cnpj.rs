@@ -1,4 +1,4 @@
-use crate::common::{get_digits, get_symbols, random_digits};
+use crate::common::{get_digits, get_symbols, random_digit_vector};
 
 pub fn validate(cnpj: &str) -> bool {
     let size: usize = cnpj.chars().count();
@@ -61,7 +61,7 @@ fn generate_digit(
 }
 
 pub fn generate() -> String {
-    let cnpj: Vec<u16> = random_digits(12);
+    let cnpj: Vec<u16> = random_digit_vector(12);
     let (d13, d14): (u16, u16) = generate_digits(&cnpj);
     let cnpj = [cnpj, vec![d13, d14]].concat();
 

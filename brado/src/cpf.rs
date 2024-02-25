@@ -1,4 +1,6 @@
-use crate::common::{get_digits, get_symbols, is_repeated, random_digits};
+use crate::common::{
+    get_digits, get_symbols, is_repeated, random_digit_vector,
+};
 
 pub fn validate(cpf: &str) -> bool {
     let size: usize = cpf.chars().count();
@@ -46,7 +48,7 @@ fn generate_digit(
 }
 
 pub fn generate() -> String {
-    let mut cpf: Vec<u16> = random_digits(9);
+    let mut cpf: Vec<u16> = random_digit_vector(9);
     cpf.push(generate_digit(&cpf, 10));
     cpf.push(generate_digit(&cpf, 11));
 
