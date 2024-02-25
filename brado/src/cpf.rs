@@ -1,4 +1,4 @@
-use crate::common::{get_digits, get_symbols, is_repeated};
+use crate::common::{get_digits, get_symbols, is_repeated, random_digits};
 
 pub fn validate(cpf: &str) -> bool {
     let size: usize = cpf.chars().count();
@@ -43,6 +43,17 @@ fn generate_digit(
     }
 
     sum
+}
+
+pub fn generate() -> String {
+    let mut cpf: Vec<u16> = random_digits(9);
+    cpf.push(generate_digit(&cpf, 10));
+    cpf.push(generate_digit(&cpf, 11));
+
+    cpf.iter()
+        .map(|d| d.to_string())
+        .collect::<Vec<String>>()
+        .join("")
 }
 
 pub fn is_bare(cpf: &str) -> bool {

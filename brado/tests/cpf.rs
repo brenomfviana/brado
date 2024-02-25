@@ -89,4 +89,10 @@ mod cpf_tests {
         let document = String::from("639292470");
         brado::cpf::mask(&document);
     }
+
+    #[test]
+    fn cpf_generate_1() {
+        let cpf = brado::cpf::generate();
+        assert_eq!(brado::cpf::validate(&cpf), true);
+    }
 }
