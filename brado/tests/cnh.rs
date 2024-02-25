@@ -86,5 +86,13 @@ mod cnh_tests {
     fn cnh_generate_1() {
         let cnh = brado::cnh::generate();
         assert_eq!(brado::cnh::validate(&cnh), true);
+        assert_eq!(brado::cnh::is_bare(&cnh), true);
+    }
+
+    #[test]
+    fn cpf_generate_masked_1() {
+        let cnh = brado::cnh::generate_masked();
+        assert_eq!(brado::cnh::validate(&cnh), true);
+        assert_eq!(brado::cnh::is_masked(&cnh), true);
     }
 }

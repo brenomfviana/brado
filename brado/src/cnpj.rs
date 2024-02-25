@@ -60,17 +60,6 @@ fn generate_digit(
     sum
 }
 
-pub fn generate() -> String {
-    let cnpj: Vec<u16> = random_digit_vector(12);
-    let (d13, d14): (u16, u16) = generate_digits(&cnpj);
-    let cnpj = [cnpj, vec![d13, d14]].concat();
-
-    cnpj.iter()
-        .map(|d| d.to_string())
-        .collect::<Vec<String>>()
-        .join("")
-}
-
 pub fn is_bare(cnpj: &str) -> bool {
     cnpj.chars().count() == 14 && get_digits(cnpj).len() == 14
 }
@@ -101,4 +90,19 @@ pub fn mask(cnpj: &str) -> String {
         &cnpj[8..12],
         &cnpj[12..14],
     )
+}
+
+pub fn generate() -> String {
+    let cnpj: Vec<u16> = random_digit_vector(12);
+    let (d13, d14): (u16, u16) = generate_digits(&cnpj);
+    let cnpj = [cnpj, vec![d13, d14]].concat();
+
+    cnpj.iter()
+        .map(|d| d.to_string())
+        .collect::<Vec<String>>()
+        .join("")
+}
+
+pub fn generate_masked() -> String {
+    mask(&generate())
 }

@@ -70,19 +70,6 @@ fn generate_second_digit(
     second as u16
 }
 
-pub fn generate() -> String {
-    let mut cnh: Vec<u16> = random_digit_vector(9);
-    let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
-    cnh.push(d10);
-    let d11: u16 = generate_second_digit(&cnh, dsc);
-    cnh.push(d11);
-
-    cnh.iter()
-        .map(|d| d.to_string())
-        .collect::<Vec<String>>()
-        .join("")
-}
-
 pub fn is_bare(cnh: &str) -> bool {
     cnh.chars().count() == 11 && get_digits(cnh).len() == 11
 }
@@ -109,4 +96,21 @@ pub fn mask(cnh: &str) -> String {
         &cnh[6..9],
         &cnh[9..11],
     )
+}
+
+pub fn generate() -> String {
+    let mut cnh: Vec<u16> = random_digit_vector(9);
+    let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
+    cnh.push(d10);
+    let d11: u16 = generate_second_digit(&cnh, dsc);
+    cnh.push(d11);
+
+    cnh.iter()
+        .map(|d| d.to_string())
+        .collect::<Vec<String>>()
+        .join("")
+}
+
+pub fn generate_masked() -> String {
+    mask(&generate())
 }

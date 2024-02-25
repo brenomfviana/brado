@@ -94,5 +94,13 @@ mod cpf_tests {
     fn cpf_generate_1() {
         let cpf = brado::cpf::generate();
         assert_eq!(brado::cpf::validate(&cpf), true);
+        assert_eq!(brado::cpf::is_bare(&cpf), true);
+    }
+
+    #[test]
+    fn cpf_generate_masked_1() {
+        let cpf = brado::cpf::generate_masked();
+        assert_eq!(brado::cpf::validate(&cpf), true);
+        assert_eq!(brado::cpf::is_masked(&cpf), true);
     }
 }
