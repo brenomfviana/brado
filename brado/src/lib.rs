@@ -4,8 +4,8 @@
 //!
 //! ## Example
 //! ```
-//! use brado;
-//! brado::cpf::validate("639.292.470-11");
+//! use brado::cpf;
+//! cpf::validate("639.292.470-11");
 //! ```
 pub mod cnh;
 pub mod cnpj;
