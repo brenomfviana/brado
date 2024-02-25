@@ -51,14 +51,19 @@ Todos os documentos possuem as mesmas funções e funcionam da mesma forma.
 
 ```rust
 use brado::cpf;
+
 cpf::validate("639.292.470-11"); // true
 cpf::validate("639.292.470-10"); // false
+
+cpf::validate("63929247011"); // true
+cpf::validate("63929247010"); // false
 ```
 
 ### mask
 
 ```rust
 use brado::cpf;
+
 cpf::mask("63929247011"); // "639.292.470-11"
 ```
 
@@ -66,6 +71,7 @@ cpf::mask("63929247011"); // "639.292.470-11"
 
 ```rust
 use brado::cpf;
+
 cpf::generate(); // "63929247011"
 cpf::generate_masked(); // "639.292.470-11"
 ```
