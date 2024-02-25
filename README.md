@@ -47,16 +47,24 @@ Todos os documentos possuem as mesmas funções e funcionam da mesma forma.
 ### validate
 
 ```rust
-use brado;
-brado::cpf::validate("639.292.470-11"); // true
-brado::cpf::validate("639.292.470-10"); // false
+use brado::cpf;
+cpf::validate("639.292.470-11"); // true
+cpf::validate("639.292.470-10"); // false
 ```
 
 ### mask
 
 ```rust
-use brado;
-brado::cpf::mask("63929247011"); // 639.292.470-11
+use brado::cpf;
+cpf::mask("63929247011"); // "639.292.470-11"
+```
+
+### generate
+
+```rust
+use brado::cpf;
+cpf::generate(); // "63929247011"
+cpf::generate_masked(); // "639.292.470-11"
 ```
 
 
