@@ -1,5 +1,8 @@
 # brado
 <a href="https://crates.io/crates/brado">
+  <img src="https://img.shields.io/crates/v/brado.svg" alt="latest release" />
+</a>
+<a href="https://crates.io/crates/brado">
   <img src="https://img.shields.io/crates/d/brado" alt="latest release" />
 </a>
 </a>
