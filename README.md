@@ -57,9 +57,9 @@ Valida o documento passado como parâmetro (`&str`). Retorna um valor booleano (
 use brado::cpf;
 
 cpf::validate("63929247011"); // true
-cpf::validate("63929247010"); // false
-
 cpf::validate("639.292.470-11"); // true
+
+cpf::validate("63929247010"); // false
 cpf::validate("639.292.470-10"); // false
 ```
 
@@ -71,6 +71,8 @@ Mascara o documento passado como parâmetro (`&str`). Retorna a string (`String`
 use brado::cpf;
 
 cpf::mask("63929247011"); // "639.292.470-11"
+
+cpf::mask("639.292.470-11"); // panic!
 ```
 
 ### is_bare
@@ -81,8 +83,11 @@ Verifica se o documento passado como parâmetro (`&str`) não possui símbolos. 
 use brado::cpf;
 
 cpf::is_bare("63929247011"); // true
-cpf::is_bare("639.292.470-10"); // false
-cpf::is_bare("639.29247010"); // false
+cpf::is_bare("63929247010"); // true
+
+cpf::is_bare("639.292.470-11"); // false
+cpf::is_bare("639.29247011"); // false
+cpf::is_bare("639292470110"); // false
 ```
 
 > OBS: se for utilizada a função `cpf::is_bare` para verificar se um CNPJ não possui símbolos, o resultado será `false`! Isso acontece pois esta função considera que a string é um CPF, ou seja, possui 11 dígitos.
@@ -95,8 +100,10 @@ Verifica se o documento passado como parâmetro (`&str`) está mascarado de acor
 use brado::cpf;
 
 cpf::is_masked("639.292.470-10"); // true
+
 cpf::is_masked("63929247011"); // false
 cpf::is_masked("6392.92.470-11"); // false
+cpf::is_masked("639.292.470-110"); // false
 ```
 
 > OBS: `cpf::is_masked` verifica se a string passada está mascarada como um CPF. `cnpj::is_masked` verifica se a string passada está mascarada como um CNPJ.
