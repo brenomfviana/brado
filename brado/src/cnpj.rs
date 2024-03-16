@@ -163,7 +163,10 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```
 /// use brado::cnpj;
 ///
-/// let result = cnpj::mask("05200851000100"); // "05.200.851/0001-00"
+/// let result = match cnpj::mask("05200851000100") { // Ok("05.200.851/0001-00")
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// assert!(cnpj::is_masked(&result)); // true
 /// ```
 ///
@@ -171,21 +174,26 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```should_panic
 /// use brado::cnpj;
 ///
-/// cnpj::mask("05.200.851/0001-00"); // panic!
+/// let result = match cnpj::mask("05.200.851/0001-00") { // It panics!
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// ```
-pub fn mask(doc: &str) -> String {
+pub fn mask(doc: &str) -> Result<String, &'static str> {
     if !is_bare(doc) {
-        panic!("The given string cannot be masked as CNPJ!")
+        return Err("The given string cannot be masked as CNPJ!");
     }
 
-    format!(
+    let masked_doc = format!(
         "{}.{}.{}/{}-{}",
         &doc[0..2],
         &doc[2..5],
         &doc[5..8],
         &doc[8..12],
         &doc[12..14],
-    )
+    );
+
+    Ok(masked_doc)
 }
 
 /// Gera e retorna um CNPJ aleatório sem máscara.
@@ -218,5 +226,5 @@ pub fn generate() -> String {
 /// assert!(cnpj::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate())
+    mask(&generate()).expect("Valid CNPJ!")
 }

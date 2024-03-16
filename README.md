@@ -65,14 +65,15 @@ cpf::validate("639.292.470-10"); // false
 
 ### mask
 
-Mascara o documento passado como parâmetro (`&str`). Retorna a string (`String`) correspondente ao documento mascarado. A string passada não deve possuir símbolos.
+Mascara o documento passado como parâmetro (`&str`). Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro. A string passada não deve possuir símbolos.
 
 ```rust
 use brado::cpf;
 
-cpf::mask("63929247011"); // "639.292.470-11"
+cpf::mask("63929247011"); // Ok("639.292.470-11")
 
-cpf::mask("639.292.470-11"); // panic!
+cpf::mask("639.292.470-11"); // Err("The given string cannot be masked as CPF!")
+cpf::mask("639292470"); // Err("The given string cannot be masked as CPF!")
 ```
 
 ### is_bare
