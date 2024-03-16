@@ -187,9 +187,7 @@ pub fn is_masked(doc: &str) -> bool {
 /// };
 /// ```
 pub fn mask(doc: &str) -> Result<String, &'static str> {
-    let digits: Vec<u16> = get_digits(doc);
-
-    if !is_bare(doc) || digits.len() != 11 {
+    if !is_bare(doc) {
         return Err("The given string cannot be masked as CNH!");
     }
 
