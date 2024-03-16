@@ -1,15 +1,44 @@
+//! Utilitários para validação de CPF.
+
 use crate::common::{
     get_digits, get_symbols, is_repeated, random_digit_vector,
 };
 
-pub fn validate(cpf: &str) -> bool {
-    let size: usize = cpf.chars().count();
+/// Realiza validação de CPF, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um CPF válido,
+/// caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CPFs válidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::validate("63929247011"); // true
+/// assert!(result);
+///
+/// let result = cpf::validate("639.292.470-11"); // true
+/// assert!(result);
+/// ```
+///
+/// CPFs inválidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::validate("63929247010"); // false
+/// assert!(!result);
+///
+/// let result = cpf::validate("639.292.470-10"); // false
+/// assert!(!result);
+/// ```
+pub fn validate(doc: &str) -> bool {
+    let size: usize = doc.chars().count();
 
-    if size != 11 && !is_masked(cpf) {
+    if size != 11 && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(cpf);
+    let digits: Vec<u16> = get_digits(doc);
 
     if digits.len() != 11 || is_repeated(&digits) {
         return false;
@@ -20,22 +49,22 @@ pub fn validate(cpf: &str) -> bool {
     (d10, d11) == (digits[9], digits[10])
 }
 
-fn generate_digits(cpf_slice: &[u16]) -> (u16, u16) {
-    let d10: u16 = generate_digit(cpf_slice, 10);
-    let d11: u16 = generate_digit(cpf_slice, 11);
+fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
+    let d10: u16 = generate_digit(doc_slice, 10);
+    let d11: u16 = generate_digit(doc_slice, 11);
 
     (d10, d11)
 }
 
 fn generate_digit(
-    cpf_slice: &[u16],
+    doc_slice: &[u16],
     max: u16,
 ) -> u16 {
     let mut sum: u16 = 0;
 
     for i in (2..=max).rev() {
         let idx: usize = (max - i) as usize;
-        sum += cpf_slice[idx] * i;
+        sum += doc_slice[idx] * i;
     }
 
     sum = (sum * 10) % 11;
@@ -47,34 +76,110 @@ fn generate_digit(
     sum
 }
 
-pub fn is_bare(cpf: &str) -> bool {
-    cpf.chars().count() == 11 && get_digits(cpf).len() == 11
+/// Verifica se o argumento `doc` pode ser um CPF sem símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CPFs válidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::is_bare("63929247011"); // true
+/// assert!(result);
+///
+/// let result = cpf::is_bare("639.292.470-11"); // false
+/// assert!(!result);
+/// ```
+///
+/// CPFs inválidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::is_bare("63929247010"); // true
+/// assert!(result);
+/// ```
+pub fn is_bare(doc: &str) -> bool {
+    doc.chars().count() == 11 && get_digits(doc).len() == 11
 }
 
-pub fn is_masked(cpf: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(cpf);
+/// Verifica se o argumento `doc` pode ser um CPF com símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CPFs válidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::is_masked("639.292.470-11"); // true
+/// assert!(result);
+///
+/// let result = cpf::is_masked("63929247011"); // false
+/// assert!(!result);
+/// ```
+///
+/// CPFs inválidos:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::is_masked("639.292.470-10"); // true
+/// assert!(result);
+/// ```
+pub fn is_masked(doc: &str) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(doc);
+    let digits: Vec<u16> = get_digits(doc);
 
-    if symbols.len() != 3 {
+    if symbols.len() != 3 || digits.len() != 11 {
         return false;
     }
 
     symbols[0] == (3, '.') && symbols[1] == (7, '.') && symbols[2] == (11, '-')
 }
 
-pub fn mask(cpf: &str) -> String {
-    if !is_bare(cpf) {
+/// Aplica máscara de CPF no argumento `doc` e retorna resultado.
+/// O argumento deve ser uma string sem símbolos, caso contrário,
+/// deve lançar erro.
+///
+/// ## Exemplos
+///
+/// Documento de 11 dígitos sem máscara:
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::mask("63929247011"); // "639.292.470-11"
+/// assert!(cpf::is_masked(&result)); // true
+/// ```
+///
+/// Documento de 11 dígitos com máscara:
+/// ```should_panic
+/// use brado::cpf;
+///
+/// cpf::mask("639.292.470-11"); // panic!
+/// ```
+pub fn mask(doc: &str) -> String {
+    if !is_bare(doc) {
         panic!("The given string cannot be masked as CPF!")
     }
 
     format!(
         "{}.{}.{}-{}",
-        &cpf[0..3],
-        &cpf[3..6],
-        &cpf[6..9],
-        &cpf[9..11],
+        &doc[0..3],
+        &doc[3..6],
+        &doc[6..9],
+        &doc[9..11],
     )
 }
 
+/// Gera e retorna um CPF aleatório sem máscara.
+///
+/// ## Exemplo
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::generate(); // "63929247011"
+/// assert!(cpf::is_bare(&result)); // true
+/// ```
 pub fn generate() -> String {
     let mut cpf: Vec<u16> = random_digit_vector(9);
     cpf.push(generate_digit(&cpf, 10));
@@ -86,6 +191,15 @@ pub fn generate() -> String {
         .join("")
 }
 
+/// Gera e retorna um CPF aleatório com máscara.
+///
+/// ## Exemplo
+/// ```
+/// use brado::cpf;
+///
+/// let result = cpf::generate_masked(); // "639.292.470-11"
+/// assert!(cpf::is_masked(&result)); // true
+/// ```
 pub fn generate_masked() -> String {
     mask(&generate())
 }

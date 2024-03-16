@@ -59,6 +59,12 @@ mod cpf_tests {
     }
 
     #[test]
+    fn cpf_is_bare_3_other_document() {
+        let bare_document: &str = "639292470110";
+        assert_eq!(brado::cpf::is_bare(bare_document), false);
+    }
+
+    #[test]
     fn cpf_is_masked_1_masked_cpf() {
         let masked_cpf: &str = "639.292.470-11";
         assert_eq!(brado::cpf::is_masked(masked_cpf), true);
@@ -68,6 +74,18 @@ mod cpf_tests {
     fn cpf_is_masked_2_bare_cpf() {
         let bare_cpf: &str = "63929247011";
         assert_eq!(brado::cpf::is_masked(bare_cpf), false);
+    }
+
+    #[test]
+    fn cpf_is_masked_3_other_document() {
+        let masked_document: &str = "6392.292.470-11";
+        assert_eq!(brado::cpf::is_masked(masked_document), false);
+    }
+
+    #[test]
+    fn cpf_is_masked_4_other_document() {
+        let masked_document: &str = "639.292.470-110";
+        assert_eq!(brado::cpf::is_masked(masked_document), false);
     }
 
     #[test]
