@@ -115,21 +115,24 @@ mod cpf_tests {
     #[test]
     fn cpf_mask_1_bare_cpf() {
         let bare_cpf: &str = "63929247011";
-        assert_eq!(brado::cpf::mask(bare_cpf), String::from("639.292.470-11"),);
+        assert_eq!(
+            brado::cpf::mask(bare_cpf),
+            Ok(String::from("639.292.470-11"))
+        );
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CPF")]
     fn cpf_mask_2_masked_cpf() {
         let masked_cpf: &str = "639.292.470-11";
-        brado::cpf::mask(masked_cpf);
+        let result = brado::cpf::mask(masked_cpf);
+        assert_eq!(result, Err("The given string cannot be masked as CPF!"),);
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CPF")]
     fn cpf_mask_3_invalid_cpf() {
         let document: &str = "639292470";
-        brado::cpf::mask(document);
+        let result = brado::cpf::mask(document);
+        assert_eq!(result, Err("The given string cannot be masked as CPF!"),);
     }
 
     #[test]
@@ -141,7 +144,10 @@ mod cpf_tests {
 
     #[test]
     fn cpf_generate_masked_1() {
-        let cpf = brado::cpf::generate_masked();
+        let cpf = match brado::cpf::generate_masked() {
+            Ok(doc) => doc,
+            Err(e) => panic!("{}", e),
+        };
         assert_eq!(brado::cpf::validate(&cpf), true);
         assert_eq!(brado::cpf::is_masked(&cpf), true);
     }

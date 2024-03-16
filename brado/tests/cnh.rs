@@ -115,21 +115,24 @@ mod cnh_tests {
     #[test]
     fn cnh_mask_1_bare_cnh() {
         let bare_cnh: &str = "84718735264";
-        assert_eq!(brado::cnh::mask(bare_cnh), String::from("847 187 352 64"),);
+        assert_eq!(
+            brado::cnh::mask(bare_cnh),
+            Ok(String::from("847 187 352 64"))
+        );
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CNH")]
     fn cnh_mask_2_masked_cnh() {
         let masked_cnh: &str = "847 187 352 64";
-        brado::cnh::mask(masked_cnh);
+        let result = brado::cnh::mask(masked_cnh);
+        assert_eq!(result, Err("The given string cannot be masked as CNH!"),);
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CNH")]
     fn cnh_mask_3_invalid_cnh() {
         let document: &str = "847187352";
-        brado::cnh::mask(document);
+        let result = brado::cnh::mask(document);
+        assert_eq!(result, Err("The given string cannot be masked as CNH!"),);
     }
 
     #[test]
@@ -141,7 +144,10 @@ mod cnh_tests {
 
     #[test]
     fn cnh_generate_masked_1() {
-        let cnh = brado::cnh::generate_masked();
+        let cnh = match brado::cnh::generate_masked() {
+            Ok(doc) => doc,
+            Err(e) => panic!("{}", e),
+        };
         assert_eq!(brado::cnh::validate(&cnh), true);
         assert_eq!(brado::cnh::is_masked(&cnh), true);
     }

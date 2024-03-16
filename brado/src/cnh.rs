@@ -170,7 +170,10 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```
 /// use brado::cnh;
 ///
-/// let result = cnh::mask("84718735264"); // "847 187 352 64"
+/// let result = match cnh::mask("84718735264") { // Ok("847 187 352 64")
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// assert!(cnh::is_masked(&result)); // true
 /// ```
 ///
@@ -178,20 +181,27 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```should_panic
 /// use brado::cnh;
 ///
-/// cnh::mask("847 187 352 64"); // panic!
+/// let result = match cnh::mask("847 187 352 64") { // It panics!
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// ```
-pub fn mask(doc: &str) -> String {
-    if !is_bare(doc) {
-        panic!("The given string cannot be masked as CNH!")
+pub fn mask(doc: &str) -> Result<String, &'static str> {
+    let digits: Vec<u16> = get_digits(doc);
+
+    if !is_bare(doc) || digits.len() != 11 {
+        return Err("The given string cannot be masked as CNH!");
     }
 
-    format!(
+    let masked_doc = format!(
         "{} {} {} {}",
         &doc[0..3],
         &doc[3..6],
         &doc[6..9],
         &doc[9..11],
-    )
+    );
+
+    Ok(masked_doc)
 }
 
 /// Gera e retorna um CNH aleatório sem máscara.
@@ -222,9 +232,12 @@ pub fn generate() -> String {
 /// ```
 /// use brado::cnh;
 ///
-/// let result = cnh::generate_masked(); // "847 187 352 64"
+/// let result = match cnh::generate_masked() { // Ok("847 187 352 64")
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// assert!(cnh::is_masked(&result)); // true
 /// ```
-pub fn generate_masked() -> String {
+pub fn generate_masked() -> Result<String, &'static str> {
     mask(&generate())
 }

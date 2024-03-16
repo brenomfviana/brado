@@ -147,7 +147,10 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```
 /// use brado::cpf;
 ///
-/// let result = cpf::mask("63929247011"); // "639.292.470-11"
+/// let result = match cpf::mask("63929247011") { // Ok("639.292.470-11")
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// assert!(cpf::is_masked(&result)); // true
 /// ```
 ///
@@ -155,20 +158,27 @@ pub fn is_masked(doc: &str) -> bool {
 /// ```should_panic
 /// use brado::cpf;
 ///
-/// cpf::mask("639.292.470-11"); // panic!
+/// let result = match cpf::mask("639.292.470-11") { // It panics!
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// ```
-pub fn mask(doc: &str) -> String {
-    if !is_bare(doc) {
-        panic!("The given string cannot be masked as CPF!")
+pub fn mask(doc: &str) -> Result<String, &'static str> {
+    let digits: Vec<u16> = get_digits(doc);
+
+    if !is_bare(doc) || digits.len() != 11 {
+        return Err("The given string cannot be masked as CPF!");
     }
 
-    format!(
+    let masked_doc = format!(
         "{}.{}.{}-{}",
         &doc[0..3],
         &doc[3..6],
         &doc[6..9],
         &doc[9..11],
-    )
+    );
+
+    Ok(masked_doc)
 }
 
 /// Gera e retorna um CPF aleatório sem máscara.
@@ -197,9 +207,12 @@ pub fn generate() -> String {
 /// ```
 /// use brado::cpf;
 ///
-/// let result = cpf::generate_masked(); // "639.292.470-11"
+/// let result = match cpf::generate_masked() { // Ok("639.292.470-11")
+///     Ok(doc) => doc,
+///     Err(e) => panic!("{}", e),
+/// };
 /// assert!(cpf::is_masked(&result)); // true
 /// ```
-pub fn generate_masked() -> String {
+pub fn generate_masked() -> Result<String, &'static str> {
     mask(&generate())
 }

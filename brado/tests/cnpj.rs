@@ -109,22 +109,22 @@ mod cnpj_tests {
         let bare_cnpj: &str = "05200851000100";
         assert_eq!(
             brado::cnpj::mask(bare_cnpj),
-            String::from("05.200.851/0001-00"),
+            Ok(String::from("05.200.851/0001-00")),
         );
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CNPJ")]
     fn cnpj_mask_2_masked_cnpj() {
         let masked_cnpj: &str = "05.200.851/0001-00";
-        brado::cnpj::mask(masked_cnpj);
+        let result = brado::cnpj::mask(masked_cnpj);
+        assert_eq!(result, Err("The given string cannot be masked as CNPJ!"),);
     }
 
     #[test]
-    #[should_panic(expected = "The given string cannot be masked as CNPJ")]
     fn cnpj_mask_3_invalid_cnpj() {
         let document: &str = "052008510001";
-        brado::cnpj::mask(document);
+        let result = brado::cnpj::mask(document);
+        assert_eq!(result, Err("The given string cannot be masked as CNPJ!"),);
     }
 
     #[test]
@@ -136,7 +136,10 @@ mod cnpj_tests {
 
     #[test]
     fn cnpj_generate_masked_1() {
-        let cnpj = brado::cnpj::generate_masked();
+        let cnpj = match brado::cnpj::generate_masked() {
+            Ok(doc) => doc,
+            Err(e) => panic!("{}", e),
+        };
         assert_eq!(brado::cnpj::validate(&cnpj), true);
         assert_eq!(brado::cnpj::is_masked(&cnpj), true);
     }
