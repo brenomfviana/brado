@@ -51,6 +51,12 @@ mod cnpj_tests {
     }
 
     #[test]
+    fn cnpj_is_bare_3_other_document() {
+        let bare_document: &str = "052008510001001";
+        assert_eq!(brado::cnpj::is_bare(bare_document), false);
+    }
+
+    #[test]
     fn cnpj_is_masked_1_masked_cnpj() {
         let masked_cnpj: &str = "05.200.851/0001-00";
         assert_eq!(brado::cnpj::is_masked(masked_cnpj), true);
@@ -60,6 +66,18 @@ mod cnpj_tests {
     fn cnpj_is_masked_2_bare_cnpj() {
         let bare_cnpj: &str = "05200851000100";
         assert_eq!(brado::cnpj::is_masked(bare_cnpj), false);
+    }
+
+    #[test]
+    fn cnpj_is_masked_3_other_document() {
+        let masked_document: &str = "0.520.085/1000-100";
+        assert_eq!(brado::cnpj::is_masked(masked_document), false);
+    }
+
+    #[test]
+    fn cnpj_is_masked_4_other_document() {
+        let masked_document: &str = "00.520.085/1000-100";
+        assert_eq!(brado::cnpj::is_masked(masked_document), false);
     }
 
     #[test]
@@ -93,7 +111,7 @@ mod cnpj_tests {
     }
 
     #[test]
-    fn cpf_generate_masked_1() {
+    fn cnpj_generate_masked_1() {
         let cnpj = brado::cnpj::generate_masked();
         assert_eq!(brado::cnpj::validate(&cnpj), true);
         assert_eq!(brado::cnpj::is_masked(&cnpj), true);

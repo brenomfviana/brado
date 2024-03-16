@@ -1,13 +1,42 @@
+//! Utilitários para validação de CNPJ.
+
 use crate::common::{get_digits, get_symbols, random_digit_vector};
 
-pub fn validate(cnpj: &str) -> bool {
-    let size: usize = cnpj.chars().count();
+/// Realiza validação de CNPJ, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um CNPJ válido,
+/// caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CNPJs válidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::validate("05200851000100"); // true
+/// assert!(result);
+///
+/// let result = cnpj::validate("05.200.851/0001-00"); // true
+/// assert!(result);
+/// ```
+///
+/// CNPJs inválidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::validate("05200851000101"); // false
+/// assert!(!result);
+///
+/// let result = cnpj::validate("05.200.851/0001-01"); // false
+/// assert!(!result);
+/// ```
+pub fn validate(doc: &str) -> bool {
+    let size: usize = doc.chars().count();
 
-    if size != 14 && !is_masked(cnpj) {
+    if size != 14 && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(cnpj);
+    let digits: Vec<u16> = get_digits(doc);
 
     if digits.len() != 14 {
         return false;
@@ -24,29 +53,29 @@ pub fn validate(cnpj: &str) -> bool {
     (d13, d14) == (digits[12], digits[13])
 }
 
-fn generate_digits(cnpj_slice: &[u16]) -> (u16, u16) {
-    let mut cnpj_slice: Vec<u16> = cnpj_slice.to_vec();
+fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
+    let mut doc_slice: Vec<u16> = doc_slice.to_vec();
 
     let weights: Vec<u16> = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d13: u16 = generate_digit(&cnpj_slice, 12, weights);
+    let d13: u16 = generate_digit(&doc_slice, 12, weights);
 
-    cnpj_slice.push(d13);
+    doc_slice.push(d13);
 
     let weights: Vec<u16> = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d14: u16 = generate_digit(&cnpj_slice, 13, weights);
+    let d14: u16 = generate_digit(&doc_slice, 13, weights);
 
     (d13, d14)
 }
 
 fn generate_digit(
-    cnpj_slice: &[u16],
+    doc_slice: &[u16],
     max: usize,
     weights: Vec<u16>,
 ) -> u16 {
     let mut sum: u16 = 0;
 
     for i in 0..max {
-        sum += cnpj_slice[i] * weights[i];
+        sum += doc_slice[i] * weights[i];
     }
 
     sum %= 11;
@@ -60,14 +89,61 @@ fn generate_digit(
     sum
 }
 
-pub fn is_bare(cnpj: &str) -> bool {
-    cnpj.chars().count() == 14 && get_digits(cnpj).len() == 14
+/// Verifica se o argumento `doc` pode ser um CNPJ sem símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CNPJs válidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::is_bare("05200851000100"); // true
+/// assert!(result);
+///
+/// let result = cnpj::is_bare("05.200.851/0001-00"); // false
+/// assert!(!result);
+/// ```
+///
+/// CNPJs inválidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::is_bare("05200851000101"); // true
+/// assert!(result);
+/// ```
+pub fn is_bare(doc: &str) -> bool {
+    doc.chars().count() == 14 && get_digits(doc).len() == 14
 }
 
-pub fn is_masked(cnpj: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(cnpj);
+/// Verifica se o argumento `doc` pode ser um CNPJ com símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CNPJs válidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::is_masked("05.200.851/0001-00"); // true
+/// assert!(result);
+///
+/// let result = cnpj::is_masked("05200851000100"); // false
+/// assert!(!result);
+/// ```
+///
+/// CNPJs inválidos:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::is_masked("05.200.851/0001-01"); // true
+/// assert!(result);
+/// ```
+pub fn is_masked(doc: &str) -> bool {
+    let symbols: Vec<(usize, char)> = get_symbols(doc);
+    let digits: Vec<u16> = get_digits(doc);
 
-    if symbols.len() != 4 {
+    if symbols.len() != 4 || digits.len() != 14 {
         return false;
     }
 
@@ -77,21 +153,50 @@ pub fn is_masked(cnpj: &str) -> bool {
         && symbols[3] == (15, '-')
 }
 
-pub fn mask(cnpj: &str) -> String {
-    if !is_bare(cnpj) {
+/// Aplica máscara de CNPJ no argumento `doc` e retorna resultado.
+/// O argumento deve ser uma string sem símbolos, caso contrário,
+/// deve lançar erro.
+///
+/// ## Exemplos
+///
+/// Documento de 14 dígitos sem máscara:
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::mask("05200851000100"); // "05.200.851/0001-00"
+/// assert!(cnpj::is_masked(&result)); // true
+/// ```
+///
+/// Documento de 14 dígitos com máscara:
+/// ```should_panic
+/// use brado::cnpj;
+///
+/// cnpj::mask("05.200.851/0001-00"); // panic!
+/// ```
+pub fn mask(doc: &str) -> String {
+    if !is_bare(doc) {
         panic!("The given string cannot be masked as CNPJ!")
     }
 
     format!(
         "{}.{}.{}/{}-{}",
-        &cnpj[0..2],
-        &cnpj[2..5],
-        &cnpj[5..8],
-        &cnpj[8..12],
-        &cnpj[12..14],
+        &doc[0..2],
+        &doc[2..5],
+        &doc[5..8],
+        &doc[8..12],
+        &doc[12..14],
     )
 }
 
+/// Gera e retorna um CNPJ aleatório sem máscara.
+///
+/// ## Exemplo
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::generate(); // "05200851000100"
+/// assert!(cnpj::is_bare(&result)); // true
+/// ```
 pub fn generate() -> String {
     let cnpj: Vec<u16> = random_digit_vector(12);
     let (d13, d14): (u16, u16) = generate_digits(&cnpj);
@@ -103,6 +208,15 @@ pub fn generate() -> String {
         .join("")
 }
 
+/// Gera e retorna um CNPJ aleatório com máscara.
+///
+/// ## Exemplo
+/// ```
+/// use brado::cnpj;
+///
+/// let result = cnpj::generate_masked(); // "05.200.851/0001-00"
+/// assert!(cnpj::is_masked(&result)); // true
+/// ```
 pub fn generate_masked() -> String {
     mask(&generate())
 }
