@@ -144,10 +144,7 @@ mod cnh_tests {
 
     #[test]
     fn cnh_generate_masked_1() {
-        let cnh = match brado::cnh::generate_masked() {
-            Ok(doc) => doc,
-            Err(e) => panic!("{}", e),
-        };
+        let cnh = brado::cnh::generate_masked();
         assert_eq!(brado::cnh::validate(&cnh), true);
         assert_eq!(brado::cnh::is_masked(&cnh), true);
     }

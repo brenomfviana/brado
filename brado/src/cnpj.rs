@@ -224,12 +224,9 @@ pub fn generate() -> String {
 /// ```
 /// use brado::cnpj;
 ///
-/// let result = match cnpj::generate_masked() { // Ok("05.200.851/0001-00")
-///     Ok(doc) => doc,
-///     Err(e) => panic!("{}", e),
-/// };
+/// let result = cnpj::generate_masked(); // "05.200.851/0001-00"
 /// assert!(cnpj::is_masked(&result)); // true
 /// ```
-pub fn generate_masked() -> Result<String, &'static str> {
-    mask(&generate())
+pub fn generate_masked() -> String {
+    mask(&generate()).expect("Valid CNPJ!")
 }

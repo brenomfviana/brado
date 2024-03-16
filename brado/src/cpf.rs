@@ -207,12 +207,9 @@ pub fn generate() -> String {
 /// ```
 /// use brado::cpf;
 ///
-/// let result = match cpf::generate_masked() { // Ok("639.292.470-11")
-///     Ok(doc) => doc,
-///     Err(e) => panic!("{}", e),
-/// };
+/// let result = cpf::generate_masked(); // "639.292.470-11"
 /// assert!(cpf::is_masked(&result)); // true
 /// ```
-pub fn generate_masked() -> Result<String, &'static str> {
-    mask(&generate())
+pub fn generate_masked() -> String {
+    mask(&generate()).expect("Valid CPF!")
 }

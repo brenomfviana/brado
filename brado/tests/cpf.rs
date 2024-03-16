@@ -144,10 +144,7 @@ mod cpf_tests {
 
     #[test]
     fn cpf_generate_masked_1() {
-        let cpf = match brado::cpf::generate_masked() {
-            Ok(doc) => doc,
-            Err(e) => panic!("{}", e),
-        };
+        let cpf = brado::cpf::generate_masked();
         assert_eq!(brado::cpf::validate(&cpf), true);
         assert_eq!(brado::cpf::is_masked(&cpf), true);
     }

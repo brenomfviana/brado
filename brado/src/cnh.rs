@@ -232,12 +232,9 @@ pub fn generate() -> String {
 /// ```
 /// use brado::cnh;
 ///
-/// let result = match cnh::generate_masked() { // Ok("847 187 352 64")
-///     Ok(doc) => doc,
-///     Err(e) => panic!("{}", e),
-/// };
+/// let result = cnh::generate_masked(); // "847 187 352 64"
 /// assert!(cnh::is_masked(&result)); // true
 /// ```
-pub fn generate_masked() -> Result<String, &'static str> {
-    mask(&generate())
+pub fn generate_masked() -> String {
+    mask(&generate()).expect("Valid CNH!")
 }

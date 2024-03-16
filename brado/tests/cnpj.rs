@@ -136,10 +136,7 @@ mod cnpj_tests {
 
     #[test]
     fn cnpj_generate_masked_1() {
-        let cnpj = match brado::cnpj::generate_masked() {
-            Ok(doc) => doc,
-            Err(e) => panic!("{}", e),
-        };
+        let cnpj = brado::cnpj::generate_masked();
         assert_eq!(brado::cnpj::validate(&cnpj), true);
         assert_eq!(brado::cnpj::is_masked(&cnpj), true);
     }
