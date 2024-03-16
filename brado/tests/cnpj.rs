@@ -5,35 +5,47 @@ mod cnpj_tests {
     #[test]
     fn cnpj_validate_1_valid_bare_cnpj() {
         let bare_cnpj: &str = "05200851000100";
-        assert_eq!(true, brado::cnpj::validate(bare_cnpj));
+        assert_eq!(brado::cnpj::validate(bare_cnpj), true);
     }
 
     #[test]
     fn cnpj_validate_2_valid_masked_cnpj() {
         let masked_cnpj: &str = "05.200.851/0001-00";
-        assert_eq!(true, brado::cnpj::validate(masked_cnpj));
+        assert_eq!(brado::cnpj::validate(masked_cnpj), true);
     }
 
     #[test]
-    fn cnpj_validate_3_invalid_mask() {
+    fn cnpj_validate_3_invalid_bare_cnpj() {
+        let bare_cnpj: &str = "05200851000101";
+        assert_eq!(brado::cnpj::validate(bare_cnpj), false);
+    }
+
+    #[test]
+    fn cnpj_validate_4_invalid_masked_cnpj() {
+        let masked_cnpj: &str = "05.200.851/0001-01";
+        assert_eq!(brado::cnpj::validate(masked_cnpj), false);
+    }
+
+    #[test]
+    fn cnpj_validate_5_invalid_mask() {
         let document: &str = "0.520.085/1000-100";
         assert_eq!(brado::cnpj::validate(document), false);
     }
 
     #[test]
-    fn cnpj_validate_4_invalid_other_document_1() {
+    fn cnpj_validate_6_invalid_other_document_1() {
         let document: &str = "052008510001";
         assert_eq!(brado::cnpj::validate(document), false);
     }
 
     #[test]
-    fn cnpj_validate_5_invalid_other_document_2() {
+    fn cnpj_validate_7_invalid_other_document_2() {
         let document: &str = "00.520.085/1000-100";
         assert_eq!(brado::cnpj::validate(document), false);
     }
 
     #[test]
-    fn cnpj_validate_6_invalid_other_document_3() {
+    fn cnpj_validate_8_invalid_other_document_3() {
         let document: &str = "05.200.851/0001-0:0";
         assert_eq!(brado::cnpj::validate(document), false);
     }
@@ -52,6 +64,18 @@ mod cnpj_tests {
 
     #[test]
     fn cnpj_is_bare_3_other_document() {
+        let bare_document: &str = "05200851000101";
+        assert_eq!(brado::cnpj::is_bare(bare_document), true);
+    }
+
+    #[test]
+    fn cnpj_is_bare_4_other_document() {
+        let bare_document: &str = "052.00851000100";
+        assert_eq!(brado::cnpj::is_bare(bare_document), false);
+    }
+
+    #[test]
+    fn cnpj_is_bare_5_other_document() {
         let bare_document: &str = "052008510001001";
         assert_eq!(brado::cnpj::is_bare(bare_document), false);
     }

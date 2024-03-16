@@ -73,6 +73,7 @@ use brado::cpf;
 cpf::mask("63929247011"); // "639.292.470-11"
 
 cpf::mask("639.292.470-11"); // panic!
+cpf::mask("639292470"); // panic!
 ```
 
 ### is_bare

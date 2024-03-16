@@ -23,25 +23,37 @@ mod cpf_tests {
     }
 
     #[test]
-    fn cpf_validate_4_invalid_mask() {
+    fn cpf_validate_4_invalid_bare_document() {
+        let document: &str = "63929247010";
+        assert_eq!(brado::cpf::validate(document), false);
+    }
+
+    #[test]
+    fn cpf_validate_5_invalid_masked_document() {
+        let document: &str = "639.292.470-10";
+        assert_eq!(brado::cpf::validate(document), false);
+    }
+
+    #[test]
+    fn cpf_validate_6_invalid_mask() {
         let document: &str = "63.929.247-011";
         assert_eq!(brado::cpf::validate(document), false);
     }
 
     #[test]
-    fn cpf_validate_5_invalid_other_document_1() {
+    fn cpf_validate_7_invalid_other_document_1() {
         let document: &str = "639292470";
         assert_eq!(brado::cpf::validate(document), false);
     }
 
     #[test]
-    fn cpf_validate_6_invalid_other_document_2() {
+    fn cpf_validate_8_invalid_other_document_2() {
         let document: &str = "063.929.247-011";
         assert_eq!(brado::cpf::validate(document), false);
     }
 
     #[test]
-    fn cpf_validate_7_invalid_other_document_3() {
+    fn cpf_validate_9_invalid_other_document_3() {
         let document: &str = "639.292.470-1:1";
         assert_eq!(brado::cpf::validate(document), false);
     }
@@ -60,6 +72,18 @@ mod cpf_tests {
 
     #[test]
     fn cpf_is_bare_3_other_document() {
+        let bare_document: &str = "63929247010";
+        assert_eq!(brado::cpf::is_bare(bare_document), true);
+    }
+
+    #[test]
+    fn cpf_is_bare_4_other_document() {
+        let bare_document: &str = "639.29247011";
+        assert_eq!(brado::cpf::is_bare(bare_document), false);
+    }
+
+    #[test]
+    fn cpf_is_bare_5_other_document() {
         let bare_document: &str = "639292470110";
         assert_eq!(brado::cpf::is_bare(bare_document), false);
     }
