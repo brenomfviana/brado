@@ -7,7 +7,7 @@
 //! Utilitários para validação de documentos brasileiros
 //!
 //! Brado fornece funções para identificação, validação e geração de documentos
-//! brasileiros. O nome desta biblioteca, Brado, é um acronimo de BRAzilian
+//! brasileiros. O nome desta biblioteca (Brado) é um acronimo de BRAzilian
 //! DOcs validator (validador de DOcumentos BRAsileiros).
 //!  
 //! # Guia Rápido

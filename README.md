@@ -13,7 +13,7 @@
 
 Brado é um pacote Rust para validação de documentos brasileiros. Este projeto é inspirado na biblioteca Python [validate-docbr](https://github.com/alvarofpp/validate-docbr).
 
-Brado fornece funções para identificação, validação e geração de documentos brasileiros. O nome desta biblioteca, Brado, é um acronimo de BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
+Brado fornece funções para identificação, validação e geração de documentos brasileiros. O nome desta biblioteca (Brado) é um acronimo de BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
 
 > :warning: A documentação desta biblioteca pode ser acessada [aqui](https://docs.rs/brado/).
 
