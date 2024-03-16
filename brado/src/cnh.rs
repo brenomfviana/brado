@@ -5,7 +5,7 @@ use crate::common::{
 };
 
 /// Realiza validação de CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNH válido,
+/// Retorna `true` se o argumento `doc` for uma CNH válido,
 /// caso contrário, retorna `false`.
 ///
 /// ## Exemplos
