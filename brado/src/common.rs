@@ -1,4 +1,4 @@
-//! Funções comuns utilizadas na validação de docos.
+//! Funções comuns utilizadas na validação de documentos.
 
 use rand::Rng;
 use std::collections::HashSet;
