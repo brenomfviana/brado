@@ -5,12 +5,12 @@ use crate::common::{
 };
 
 /// Realiza validação de CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for uma CNH válido,
+/// Retorna `true` se o argumento `doc` for uma CNH válida,
 /// caso contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
-/// CNHs válidos:
+/// CNHs válidas:
 /// ```
 /// use brado::cnh;
 ///
@@ -21,7 +21,7 @@ use crate::common::{
 /// assert!(result);
 /// ```
 ///
-/// CNHs inválidos:
+/// CNHs inválidas:
 /// ```
 /// use brado::cnh;
 ///
@@ -104,7 +104,7 @@ fn generate_second_digit(
 ///
 /// ## Exemplos
 ///
-/// CNHs válidos:
+/// CNHs válidas:
 /// ```
 /// use brado::cnh;
 ///
@@ -115,7 +115,7 @@ fn generate_second_digit(
 /// assert!(!result);
 /// ```
 ///
-/// CNHs inválidos:
+/// CNHs inválidas:
 /// ```
 /// use brado::cnh;
 ///
@@ -131,7 +131,7 @@ pub fn is_bare(doc: &str) -> bool {
 ///
 /// ## Exemplos
 ///
-/// CNHs válidos:
+/// CNHs válidas:
 /// ```
 /// use brado::cnh;
 ///
@@ -142,7 +142,7 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(!result);
 /// ```
 ///
-/// CNHs inválidos:
+/// CNHs inválidas:
 /// ```
 /// use brado::cnh;
 ///
