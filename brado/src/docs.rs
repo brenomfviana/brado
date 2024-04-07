@@ -68,7 +68,7 @@ pub fn is_cnpj(doc: &str) -> bool {
 }
 
 /// Verifica se um documento `doc` é uma CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for uma CNH válido,
+/// Retorna `true` se o argumento `doc` for uma CNH válida,
 /// caso contrário, retorna `false`.
 ///
 /// ## Exemplos
@@ -98,8 +98,8 @@ pub fn is_cnh(doc: &str) -> bool {
     cnh::validate(doc)
 }
 
-/// Verifica se um documento `doc` é uma CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for uma CNH válido,
+/// Verifica se um documento `doc` é um CNS, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um CNS válido,
 /// caso contrário, retorna `false`.
 ///
 /// ## Exemplos

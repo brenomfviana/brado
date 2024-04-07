@@ -66,7 +66,7 @@ pub fn get_symbols(doc: &str) -> Vec<(usize, char)> {
         .collect()
 }
 
-/// Remove os símbolos (desmascara) de uma string (`&str`)
+/// Desmascara uma string (`&str`), ou seja, remove os símbolos,
 /// e retorna a string resultante.
 ///
 /// ## Exemplo
@@ -103,7 +103,7 @@ pub fn random_digit_vector(size: usize) -> Vec<u16> {
     digits
 }
 
-/// Gera e retorna um número aleatório entre `min` e `max`.
+/// Seleciona aleatoriamente um elemento de um vetor de digítos.
 ///
 /// ## Exemplo
 ///

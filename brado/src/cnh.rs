@@ -99,7 +99,7 @@ fn generate_second_digit(
     second as u16
 }
 
-/// Verifica se o argumento `doc` pode ser um CNH sem símbolos.
+/// Verifica se o argumento `doc` pode ser uma CNH sem símbolos.
 /// Se for, retorna `true`, caso contrário, retorna `false`.
 ///
 /// ## Exemplos
@@ -126,7 +126,7 @@ pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == 11 && get_digits(doc).len() == 11
 }
 
-/// Verifica se o argumento `doc` pode ser um CNH com símbolos.
+/// Verifica se o argumento `doc` pode ser uma CNH com símbolos.
 /// Se for, retorna `true`, caso contrário, retorna `false`.
 ///
 /// ## Exemplos
@@ -202,7 +202,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
     Ok(masked_doc)
 }
 
-/// Gera e retorna um CNH aleatório sem máscara.
+/// Gera e retorna uma CNH aleatório sem máscara.
 ///
 /// ## Exemplo
 /// ```
@@ -224,7 +224,7 @@ pub fn generate() -> String {
         .join("")
 }
 
-/// Gera e retorna um CNH aleatório com máscara.
+/// Gera e retorna uma CNH aleatório com máscara.
 ///
 /// ## Exemplo
 /// ```
