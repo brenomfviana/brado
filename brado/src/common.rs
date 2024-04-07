@@ -102,3 +102,20 @@ pub fn random_digit_vector(size: usize) -> Vec<u16> {
     }
     digits
 }
+
+/// Gera e retorna um número aleatório entre `min` e `max`.
+///
+/// ## Exemplo
+///
+/// ```
+/// use brado::common::random_digit_from_vector;
+///
+/// let options = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+/// let result = random_digit_from_vector(&options);
+/// assert_eq!(options.contains(&result), true);
+/// ```
+pub fn random_digit_from_vector(options: &[u16]) -> u16 {
+    let mut rng = rand::thread_rng();
+    let idx = rng.gen_range(0..options.len());
+    options[idx]
+}
