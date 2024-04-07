@@ -42,7 +42,7 @@ pub fn is_cpf(doc: &str) -> bool {
 ///
 /// ## Exemplos
 ///
-/// CNPJs válidos:
+/// CNPJs válidas:
 /// ```
 /// use brado::docs;
 ///
@@ -53,7 +53,7 @@ pub fn is_cpf(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 ///
-/// CNPJs inválidos:
+/// CNPJs inválidas:
 /// ```
 /// use brado::docs;
 ///
