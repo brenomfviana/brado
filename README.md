@@ -29,7 +29,7 @@ cargo add brado
 Ou adicionar a linha a seguir no arquivo `Cargo.toml`:
 
 ```toml
-brado = "0.3.1"
+brado = "0.4.0"
 ```
 
 
@@ -38,7 +38,7 @@ brado = "0.3.1"
 - [x] CPF: Cadastro de Pessoa Física;
 - [x] CNH: Carteira Nacional de Habilitação;
 - [x] CNPJ: Cadastro Nacional da Pessoa Jurídica;
-- [ ] CNS: Cartão Nacional de Saúde;
+- [x] CNS: Cartão Nacional de Saúde;
 - [ ] PIS: PIS/NIS/PASEP/NIT;
 - [ ] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
 - [ ] RENAVAM: Registro Nacional de Veículos Automotores;
@@ -65,7 +65,7 @@ cpf::validate("639.292.470-10"); // false
 
 ### mask
 
-Mascara o documento passado como parâmetro (`&str`). Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro. A string passada não deve possuir símbolos.
+Mascara o documento passado como parâmetro (`&str`), apenas se a string passada não possuir símbolos. Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro.
 
 ```rust
 use brado::cpf;
@@ -83,12 +83,12 @@ Verifica se o documento passado como parâmetro (`&str`) não possui símbolos. 
 ```rust
 use brado::cpf;
 
-cpf::is_bare("63929247011"); // true
-cpf::is_bare("63929247010"); // true
+cpf::is_bare("63929247011"); // true (CPF válido sem máscara)
+cpf::is_bare("63929247010"); // true (CPF inválido sem máscara)
 
-cpf::is_bare("639.292.470-11"); // false
-cpf::is_bare("639.29247011"); // false
-cpf::is_bare("639292470110"); // false
+cpf::is_bare("639.292.470-11"); // false (CPF válido com máscara)
+cpf::is_bare("639.29247011"); // false (CPF válido mascarado errado)
+cpf::is_bare("639292470110"); // false (CPF inválido sem máscara)
 ```
 
 > OBS: se for utilizada a função `cpf::is_bare` para verificar se um CNPJ não possui símbolos, o resultado será `false`! Isso acontece pois esta função considera que a string é um CPF, ou seja, possui 11 dígitos.
@@ -100,11 +100,12 @@ Verifica se o documento passado como parâmetro (`&str`) está mascarado de acor
 ```rust
 use brado::cpf;
 
-cpf::is_masked("639.292.470-10"); // true
+cpf::is_masked("639.292.470-11"); // true (CPF válido com máscara)
+cpf::is_masked("639.292.470-10"); // true (CPF inválido com máscara)
 
-cpf::is_masked("63929247011"); // false
-cpf::is_masked("6392.92.470-11"); // false
-cpf::is_masked("639.292.470-110"); // false
+cpf::is_masked("63929247011"); // false (CPF válido sem máscara)
+cpf::is_masked("6392.92.470-11"); // false (CPF válido mascarado errado)
+cpf::is_masked("639.292.470-110"); // false (CPF inválido com máscara)
 ```
 
 > OBS: `cpf::is_masked` verifica se a string passada está mascarada como um CPF. `cnpj::is_masked` verifica se a string passada está mascarada como um CNPJ.
@@ -116,7 +117,7 @@ Gera um novo documento sem símbolos (`String`).
 ```rust
 use brado::cpf;
 
-cpf::generate(); // "639.292.470-11"
+cpf::generate(); // "63929247011"
 ```
 
 ### generate_masked
