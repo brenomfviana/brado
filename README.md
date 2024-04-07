@@ -13,7 +13,7 @@
 
 Brado é um pacote Rust para validação de documentos brasileiros. Este projeto é inspirado na biblioteca Python [validate-docbr](https://github.com/alvarofpp/validate-docbr).
 
-Brado fornece funções para identificação, validação e geração de documentos brasileiros. O nome desta biblioteca (Brado) é um acronimo de BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
+Brado fornece funções para identificação, validação e geração de documentos brasileiros. O nome desta biblioteca (Brado) é um acrônimo de BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
 
 > :warning: A documentação desta biblioteca pode ser acessada [aqui](https://docs.rs/brado/).
 
@@ -65,7 +65,7 @@ cpf::validate("639.292.470-10"); // false
 
 ### mask
 
-Mascara o documento passado como parâmetro (`&str`), apenas se a string passada não possuir símbolos. Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro.
+Mascara o documento passado como parâmetro (`&str`), apenas se não possuir símbolos. Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro.
 
 ```rust
 use brado::cpf;
@@ -128,6 +128,17 @@ Gera um novo documento mascarado (`String`).
 use brado::cpf;
 
 cpf::generate_masked(); // "639.292.470-11"
+```
+
+### docs::is_cpf, docs::is_cnpj, docs::is_cnh, docs::is_cns
+
+São funções que verificam se o documento passado como parâmetro (`&str`) são, respectivamente, CPF, CNPJ, CNH e CNS válidos. Essas funções são atalhos (apelidos) para as funções de validação de cada documento. São indicadas para o contexto de identificação do tipo do documento.
+
+```rust
+use brado::docs;
+
+docs::is_cpf("639.292.470-11"); // true
+docs::is_cnpj("639.292.470-11"); // false
 ```
 
 
