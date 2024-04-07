@@ -23,6 +23,7 @@
 //! ```
 pub mod cnh;
 pub mod cnpj;
+pub mod cns;
 pub mod common;
 pub mod cpf;
 pub mod docs;

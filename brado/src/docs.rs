@@ -2,6 +2,7 @@
 
 use crate::cnh;
 use crate::cnpj;
+use crate::cns;
 use crate::cpf;
 
 /// Verifica se um documento `doc` é um CPF, máscarado ou não.
@@ -95,4 +96,35 @@ pub fn is_cnpj(doc: &str) -> bool {
 /// ```
 pub fn is_cnh(doc: &str) -> bool {
     cnh::validate(doc)
+}
+
+/// Verifica se um documento `doc` é uma CNH, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for uma CNH válido,
+/// caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// CNSs válidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_cns("144082627260004"); // true
+/// assert!(result);
+///
+/// let result = docs::is_cns("144 0826 2726 0004"); // true
+/// assert!(result);
+/// ```
+///
+/// CNSs inválidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_cns("144082627260005"); // false
+/// assert!(!result);
+///
+/// let result = docs::is_cns("144 0826 2726 0005"); // false
+/// assert!(!result);
+/// ```
+pub fn is_cns(doc: &str) -> bool {
+    cns::validate(doc)
 }
