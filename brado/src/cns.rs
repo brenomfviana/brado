@@ -44,7 +44,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    validate_digits(&digits)
+    validate_checksum(&digits)
 }
 
 fn valid_first_digits() -> Vec<u16> {
@@ -59,7 +59,7 @@ fn is_first_digit_invalid(digit: &u16) -> bool {
     !is_first_digit_valid(digit)
 }
 
-fn validate_digits(doc_slice: &[u16]) -> bool {
+fn validate_checksum(doc_slice: &[u16]) -> bool {
     if vec![1, 2].contains(&doc_slice[0]) {
         let check_digits = generate_last_four_digits(&doc_slice[..11]);
 
@@ -259,7 +259,7 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
 
     loop {
         if val == 0 {
-            if validate_digits(&cns) {
+            if validate_checksum(&cns) {
                 return cns;
             } else {
                 let checksum = cns_sum(&cns, cns.len() as u16);
