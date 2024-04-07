@@ -65,7 +65,7 @@ cpf::validate("639.292.470-10"); // false
 
 ### mask
 
-Mascara o documento passado como parâmetro (`&str`), apenas se não possuir símbolos. Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro.
+Mascara o documento passado como parâmetro (`&str`), apenas se não possuir símbolos e tiver o número de caracteres do documento sem símbolos. Retorna uma string (`Result<String, &'static str>`) correspondente ao documento mascarado ou um erro.
 
 ```rust
 use brado::cpf;
