@@ -29,7 +29,7 @@ cargo add brado
 Ou adicionar a linha a seguir no arquivo `Cargo.toml`:
 
 ```toml
-brado = "0.4.0"
+brado = "0.5.0"
 ```
 
 
@@ -39,7 +39,7 @@ brado = "0.4.0"
 - [x] CNH: Carteira Nacional de Habilitação;
 - [x] CNPJ: Cadastro Nacional da Pessoa Jurídica;
 - [x] CNS: Cartão Nacional de Saúde;
-- [ ] PIS: PIS/NIS/PASEP/NIT;
+- [x] NIS: NIS/NIT/PIS/PASEP;
 - [ ] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
 - [ ] RENAVAM: Registro Nacional de Veículos Automotores;
 - [ ] Certidão de Nascimento/Casamento/Óbito.
@@ -143,6 +143,11 @@ docs::is_cnpj("639.292.470-11"); // false
 
 
 # Como Contribuir
+
+1. Fazer um fork do projeto;
+2. Criar um Pull Request com as sugestões de alteração.
+
+## (Opcional) Configuração do Projeto via Nix
 
 1. Instalar nix (com flakes, ou seja, >2.4);
 2. Fazer um fork do projeto;
