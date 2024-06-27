@@ -42,7 +42,7 @@ brado = "0.8.0"
 - [x] NIS: NIS/NIT/PIS/PASEP;
 - [x] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
 - [x] RENAVAM: Registro Nacional de Veículos Automotores;
-- [x] Certidão de Nascimento/Casamento/Óbito.
+- [x] Certidões de Nascimento, Casamento e Óbito.
 
 
 ## Funções
