@@ -84,6 +84,26 @@ pub fn unmask(doc: &str) -> String {
         .join("")
 }
 
+/// Clona vetor e o extende adicionando elementos de outro vetor.
+///
+/// ## Exemplo
+///
+/// ```
+/// use brado::common::extend_vector;
+///
+/// let vector = vec![0, 1, 2];
+/// let result = extend_vector(&vector, &vec![3, 4, 5]);
+/// assert_eq!(result, vec![0, 1, 2, 3, 4, 5]);
+/// ```
+pub fn extend_vector(
+    cur_vec: &[u16],
+    extension: &[u16],
+) -> Vec<u16> {
+    let mut new_vec = cur_vec.to_vec();
+    new_vec.extend(extension);
+    new_vec
+}
+
 /// Gera e retorna um vetor de dígitos aleatórios com o tamanho `size`.
 ///
 /// ## Exemplo

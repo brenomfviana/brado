@@ -29,7 +29,7 @@ cargo add brado
 Ou adicionar a linha a seguir no arquivo `Cargo.toml`:
 
 ```toml
-brado = "0.7.0"
+brado = "0.8.0"
 ```
 
 
@@ -42,7 +42,7 @@ brado = "0.7.0"
 - [x] NIS: NIS/NIT/PIS/PASEP;
 - [x] Título eleitoral: Cadastro que permite cidadãos brasileiros votar;
 - [x] RENAVAM: Registro Nacional de Veículos Automotores;
-- [ ] Certidão de Nascimento/Casamento/Óbito.
+- [x] Certidões de Nascimento, Casamento e Óbito.
 
 
 ## Funções
