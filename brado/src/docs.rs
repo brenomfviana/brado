@@ -4,6 +4,7 @@ use crate::cnh;
 use crate::cnpj;
 use crate::cns;
 use crate::cpf;
+use crate::nis;
 
 /// Verifica se um documento `doc` é um CPF, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CPF válido,
@@ -127,4 +128,35 @@ pub fn is_cnh(doc: &str) -> bool {
 /// ```
 pub fn is_cns(doc: &str) -> bool {
     cns::validate(doc)
+}
+
+/// Verifica se um documento `doc` é um Número NIS/NIT/PIS/PASEP, máscarado ou
+/// não. Retorna `true` se o argumento `doc` for um Número NIS/NIT/PIS/PASEP
+/// válido, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// Números NIS/NIT/PIS/PASEP válidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_nis("40865658047"); // true
+/// assert!(result);
+///
+/// let result = docs::is_nis("408.65658.04-7"); // true
+/// assert!(result);
+/// ```
+///
+/// Números NIS/NIT/PIS/PASEP inválidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_nis("40865658046"); // false
+/// assert!(!result);
+///
+/// let result = docs::is_nis("408.65658.04-6"); // false
+/// assert!(!result);
+/// ```
+pub fn is_nis(doc: &str) -> bool {
+    nis::validate(doc)
 }
