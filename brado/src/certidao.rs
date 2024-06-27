@@ -1,6 +1,8 @@
-//! Utilitários para validação de Certidão de Nascimento, Casamento e Óbito.
+//! Utilitários para validação de Certidões de Nascimento, Casamento e Óbito.
 
-use crate::common::{get_digits, get_symbols, extend_vector, random_digit_vector};
+use crate::common::{
+    extend_vector, get_digits, get_symbols, random_digit_vector,
+};
 
 /// Realiza validação de Certidão, máscarada ou não.
 /// Retorna `true` se o argumento `doc` for uma Certidão válido,
@@ -65,7 +67,6 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
             result
         })
         .sum();
-
     let result = d % 11;
 
     if result > 9 {
