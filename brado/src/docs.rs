@@ -4,7 +4,9 @@ use crate::cnh;
 use crate::cnpj;
 use crate::cns;
 use crate::cpf;
+use crate::eleitoral;
 use crate::nis;
+use crate::renavam;
 
 /// Verifica se um documento `doc` é um CPF, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CPF válido,
@@ -159,4 +161,66 @@ pub fn is_cns(doc: &str) -> bool {
 /// ```
 pub fn is_nis(doc: &str) -> bool {
     nis::validate(doc)
+}
+
+/// Verifica se um documento `doc` é um Título Eleitoral, máscarado ou
+/// não. Retorna `true` se o argumento `doc` for um Título Eleitoral
+/// válido, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// Títulos Eleitorais válidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_eleitoral("773537801651"); // true
+/// assert!(result);
+///
+/// let result = docs::is_eleitoral("7735 3780 1651"); // true
+/// assert!(result);
+/// ```
+///
+/// Títulos Eleitorais inválidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_eleitoral("773537801650"); // false
+/// assert!(!result);
+///
+/// let result = docs::is_eleitoral("7735 3780 1650"); // false
+/// assert!(!result);
+/// ```
+pub fn is_eleitoral(doc: &str) -> bool {
+    eleitoral::validate(doc)
+}
+
+/// Verifica se um documento `doc` é um RENAVAM, máscarado ou
+/// não. Retorna `true` se o argumento `doc` for um RENAVAM
+/// válido, caso contrário, retorna `false`.
+///
+/// ## Exemplos
+///
+/// RENAVAMs válidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_renavam("79072338363"); // true
+/// assert!(result);
+///
+/// let result = docs::is_renavam("7907233836-3"); // true
+/// assert!(result);
+/// ```
+///
+/// RENAVAMs inválidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_renavam("79072338362"); // false
+/// assert!(!result);
+///
+/// let result = docs::is_renavam("7907233836-2"); // false
+/// assert!(!result);
+/// ```
+pub fn is_renavam(doc: &str) -> bool {
+    renavam::validate(doc)
 }

@@ -29,3 +29,4 @@ pub mod cpf;
 pub mod docs;
 pub mod eleitoral;
 pub mod nis;
+pub mod renavam;
