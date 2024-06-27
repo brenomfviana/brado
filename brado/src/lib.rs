@@ -21,6 +21,7 @@
 //! let result = brado::cpf::validate("639.292.470-11");
 //! assert!(result);
 //! ```
+pub mod certidao;
 pub mod cnh;
 pub mod cnpj;
 pub mod cns;
