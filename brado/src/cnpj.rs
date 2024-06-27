@@ -1,4 +1,4 @@
-//! Utilitários para validação de CNPJ.
+//! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
 use crate::common::{get_digits, get_symbols, random_digit_vector};
 
@@ -54,39 +54,34 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
-    let mut doc_slice: Vec<u16> = doc_slice.to_vec();
-
     let weights: Vec<u16> = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d13: u16 = generate_digit(&doc_slice, 12, weights);
+    let d13: u16 = generate_digit(doc_slice, weights);
 
-    doc_slice.push(d13);
+    let doc_slice: Vec<u16> = [doc_slice, &[d13]].concat();
 
     let weights: Vec<u16> = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d14: u16 = generate_digit(&doc_slice, 13, weights);
+    let d14: u16 = generate_digit(&doc_slice, weights);
 
     (d13, d14)
 }
 
 fn generate_digit(
     doc_slice: &[u16],
-    max: usize,
     weights: Vec<u16>,
 ) -> u16 {
-    let mut sum: u16 = 0;
+    let sum: u16 = doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, x)| x * weights[i])
+        .sum();
 
-    for i in 0..max {
-        sum += doc_slice[i] * weights[i];
-    }
+    let result = sum % 11;
 
-    sum %= 11;
-
-    if sum < 10 {
-        sum = 0;
+    if result < 10 {
+        0
     } else {
-        sum = 11 - sum;
+        11 - result
     }
-
-    sum
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ sem símbolos.
