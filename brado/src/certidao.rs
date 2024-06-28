@@ -1,8 +1,6 @@
 //! Utilitários para validação de Certidões de Nascimento, Casamento e Óbito.
 
-use crate::common::{
-    extend_vector, get_digits, get_symbols, random_digit_vector,
-};
+use crate::common::{get_digits, get_symbols, random_digit_vector};
 
 /// Realiza validação de Certidão, máscarada ou não.
 /// Retorna `true` se o argumento `doc` for uma Certidão válido,
@@ -50,23 +48,27 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
-    let d30: u16 = generate_digit(&doc_slice);
-    let d31: u16 = generate_digit(&extend_vector(&doc_slice, &vec![d30]));
+    let d30: u16 = generate_digit(doc_slice);
+    let d31: u16 = generate_digit(&[doc_slice, &[d30]].concat());
 
     (d30, d31)
 }
 
 fn generate_digit(doc_slice: &[u16]) -> u16 {
     let mut multiplier: u16 = 32 - (doc_slice.len() as u16);
+
     let d: u16 = doc_slice
         .iter()
         .map(|x| {
             let result: u16 = x * multiplier;
+
             multiplier += 1;
             multiplier = if multiplier > 10 { 0 } else { multiplier };
+
             result
         })
         .sum();
+
     let result = d % 11;
 
     if result > 9 {
@@ -202,8 +204,8 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// ```
 pub fn generate() -> String {
     let mut certidao: Vec<u16> = random_digit_vector(30);
-    let (d30, d31): (u16, u16) = generate_digits(&certidao);
-    certidao.extend(vec![d30, d31]);
+    certidao.push(generate_digit(&certidao));
+    certidao.push(generate_digit(&certidao));
 
     certidao
         .iter()
