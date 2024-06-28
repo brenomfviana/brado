@@ -1,5 +1,6 @@
-//! Utilitários para validação de documentos.
+//! Utilitários para identificação de documentos.
 
+use crate::certidao;
 use crate::cnh;
 use crate::cnpj;
 use crate::cns;
@@ -9,8 +10,8 @@ use crate::nis;
 use crate::renavam;
 
 /// Verifica se um documento `doc` é um CPF, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CPF válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CPF válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -40,8 +41,8 @@ pub fn is_cpf(doc: &str) -> bool {
 }
 
 /// Verifica se um documento `doc` é um CNPJ, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNPJ válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CNPJ válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -71,8 +72,8 @@ pub fn is_cnpj(doc: &str) -> bool {
 }
 
 /// Verifica se um documento `doc` é uma CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for uma CNH válida,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for uma CNH válida, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -102,8 +103,8 @@ pub fn is_cnh(doc: &str) -> bool {
 }
 
 /// Verifica se um documento `doc` é um CNS, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNS válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CNS válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -132,9 +133,9 @@ pub fn is_cns(doc: &str) -> bool {
     cns::validate(doc)
 }
 
-/// Verifica se um documento `doc` é um Número NIS/NIT/PIS/PASEP, máscarado ou
-/// não. Retorna `true` se o argumento `doc` for um Número NIS/NIT/PIS/PASEP
-/// válido, caso contrário, retorna `false`.
+/// Verifica se um documento `doc` é um NIS/NIT/PIS/PASEP, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um NIS/NIT/PIS/PASEP válido, caso
+/// contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -163,9 +164,9 @@ pub fn is_nis(doc: &str) -> bool {
     nis::validate(doc)
 }
 
-/// Verifica se um documento `doc` é um Título Eleitoral, máscarado ou
-/// não. Retorna `true` se o argumento `doc` for um Título Eleitoral
-/// válido, caso contrário, retorna `false`.
+/// Verifica se um documento `doc` é um Título Eleitoral, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um Título Eleitoral válido, caso
+/// contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -194,9 +195,9 @@ pub fn is_eleitoral(doc: &str) -> bool {
     eleitoral::validate(doc)
 }
 
-/// Verifica se um documento `doc` é um RENAVAM, máscarado ou
-/// não. Retorna `true` se o argumento `doc` for um RENAVAM
-/// válido, caso contrário, retorna `false`.
+/// Verifica se um documento `doc` é um RENAVAM, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for um RENAVAM válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -223,4 +224,35 @@ pub fn is_eleitoral(doc: &str) -> bool {
 /// ```
 pub fn is_renavam(doc: &str) -> bool {
     renavam::validate(doc)
+}
+
+/// Verifica se um documento `doc` é uma Certidão, máscarado ou não.
+/// Retorna `true` se o argumento `doc` for uma Certidão válido, caso contrário,
+/// retorna `false`.
+///
+/// ## Exemplos
+///
+/// Certidões válidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_certidao("21924201552023106304243115818536"); // true
+/// assert!(result);
+///
+/// let result = docs::is_certidao("219242 01 55 2023 1 06304 243 1158185-36"); // true
+/// assert!(result);
+/// ```
+///
+/// Certidões inválidos:
+/// ```
+/// use brado::docs;
+///
+/// let result = docs::is_certidao("21924201552023106304243115818535"); // false
+/// assert!(!result);
+///
+/// let result = docs::is_certidao("219242 01 55 2023 1 06304 243 1158185-35"); // false
+/// assert!(!result);
+/// ```
+pub fn is_certidao(doc: &str) -> bool {
+    certidao::validate(doc)
 }

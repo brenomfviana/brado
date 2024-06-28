@@ -1,12 +1,12 @@
-//! Utilitários para validação de CNS.
+//! Utilitários para validação de Cartão Nacional de Saúde (CNS).
 
 use crate::common::{
     get_digits, get_symbols, random_digit_from_vector, random_digit_vector,
 };
 
 /// Realiza validação de CNS, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNS válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CNS válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -60,34 +60,30 @@ fn is_first_digit_invalid(digit: &u16) -> bool {
 }
 
 fn validate_checksum(doc_slice: &[u16]) -> bool {
-    if vec![1, 2].contains(&doc_slice[0]) {
-        let check_digits = generate_last_four_digits(&doc_slice[..11]);
+    if [1, 2].contains(&doc_slice[0]) {
+        let check_digits: Vec<u16> =
+            generate_last_four_digits(&doc_slice[..11]);
 
-        &doc_slice[11..] == check_digits
+        doc_slice[11..] == check_digits
     } else {
-        let checksum = cns_sum(&doc_slice, 15);
+        let checksum: u16 = cns_sum(doc_slice);
 
         checksum % 11 == 0
     }
 }
 
-fn cns_sum(
-    doc_slice: &[u16],
-    size: u16,
-) -> u16 {
-    let mut sum: u16 = 0;
-
-    for i in 0..size {
-        sum += doc_slice[i as usize] * (15 - i);
-    }
-
-    sum
+fn cns_sum(doc_slice: &[u16]) -> u16 {
+    doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, x)| x * (15 - i as u16))
+        .sum()
 }
 
 fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
-    let mut checksum = cns_sum(&doc_slice, doc_slice.len() as u16);
+    let mut checksum: u16 = cns_sum(doc_slice);
 
-    let mut check_digit = 11 - (checksum % 11);
+    let mut check_digit: u16 = 11 - (checksum % 11);
 
     if check_digit == 11 {
         check_digit = 0;
@@ -168,8 +164,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de CNS no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///
@@ -198,7 +194,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CNS!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{} {} {} {}",
         &doc[0..3],
         &doc[3..7],
@@ -219,10 +215,10 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cns::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let first_digit = random_digit_from_vector(&valid_first_digits());
+    let first_digit: u16 = random_digit_from_vector(&valid_first_digits());
 
-    let cns = {
-        if vec![1, 2].contains(&first_digit) {
+    let cns: Vec<u16> = {
+        if [1, 2].contains(&first_digit) {
             generate_first_case(first_digit)
         } else {
             generate_second_case(first_digit)
@@ -239,6 +235,7 @@ fn generate_first_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
     cns.extend_from_slice(&random_digit_vector(10));
     cns.extend_from_slice(&generate_last_four_digits(&cns));
+
     cns
 }
 
@@ -246,13 +243,13 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
     cns.extend_from_slice(&random_digit_vector(14));
 
-    let checksum = cns_sum(&cns, cns.len() as u16);
-    let rest = checksum % 11;
+    let checksum: u16 = cns_sum(&cns);
+    let rest: u16 = checksum % 11;
     if rest == 0 {
         return cns;
     }
 
-    let diff = 11 - rest;
+    let diff: u16 = 11 - rest;
 
     let mut val: usize = diff as usize;
     let mut idx: usize = 15 - val;
@@ -262,9 +259,9 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
             if validate_checksum(&cns) {
                 return cns;
             } else {
-                let checksum = cns_sum(&cns, cns.len() as u16);
+                let checksum: u16 = cns_sum(&cns);
 
-                let diff = 15 - (checksum % 11);
+                let diff: u16 = 15 - (checksum % 11);
 
                 val = diff as usize;
                 idx = 15 - diff as usize;

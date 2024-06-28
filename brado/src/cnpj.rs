@@ -1,10 +1,10 @@
-//! Utilitários para validação de CNPJ.
+//! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
 use crate::common::{get_digits, get_symbols, random_digit_vector};
 
 /// Realiza validação de CNPJ, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNPJ válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CNPJ válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -54,39 +54,34 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
-    let mut doc_slice: Vec<u16> = doc_slice.to_vec();
-
     let weights: Vec<u16> = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d13: u16 = generate_digit(&doc_slice, 12, weights);
+    let d13: u16 = generate_digit(doc_slice, weights);
 
-    doc_slice.push(d13);
+    let doc_slice: Vec<u16> = [doc_slice, &[d13]].concat();
 
     let weights: Vec<u16> = vec![6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
-    let d14: u16 = generate_digit(&doc_slice, 13, weights);
+    let d14: u16 = generate_digit(&doc_slice, weights);
 
     (d13, d14)
 }
 
 fn generate_digit(
     doc_slice: &[u16],
-    max: usize,
     weights: Vec<u16>,
 ) -> u16 {
-    let mut sum: u16 = 0;
+    let sum: u16 = doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, x)| x * weights[i])
+        .sum();
 
-    for i in 0..max {
-        sum += doc_slice[i] * weights[i];
-    }
+    let rest: u16 = sum % 11;
 
-    sum %= 11;
-
-    if sum < 10 {
-        sum = 0;
+    if rest < 10 {
+        0
     } else {
-        sum = 11 - sum;
+        11 - rest
     }
-
-    sum
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ sem símbolos.
@@ -154,8 +149,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de CNPJ no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///
@@ -184,7 +179,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CNPJ!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}/{}-{}",
         &doc[0..2],
         &doc[2..5],
@@ -208,7 +203,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 pub fn generate() -> String {
     let cnpj: Vec<u16> = random_digit_vector(12);
     let (d13, d14): (u16, u16) = generate_digits(&cnpj);
-    let cnpj = [cnpj, vec![d13, d14]].concat();
+    let cnpj: Vec<u16> = [cnpj, vec![d13, d14]].concat();
 
     cnpj.iter()
         .map(|d| d.to_string())

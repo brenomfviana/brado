@@ -1,12 +1,12 @@
-//! Utilitários para validação de CPF.
+//! Utilitários para validação de Cadastro de Pessoa Física (CPF).
 
 use crate::common::{
     get_digits, get_symbols, is_repeated, random_digit_vector,
 };
 
 /// Realiza validação de CPF, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CPF válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CPF válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -44,36 +44,34 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let (d10, d11): (u16, u16) = generate_digits(&digits[..10]);
+    let (d10, d11): (u16, u16) = generate_digits(&digits[..9]);
 
     (d10, d11) == (digits[9], digits[10])
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
-    let d10: u16 = generate_digit(doc_slice, 10);
-    let d11: u16 = generate_digit(doc_slice, 11);
+    let d10: u16 = generate_digit(doc_slice);
+    let d11: u16 = generate_digit(&[doc_slice, &[d10]].concat());
 
     (d10, d11)
 }
 
-fn generate_digit(
-    doc_slice: &[u16],
-    max: u16,
-) -> u16 {
-    let mut sum: u16 = 0;
+fn generate_digit(doc_slice: &[u16]) -> u16 {
+    let max: usize = doc_slice.len() + 1;
 
-    for i in (2..=max).rev() {
-        let idx: usize = (max - i) as usize;
-        sum += doc_slice[idx] * i;
+    let sum: u16 = doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, d)| d * (max - i) as u16)
+        .sum();
+
+    let rest: u16 = (sum * 10) % 11;
+
+    if rest == 10 {
+        0
+    } else {
+        rest
     }
-
-    sum = (sum * 10) % 11;
-
-    if sum == 10 {
-        sum = 0;
-    }
-
-    sum
 }
 
 /// Verifica se o argumento `doc` pode ser um CPF sem símbolos.
@@ -138,8 +136,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de CPF no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///
@@ -168,7 +166,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CPF!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}-{}",
         &doc[0..3],
         &doc[3..6],
@@ -190,8 +188,8 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// ```
 pub fn generate() -> String {
     let mut cpf: Vec<u16> = random_digit_vector(9);
-    cpf.push(generate_digit(&cpf, 10));
-    cpf.push(generate_digit(&cpf, 11));
+    cpf.push(generate_digit(&cpf));
+    cpf.push(generate_digit(&cpf));
 
     cpf.iter()
         .map(|d| d.to_string())

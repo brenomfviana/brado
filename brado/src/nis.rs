@@ -1,10 +1,15 @@
 //! Utilitários para validação de NIS/NIT/PIS/PASEP.
+//!
+//! NIS: Número de Identificação Social;
+//! NIT: Número de Inscrição do Trabalhador;
+//! PIS: Programa de Integração Social;
+//! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
 use crate::common::{
     get_digits, get_symbols, is_repeated, random_digit_vector,
 };
 
-/// Realiza validação de Número NIS/NIT/PIS/PASEP, máscarado ou não.
+/// Realiza validação de NIS/NIT/PIS/PASEP, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um NIS/NIT/PIS/PASEP válido,
 /// caso contrário, retorna `false`.
 ///
@@ -50,25 +55,25 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digit(doc_slice: &[u16]) -> u16 {
-    let mut sum: u16 = 0;
     let multipliers: Vec<u16> = vec![3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
-    for i in 0..10 {
-        sum += doc_slice[i] * multipliers[i];
+    let sum: u16 = doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, x)| x * multipliers[i])
+        .sum();
+
+    let rest: u16 = sum % 11;
+
+    if rest >= 2 {
+        11 - rest
+    } else {
+        0
     }
-
-    let mut digit: u16 = 0;
-    let module: u16 = sum % 11;
-
-    if module >= 2 {
-        digit = 11 - module;
-    }
-
-    digit
 }
 
-/// Verifica se o argumento `doc` pode ser um Número NIS/NIT/PIS/PASEP sem
-/// símbolos. Se for, retorna `true`, caso contrário, retorna `false`.
+/// Verifica se o argumento `doc` pode ser um NIS/NIT/PIS/PASEP sem símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -159,7 +164,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as NIS/NIT/PIS/PASEP!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}-{}",
         &doc[0..3],
         &doc[3..8],
@@ -170,7 +175,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
     Ok(masked_doc)
 }
 
-/// Gera e retorna um Número NIS/NIT/PIS/PASEP aleatório sem máscara.
+/// Gera e retorna um NIS/NIT/PIS/PASEP aleatório sem máscara.
 ///
 /// ## Exemplo
 /// ```
@@ -189,7 +194,7 @@ pub fn generate() -> String {
         .join("")
 }
 
-/// Gera e retorna um Número NIS/NIT/PIS/PASEP aleatório com máscara.
+/// Gera e retorna um NIS/NIT/PIS/PASEP aleatório com máscara.
 ///
 /// ## Exemplo
 /// ```
