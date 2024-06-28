@@ -75,12 +75,12 @@ fn generate_digit(
         .map(|(i, x)| x * weights[i])
         .sum();
 
-    let result = sum % 11;
+    let rest: u16 = sum % 11;
 
-    if result < 10 {
+    if rest < 10 {
         0
     } else {
-        11 - result
+        11 - rest
     }
 }
 
@@ -179,7 +179,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CNPJ!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}/{}-{}",
         &doc[0..2],
         &doc[2..5],
@@ -203,7 +203,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 pub fn generate() -> String {
     let cnpj: Vec<u16> = random_digit_vector(12);
     let (d13, d14): (u16, u16) = generate_digits(&cnpj);
-    let cnpj = [cnpj, vec![d13, d14]].concat();
+    let cnpj: Vec<u16> = [cnpj, vec![d13, d14]].concat();
 
     cnpj.iter()
         .map(|d| d.to_string())

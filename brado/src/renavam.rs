@@ -49,7 +49,7 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digit(doc_slice: &[u16]) -> u16 {
-    let multipliers = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+    let multipliers: [u16; 10] = [3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
     let sum: u16 = doc_slice
         .iter()
@@ -57,7 +57,7 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
         .map(|(i, x)| x * multipliers[i])
         .sum();
 
-    let rest = (sum * 10) % 11;
+    let rest: u16 = (sum * 10) % 11;
 
     if rest == 10 {
         0
@@ -158,7 +158,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as RENAVAM!");
     }
 
-    let masked_doc = format!("{}-{}", &doc[0..10], &doc[10..11]);
+    let masked_doc: String = format!("{}-{}", &doc[0..10], &doc[10..11]);
 
     Ok(masked_doc)
 }

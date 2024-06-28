@@ -67,12 +67,12 @@ fn generate_first_digit(doc_slice: &[u16]) -> (u16, u16) {
         .map(|(i, x)| x * (9 - i) as u16)
         .sum();
 
-    let result: u16 = sum % 11;
+    let rest: u16 = sum % 11;
 
-    if result >= 10 {
+    if rest >= 10 {
         (0, 2)
     } else {
-        (result, 0)
+        (rest, 0)
     }
 }
 
@@ -189,7 +189,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CNH!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{} {} {} {}",
         &doc[0..3],
         &doc[3..6],

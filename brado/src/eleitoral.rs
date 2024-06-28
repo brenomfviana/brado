@@ -64,12 +64,12 @@ fn generate_first_digit(doc_slice: &[u16]) -> u16 {
         .map(|(i, x)| x * multipliers[i])
         .sum();
 
-    let result = sum % 11;
+    let rest: u16 = sum % 11;
 
-    if result == 10 {
+    if rest == 10 {
         0
     } else {
-        result
+        rest
     }
 }
 
@@ -88,12 +88,12 @@ fn generate_second_digit(
         .map(|(i, x)| x * multipliers[i])
         .sum();
 
-    let result = sum % 11;
+    let rest: u16 = sum % 11;
 
-    if result == 10 {
+    if rest == 10 {
         0
     } else {
-        result
+        rest
     }
 }
 
@@ -189,7 +189,8 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as Título Eleitoral!");
     }
 
-    let masked_doc = format!("{} {} {}", &doc[0..4], &doc[4..8], &doc[8..12]);
+    let masked_doc: String =
+        format!("{} {} {}", &doc[0..4], &doc[4..8], &doc[8..12]);
 
     Ok(masked_doc)
 }

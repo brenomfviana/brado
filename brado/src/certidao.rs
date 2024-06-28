@@ -69,12 +69,12 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
         })
         .sum();
 
-    let result = d % 11;
+    let rest: u16 = d % 11;
 
-    if result > 9 {
+    if rest > 9 {
         1
     } else {
-        result
+        rest
     }
 }
 
@@ -177,7 +177,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as Certidão!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{} {} {} {} {} {} {} {}-{}",
         &doc[0..6],
         &doc[6..8],

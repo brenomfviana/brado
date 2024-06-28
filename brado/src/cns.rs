@@ -61,11 +61,12 @@ fn is_first_digit_invalid(digit: &u16) -> bool {
 
 fn validate_checksum(doc_slice: &[u16]) -> bool {
     if [1, 2].contains(&doc_slice[0]) {
-        let check_digits = generate_last_four_digits(&doc_slice[..11]);
+        let check_digits: Vec<u16> =
+            generate_last_four_digits(&doc_slice[..11]);
 
         doc_slice[11..] == check_digits
     } else {
-        let checksum = cns_sum(doc_slice);
+        let checksum: u16 = cns_sum(doc_slice);
 
         checksum % 11 == 0
     }
@@ -80,9 +81,9 @@ fn cns_sum(doc_slice: &[u16]) -> u16 {
 }
 
 fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
-    let mut checksum = cns_sum(doc_slice);
+    let mut checksum: u16 = cns_sum(doc_slice);
 
-    let mut check_digit = 11 - (checksum % 11);
+    let mut check_digit: u16 = 11 - (checksum % 11);
 
     if check_digit == 11 {
         check_digit = 0;
@@ -193,7 +194,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CNS!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{} {} {} {}",
         &doc[0..3],
         &doc[3..7],
@@ -214,9 +215,9 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cns::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let first_digit = random_digit_from_vector(&valid_first_digits());
+    let first_digit: u16 = random_digit_from_vector(&valid_first_digits());
 
-    let cns = {
+    let cns: Vec<u16> = {
         if [1, 2].contains(&first_digit) {
             generate_first_case(first_digit)
         } else {
@@ -242,13 +243,13 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
     cns.extend_from_slice(&random_digit_vector(14));
 
-    let checksum = cns_sum(&cns);
-    let rest = checksum % 11;
+    let checksum: u16 = cns_sum(&cns);
+    let rest: u16 = checksum % 11;
     if rest == 0 {
         return cns;
     }
 
-    let diff = 11 - rest;
+    let diff: u16 = 11 - rest;
 
     let mut val: usize = diff as usize;
     let mut idx: usize = 15 - val;
@@ -258,9 +259,9 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
             if validate_checksum(&cns) {
                 return cns;
             } else {
-                let checksum = cns_sum(&cns);
+                let checksum: u16 = cns_sum(&cns);
 
-                let diff = 15 - (checksum % 11);
+                let diff: u16 = 15 - (checksum % 11);
 
                 val = diff as usize;
                 idx = 15 - diff as usize;

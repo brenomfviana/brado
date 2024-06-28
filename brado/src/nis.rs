@@ -63,10 +63,10 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
         .map(|(i, x)| x * multipliers[i])
         .sum();
 
-    let module: u16 = sum % 11;
+    let rest: u16 = sum % 11;
 
-    if module >= 2 {
-        11 - module
+    if rest >= 2 {
+        11 - rest
     } else {
         0
     }
@@ -164,7 +164,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as NIS/NIT/PIS/PASEP!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}-{}",
         &doc[0..3],
         &doc[3..8],

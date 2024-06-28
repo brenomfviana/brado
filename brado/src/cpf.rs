@@ -57,7 +57,7 @@ fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
 }
 
 fn generate_digit(doc_slice: &[u16]) -> u16 {
-    let max = doc_slice.len() + 1;
+    let max: usize = doc_slice.len() + 1;
 
     let sum: u16 = doc_slice
         .iter()
@@ -65,12 +65,12 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
         .map(|(i, d)| d * (max - i) as u16)
         .sum();
 
-    let result = (sum * 10) % 11;
+    let rest: u16 = (sum * 10) % 11;
 
-    if result == 10 {
+    if rest == 10 {
         0
     } else {
-        result
+        rest
     }
 }
 
@@ -166,7 +166,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as CPF!");
     }
 
-    let masked_doc = format!(
+    let masked_doc: String = format!(
         "{}.{}.{}-{}",
         &doc[0..3],
         &doc[3..6],
