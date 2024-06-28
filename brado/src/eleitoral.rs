@@ -78,6 +78,7 @@ fn generate_second_digit(
     first_digit: u16,
 ) -> u16 {
     let multipliers: Vec<u16> = (7..10).collect();
+
     let mut doc_slice: Vec<u16> = doc_slice.to_vec();
     doc_slice.extend(vec![first_digit]);
 
@@ -188,7 +189,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
         return Err("The given string cannot be masked as Título Eleitoral!");
     }
 
-    let masked_doc = format!("{} {} {}", &doc[0..4], &doc[4..8], &doc[8..12],);
+    let masked_doc = format!("{} {} {}", &doc[0..4], &doc[4..8], &doc[8..12]);
 
     Ok(masked_doc)
 }
@@ -204,11 +205,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// ```
 pub fn generate() -> String {
     let mut eleitoral: Vec<u16> = random_digit_vector(8);
-
-    let mut rng = rand::thread_rng();
-    let state_identifier = vec![rng.gen_range(0..2), rng.gen_range(0..10)];
-
-    eleitoral.extend(state_identifier);
+    eleitoral.extend(generate_state_identifier());
 
     let d11: u16 = generate_first_digit(&eleitoral[0..8]);
     eleitoral.push(d11);
@@ -220,6 +217,12 @@ pub fn generate() -> String {
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
         .join("")
+}
+
+fn generate_state_identifier() -> Vec<u16> {
+    let mut rng = rand::thread_rng();
+
+    vec![rng.gen_range(0..2), rng.gen_range(0..10)]
 }
 
 /// Gera e retorna um Título Eleitoral aleatório com máscara.
