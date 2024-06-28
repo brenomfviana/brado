@@ -3,155 +3,136 @@ mod eleitoral_tests {
     use brado;
 
     #[test]
-    fn eleitoral_validate_1_valid_bare_eleitoral() {
-        let bare_eleitoral: &str = "773537801651";
-        assert_eq!(brado::eleitoral::validate(bare_eleitoral), true);
-    }
-
-    #[test]
-    fn eleitoral_validate_2_valid_masked_eleitoral() {
-        let masked_eleitoral: &str = "7735 3780 1651";
-        assert_eq!(brado::eleitoral::validate(masked_eleitoral), true);
-    }
-
-    #[test]
-    fn eleitoral_validate_3_invalid_repeated_numbers() {
-        for i in 1..=9 {
-            let document: String = (vec![i.to_string(); 11]).join("");
-            assert_eq!(brado::eleitoral::validate(&document), false);
+    fn eleitoral_validate_1_valid_eleitorais() {
+        let valid_eleitorais = ["773537801651", "7735 3780 1651"];
+        for valid_eleitoral in valid_eleitorais {
+            assert_eq!(brado::eleitoral::validate(valid_eleitoral), true);
         }
     }
 
     #[test]
-    fn eleitoral_validate_4_invalid_bare_document() {
-        let document: &str = "773537801650";
-        assert_eq!(brado::eleitoral::validate(document), false);
+    fn eleitoral_validate_2_invalid_eleitorais() {
+        let invalid_eleitorais = [
+            "77353780165",
+            "773537801650",
+            "7735378016510",
+            "7735 3780 165",
+            "7735 3780 1650",
+            "7735 3780 16510",
+            "773 5378 01651",
+            "77353 7801 651",
+            "7735:3780 1651",
+            "7735 3780:1651",
+            "AAAAAAAAAAAA",
+            "AAAA AAAA AAAA",
+        ];
+        for invalid_eleitoral in invalid_eleitorais {
+            assert_eq!(brado::eleitoral::validate(invalid_eleitoral), false);
+        }
     }
 
     #[test]
-    fn eleitoral_validate_5_invalid_masked_document() {
-        let document: &str = "7735 3780 1650";
-        assert_eq!(brado::eleitoral::validate(document), false);
+    fn eleitoral_is_bare_1_valid_bare() {
+        let documents = [
+            "773537801651", // Valid Título Eleitoral
+            "773537801650", // Invalid Título Eleitoral
+        ];
+        for document in documents {
+            assert_eq!(brado::eleitoral::is_bare(document), true);
+        }
     }
 
     #[test]
-    fn eleitoral_validate_6_invalid_mask() {
-        let document: &str = "773 537 801 651";
-        assert_eq!(brado::eleitoral::validate(document), false);
+    fn eleitoral_is_bare_2_invalid_bare() {
+        let documents = [
+            "7735 3780 1651", // Valid Título Eleitoral
+            "7735 3780 1650", // Invalid Título Eleitoral
+            "773 5378 01651", // Invalid Título Eleitoral
+            "77353 7801 651", // Invalid Título Eleitoral
+            "77353780165",    // Invalid Título Eleitoral
+            "7735378016510",  // Invalid Título Eleitoral
+        ];
+        for document in documents {
+            assert_eq!(brado::eleitoral::is_bare(document), false);
+        }
     }
 
     #[test]
-    fn eleitoral_validate_7_invalid_other_document_1() {
-        let document: &str = "7735378016";
-        assert_eq!(brado::eleitoral::validate(document), false);
+    fn eleitoral_is_masked_1_valid_masked() {
+        let documents = [
+            "7735 3780 1651", // Valid Título Eleitoral
+            "7735 3780 1650", // Invalid Título Eleitoral
+        ];
+        for document in documents {
+            assert_eq!(brado::eleitoral::is_masked(document), true);
+        }
     }
 
     #[test]
-    fn eleitoral_validate_8_invalid_other_document_2() {
-        let document: &str = "07735 3780 1650";
-        assert_eq!(brado::eleitoral::validate(document), false);
+    fn eleitoral_is_masked_2_invalid_masked() {
+        let documents = [
+            "773537801651", // Valid Título Eleitoral
+            "773537801650", // Invalid Título Eleitoral
+            "7735 37801651", // Invalid Título Eleitoral
+            "77353780 1651", // Invalid Título Eleitoral
+            "773 5378 01651", // Invalid Título Eleitoral
+            "77353 7801 651", // Invalid Título Eleitoral
+            "77353780165",  // Invalid Título Eleitoral
+            "7735378016510", // Invalid Título Eleitoral
+            "7735:37801651", // Invalid Título Eleitoral
+            "77353780:1651", // Invalid Título Eleitoral
+        ];
+        for document in documents {
+            assert_eq!(brado::eleitoral::is_masked(document), false);
+        }
     }
 
     #[test]
-    fn eleitoral_validate_9_invalid_other_document_3() {
-        let document: &str = "7735 3780:1650";
-        assert_eq!(brado::eleitoral::validate(document), false);
-    }
-
-    #[test]
-    fn eleitoral_is_bare_1_bare_eleitoral() {
-        let bare_eleitoral: &str = "773537801651";
-        assert_eq!(brado::eleitoral::is_bare(bare_eleitoral), true);
-    }
-
-    #[test]
-    fn eleitoral_is_bare_2_masked_eleitoral() {
-        let masked_eleitoral: &str = "7735 3780 1651";
-        assert_eq!(brado::eleitoral::is_bare(masked_eleitoral), false);
-    }
-
-    #[test]
-    fn eleitoral_is_bare_3_other_document() {
-        let bare_document: &str = "773537801650";
-        assert_eq!(brado::eleitoral::is_bare(bare_document), true);
-    }
-
-    #[test]
-    fn eleitoral_is_bare_4_other_document() {
-        let bare_document: &str = "7735 37801650";
-        assert_eq!(brado::eleitoral::is_bare(bare_document), false);
-    }
-
-    #[test]
-    fn eleitoral_is_bare_5_other_document() {
-        let bare_document: &str = "7735378016510";
-        assert_eq!(brado::eleitoral::is_bare(bare_document), false);
-    }
-
-    #[test]
-    fn eleitoral_is_masked_1_masked_eleitoral() {
-        let masked_eleitoral: &str = "7735 3780 1651";
-        assert_eq!(brado::eleitoral::is_masked(masked_eleitoral), true);
-    }
-
-    #[test]
-    fn eleitoral_is_masked_2_bare_eleitoral() {
-        let bare_eleitoral: &str = "773537801651";
-        assert_eq!(brado::eleitoral::is_masked(bare_eleitoral), false);
-    }
-
-    #[test]
-    fn eleitoral_is_masked_3_other_document() {
-        let masked_document: &str = "77353 3780 1651";
-        assert_eq!(brado::eleitoral::is_masked(masked_document), false);
-    }
-
-    #[test]
-    fn eleitoral_is_masked_4_other_document() {
-        let masked_document: &str = "7735 3780 16510";
-        assert_eq!(brado::eleitoral::is_masked(masked_document), false);
-    }
-
-    #[test]
-    fn eleitoral_mask_1_bare_eleitoral() {
-        let bare_eleitoral: &str = "773537801651";
+    fn eleitoral_mask_1_valid_mask() {
+        let valid_eleitoral: &str = "773537801651";
         assert_eq!(
-            brado::eleitoral::mask(bare_eleitoral),
+            brado::eleitoral::mask(valid_eleitoral),
             Ok(String::from("7735 3780 1651"))
         );
-    }
-
-    #[test]
-    fn eleitoral_mask_2_masked_eleitoral() {
-        let masked_eleitoral: &str = "7735 3780 1651";
-        let result = brado::eleitoral::mask(masked_eleitoral);
+        let invalid_eleitoral: &str = "773537801650";
         assert_eq!(
-            result,
-            Err("The given string cannot be masked as Título Eleitoral!"),
+            brado::eleitoral::mask(invalid_eleitoral),
+            Ok(String::from("7735 3780 1650"))
         );
     }
 
     #[test]
-    fn eleitoral_mask_3_invalid_eleitoral() {
-        let document: &str = "7735378016";
-        let result = brado::eleitoral::mask(document);
-        assert_eq!(
-            result,
-            Err("The given string cannot be masked as Título Eleitoral!"),
-        );
+    fn eleitoral_mask_2_invalid_mask() {
+        let documents = [
+            "7735 3780 1651", // Valid Título Eleitoral
+            "7735 3780 1650", // Invalid Título Eleitoral
+            "77353780165",    // Invalid Título Eleitoral
+            "7735378016510",  // Invalid Título Eleitoral
+        ];
+        for document in documents {
+            let result = brado::eleitoral::mask(document);
+            assert_eq!(
+                result,
+                Err("The given string cannot be masked as Título Eleitoral!"),
+            );
+        }
     }
 
     #[test]
     fn eleitoral_generate_1() {
-        let eleitoral = brado::eleitoral::generate();
-        assert_eq!(brado::eleitoral::validate(&eleitoral), true);
-        assert_eq!(brado::eleitoral::is_bare(&eleitoral), true);
+        for _ in 0..1000 {
+            let eleitoral = brado::eleitoral::generate();
+            assert_eq!(brado::eleitoral::validate(&eleitoral), true);
+            assert_eq!(brado::eleitoral::is_bare(&eleitoral), true);
+        }
     }
 
     #[test]
     fn eleitoral_generate_masked_1() {
-        let eleitoral = brado::eleitoral::generate_masked();
-        assert_eq!(brado::eleitoral::validate(&eleitoral), true);
-        assert_eq!(brado::eleitoral::is_masked(&eleitoral), true);
+        for _ in 0..1000 {
+            let eleitoral = brado::eleitoral::generate_masked();
+            assert_eq!(brado::eleitoral::validate(&eleitoral), true);
+            assert_eq!(brado::eleitoral::is_masked(&eleitoral), true);
+        }
     }
 }
