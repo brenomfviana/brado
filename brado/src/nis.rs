@@ -50,21 +50,21 @@ pub fn validate(doc: &str) -> bool {
 }
 
 fn generate_digit(doc_slice: &[u16]) -> u16 {
-    let mut sum: u16 = 0;
     let multipliers: Vec<u16> = vec![3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
 
-    for i in 0..10 {
-        sum += doc_slice[i] * multipliers[i];
-    }
+    let sum: u16 = doc_slice
+        .iter()
+        .enumerate()
+        .map(|(i, x)| x * multipliers[i])
+        .sum();
 
-    let mut digit: u16 = 0;
     let module: u16 = sum % 11;
 
     if module >= 2 {
-        digit = 11 - module;
+        11 - module
+    } else {
+        0
     }
-
-    digit
 }
 
 /// Verifica se o argumento `doc` pode ser um Número NIS/NIT/PIS/PASEP sem
