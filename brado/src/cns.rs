@@ -5,8 +5,8 @@ use crate::common::{
 };
 
 /// Realiza validação de CNS, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for um CNS válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for um CNS válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -163,8 +163,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de CNS no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///

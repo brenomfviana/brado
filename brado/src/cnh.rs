@@ -5,8 +5,8 @@ use crate::common::{
 };
 
 /// Realiza validação de CNH, máscarado ou não.
-/// Retorna `true` se o argumento `doc` for uma CNH válida,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for uma CNH válida, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -159,8 +159,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de CNH no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///

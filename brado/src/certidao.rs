@@ -3,8 +3,8 @@
 use crate::common::{get_digits, get_symbols, random_digit_vector};
 
 /// Realiza validação de Certidão, máscarada ou não.
-/// Retorna `true` se o argumento `doc` for uma Certidão válido,
-/// caso contrário, retorna `false`.
+/// Retorna `true` se o argumento `doc` for uma Certidão válido, caso contrário,
+/// retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -147,8 +147,8 @@ pub fn is_masked(doc: &str) -> bool {
 }
 
 /// Aplica máscara de Certidão no argumento `doc` e retorna resultado.
-/// O argumento deve ser uma string sem símbolos, caso contrário,
-/// deve lançar erro.
+/// O argumento deve ser uma string sem símbolos, caso contrário, deve lançar
+/// erro.
 ///
 /// ## Exemplos
 ///

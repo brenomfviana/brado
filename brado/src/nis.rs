@@ -1,10 +1,15 @@
 //! Utilitários para validação de NIS/NIT/PIS/PASEP.
+//!
+//! NIS: Número de Identificação Social;
+//! NIT: Número de Inscrição do Trabalhador;
+//! PIS: Programa de Integração Social;
+//! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
 use crate::common::{
     get_digits, get_symbols, is_repeated, random_digit_vector,
 };
 
-/// Realiza validação de Número NIS/NIT/PIS/PASEP, máscarado ou não.
+/// Realiza validação de NIS/NIT/PIS/PASEP, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um NIS/NIT/PIS/PASEP válido,
 /// caso contrário, retorna `false`.
 ///
@@ -67,8 +72,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
     }
 }
 
-/// Verifica se o argumento `doc` pode ser um Número NIS/NIT/PIS/PASEP sem
-/// símbolos. Se for, retorna `true`, caso contrário, retorna `false`.
+/// Verifica se o argumento `doc` pode ser um NIS/NIT/PIS/PASEP sem símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
@@ -170,7 +175,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
     Ok(masked_doc)
 }
 
-/// Gera e retorna um Número NIS/NIT/PIS/PASEP aleatório sem máscara.
+/// Gera e retorna um NIS/NIT/PIS/PASEP aleatório sem máscara.
 ///
 /// ## Exemplo
 /// ```
@@ -189,7 +194,7 @@ pub fn generate() -> String {
         .join("")
 }
 
-/// Gera e retorna um Número NIS/NIT/PIS/PASEP aleatório com máscara.
+/// Gera e retorna um NIS/NIT/PIS/PASEP aleatório com máscara.
 ///
 /// ## Exemplo
 /// ```

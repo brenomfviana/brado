@@ -97,8 +97,8 @@ fn generate_second_digit(
     }
 }
 
-/// Verifica se o argumento `doc` pode ser um Título Eleitoral sem
-/// símbolos. Se for, retorna `true`, caso contrário, retorna `false`.
+/// Verifica se o argumento `doc` pode ser um Título Eleitoral sem símbolos.
+/// Se for, retorna `true`, caso contrário, retorna `false`.
 ///
 /// ## Exemplos
 ///
