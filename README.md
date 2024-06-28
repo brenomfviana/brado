@@ -29,7 +29,7 @@ cargo add brado
 Ou adicionar a linha a seguir no arquivo `Cargo.toml`:
 
 ```toml
-brado = "0.8.0"
+brado = "1.0.0"
 ```
 
 
