@@ -78,18 +78,20 @@ mod cns_tests {
     #[test]
     fn cns_is_masked_2_invalid_masked() {
         let documents = [
-            "144082627260004",    // Valid CNS
-            "144082627260003",    // Invalid CNS
-            "144 082627260004",   // Invalid CNS
-            "1440826 27260004",   // Invalid CNS
-            "14408262726 0004",   // Invalid CNS
-            "14408262726000",     // Invalid CNS
-            "1440826272600043",   // Invalid CNS
-            "14 4082 6272 60004", // Invalid CNS
-            "1440 8262 7260 004", // Invalid CNS
-            "144:0826 2726 0004", // Invalid CNS
-            "144 0826:2726 0004", // Invalid CNS
-            "144 0826 2726:0004", // Invalid CNS
+            "144082627260004",     // Valid CNS
+            "144082627260003",     // Invalid CNS
+            "144 082627260004",    // Invalid CNS
+            "1440826 27260004",    // Invalid CNS
+            "14408262726 0004",    // Invalid CNS
+            "14408262726000",      // Invalid CNS
+            "1440826272600043",    // Invalid CNS
+            "144 0826 2726 000",   // Invalid CNS
+            "144 0826 2726 00043", // Invalid CNS
+            "14 4082 6272 60004",  // Invalid CNS
+            "1440 8262 7260 004",  // Invalid CNS
+            "144:0826 2726 0004",  // Invalid CNS
+            "144 0826:2726 0004",  // Invalid CNS
+            "144 0826 2726:0004",  // Invalid CNS
         ];
         for document in documents {
             assert_eq!(brado::cns::is_masked(document), false);

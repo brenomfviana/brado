@@ -86,6 +86,8 @@ mod cnh_tests {
             "847 18735264",    // Invalid CNH
             "847187 35264",    // Invalid CNH
             "847187352 64",    // Invalid CNH
+            "8471873526",      // Invalid CNH
+            "847187352643",    // Invalid CNH
             "847 187 352 6",   // Invalid CNH
             "847 187 352 643", // Invalid CNH
             "84 718 735 264",  // Invalid CNH

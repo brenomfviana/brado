@@ -86,6 +86,8 @@ mod nis_tests {
             "408.65658047",    // Invalid NIS/NIT/PIS/PASEP
             "40865658.047",    // Invalid NIS/NIT/PIS/PASEP
             "4086565804-7",    // Invalid NIS/NIT/PIS/PASEP
+            "4086565804",      // Invalid NIS/NIT/PIS/PASEP
+            "408656580476",    // Invalid NIS/NIT/PIS/PASEP
             "408.65658.04-",   // Invalid NIS/NIT/PIS/PASEP
             "408.65658.04-76", // Invalid NIS/NIT/PIS/PASEP
             "40.86565.80-47",  // Invalid NIS/NIT/PIS/PASEP

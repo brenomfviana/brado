@@ -86,6 +86,8 @@ mod cpf_tests {
             "639.29247011",    // Invalid CPF
             "639292.47011",    // Invalid CPF
             "639292470-11",    // Invalid CPF
+            "6392924701",      // Invalid CPF
+            "639292470110",    // Invalid CPF
             "639.292.470-1",   // Invalid CPF
             "639.292.470-110", // Invalid CPF
             "63.929.247-011",  // Invalid CPF

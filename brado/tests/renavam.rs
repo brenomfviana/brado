@@ -68,13 +68,15 @@ mod renavam_tests {
     #[test]
     fn renavam_is_masked_2_invalid_masked() {
         let documents = [
-            "79072338363",  // Valid RENAVAM
-            "79072338362",  // Invalid RENAVAM
-            "7907233836",   // Invalid RENAVAM
-            "790723383632", // Invalid RENAVAM
-            "790723383-63", // Invalid RENAVAM
-            "79072338363-", // Invalid RENAVAM
-            "7907233836:3", // Invalid RENAVAM
+            "79072338363",   // Valid RENAVAM
+            "79072338362",   // Invalid RENAVAM
+            "7907233836",    // Invalid RENAVAM
+            "790723383632",  // Invalid RENAVAM
+            "7907233836-",   // Invalid RENAVAM
+            "7907233836-32", // Invalid RENAVAM
+            "790723383-63",  // Invalid RENAVAM
+            "79072338363-",  // Invalid RENAVAM
+            "7907233836:3",  // Invalid RENAVAM
         ];
         for document in documents {
             assert_eq!(brado::renavam::is_masked(document), false);

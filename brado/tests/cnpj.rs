@@ -81,6 +81,8 @@ mod cnpj_tests {
             "05200.851000101",     // Invalid CNPJ
             "05200851/000101",     // Invalid CNPJ
             "052008510001-01",     // Invalid CNPJ
+            "0520085100010",       // Invalid CNPJ
+            "052008510001001",     // Invalid CNPJ
             "05.200.851/0001-0",   // Invalid CNPJ
             "05.200.851/0001-001", // Invalid CNPJ
             "0.520.085/1000-100",  // Invalid CNPJ

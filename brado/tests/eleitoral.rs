@@ -71,16 +71,18 @@ mod eleitoral_tests {
     #[test]
     fn eleitoral_is_masked_2_invalid_masked() {
         let documents = [
-            "773537801651", // Valid Título Eleitoral
-            "773537801650", // Invalid Título Eleitoral
-            "7735 37801651", // Invalid Título Eleitoral
-            "77353780 1651", // Invalid Título Eleitoral
-            "773 5378 01651", // Invalid Título Eleitoral
-            "77353 7801 651", // Invalid Título Eleitoral
-            "77353780165",  // Invalid Título Eleitoral
-            "7735378016510", // Invalid Título Eleitoral
-            "7735:37801651", // Invalid Título Eleitoral
-            "77353780:1651", // Invalid Título Eleitoral
+            "773537801651",    // Valid Título Eleitoral
+            "773537801650",    // Invalid Título Eleitoral
+            "7735 37801651",   // Invalid Título Eleitoral
+            "77353780 1651",   // Invalid Título Eleitoral
+            "77353780165",     // Invalid Título Eleitoral
+            "7735378016510",   // Invalid Título Eleitoral
+            "7735 3780 165",   // Invalid Título Eleitoral
+            "7735 3780 16510", // Invalid Título Eleitoral
+            "773 5378 01651",  // Invalid Título Eleitoral
+            "77353 7801 651",  // Invalid Título Eleitoral
+            "7735:37801651",   // Invalid Título Eleitoral
+            "77353780:1651",   // Invalid Título Eleitoral
         ];
         for document in documents {
             assert_eq!(brado::eleitoral::is_masked(document), false);
