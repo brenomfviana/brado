@@ -40,11 +40,7 @@ pub fn validate(doc: &str) -> bool {
 
     let digits: Vec<u16> = get_digits(doc);
 
-    if digits.len() != 11 {
-        return false;
-    }
-
-    if is_repeated(&digits) {
+    if digits.len() != 11 || is_repeated(&digits) {
         return false;
     }
 
@@ -86,14 +82,17 @@ fn generate_second_digit(
         sum += doc_slice[i - 1] * (i as u16);
     }
 
-    let second: i16 = ((sum % 11) as i16) - (dsc as i16);
+    let rest: u16 = sum % 11;
+    let second: u16 = if rest >= dsc {
+        rest - dsc
+    } else {
+        11 + rest - dsc
+    };
 
     if second >= 10 {
         0
-    } else if second < 0 {
-        (second + 11) as u16
     } else {
-        second as u16
+        second
     }
 }
 
