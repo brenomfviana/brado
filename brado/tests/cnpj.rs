@@ -11,7 +11,7 @@ mod cnpj_tests {
     }
 
     #[test]
-    fn cnpj_validate_1_invalid_cnpjs() {
+    fn cnpj_validate_2_invalid_cnpjs() {
         let invalid_cnpjs = [
             "0520085100010",
             "05200851000101",

@@ -11,7 +11,7 @@ mod cnh_tests {
     }
 
     #[test]
-    fn cnh_validate_1_invalid_cnhs() {
+    fn cnh_validate_2_invalid_cnhs() {
         let invalid_cnhs = [
             "8471873526",
             "84718735263",
