@@ -3,155 +3,130 @@ mod renavam_tests {
     use brado;
 
     #[test]
-    fn renavam_validate_1_valid_bare_renavam() {
-        let bare_renavam: &str = "79072338363";
-        assert_eq!(brado::renavam::validate(bare_renavam), true);
-    }
-
-    #[test]
-    fn renavam_validate_2_valid_masked_renavam() {
-        let masked_renavam: &str = "7907233836-3";
-        assert_eq!(brado::renavam::validate(masked_renavam), true);
-    }
-
-    #[test]
-    fn renavam_validate_3_invalid_repeated_numbers() {
-        for i in 1..=9 {
-            let document: String = (vec![i.to_string(); 11]).join("");
-            assert_eq!(brado::renavam::validate(&document), false);
+    fn renavam_validate_1_valid_renavams() {
+        let valid_renavams = ["79072338363", "7907233836-3"];
+        for valid_renavam in valid_renavams {
+            assert_eq!(brado::renavam::validate(valid_renavam), true);
         }
     }
 
     #[test]
-    fn renavam_validate_4_invalid_bare_document() {
-        let document: &str = "79072338362";
-        assert_eq!(brado::renavam::validate(document), false);
+    fn renavam_validate_2_invalid_renavams() {
+        let invalid_renavams = [
+            "7907233836",
+            "79072338362",
+            "790723383632",
+            "7907233836-",
+            "7907233836-2",
+            "7907233836-32",
+            "790723383-63",
+            "79072338363-",
+            "7907233836:3",
+            "AAAAAAAAAAA",
+            "AAAAAAAAAA-A",
+        ];
+        for invalid_renavam in invalid_renavams {
+            assert_eq!(brado::renavam::validate(invalid_renavam), false);
+        }
     }
 
     #[test]
-    fn renavam_validate_5_invalid_masked_document() {
-        let document: &str = "7907233836-2";
-        assert_eq!(brado::renavam::validate(document), false);
+    fn renavam_is_bare_1_valid_bare() {
+        let documents = [
+            "79072338363", // Valid RENAVAM
+            "79072338362", // Invalid RENAVAM
+        ];
+        for document in documents {
+            assert_eq!(brado::renavam::is_bare(document), true);
+        }
     }
 
     #[test]
-    fn renavam_validate_6_invalid_mask() {
-        let document: &str = "790723383-63";
-        assert_eq!(brado::renavam::validate(document), false);
+    fn renavam_is_bare_2_invalid_bare() {
+        let documents = [
+            "7907233836-3", // Valid RENAVAM
+            "7907233836-2", // Invalid RENAVAM
+            "7907233836",   // Invalid RENAVAM
+            "790723383632", // Invalid RENAVAM
+        ];
+        for document in documents {
+            assert_eq!(brado::renavam::is_bare(document), false);
+        }
     }
 
     #[test]
-    fn renavam_validate_7_invalid_other_document_1() {
-        let document: &str = "790723383";
-        assert_eq!(brado::renavam::validate(document), false);
+    fn renavam_is_masked_1_valid_masked() {
+        let documents = [
+            "7907233836-3", // Valid RENAVAM
+            "7907233836-2", // Invalid RENAVAM
+        ];
+        for document in documents {
+            assert_eq!(brado::renavam::is_masked(document), true);
+        }
     }
 
     #[test]
-    fn renavam_validate_8_invalid_other_document_2() {
-        let document: &str = "07907233836-3";
-        assert_eq!(brado::renavam::validate(document), false);
+    fn renavam_is_masked_2_invalid_masked() {
+        let documents = [
+            "79072338363",  // Valid RENAVAM
+            "79072338362",  // Invalid RENAVAM
+            "7907233836",   // Invalid RENAVAM
+            "790723383632", // Invalid RENAVAM
+            "790723383-63", // Invalid RENAVAM
+            "79072338363-", // Invalid RENAVAM
+            "7907233836:3", // Invalid RENAVAM
+        ];
+        for document in documents {
+            assert_eq!(brado::renavam::is_masked(document), false);
+        }
     }
 
     #[test]
-    fn renavam_validate_9_invalid_other_document_3() {
-        let document: &str = "7907233836:3";
-        assert_eq!(brado::renavam::validate(document), false);
-    }
-
-    #[test]
-    fn renavam_is_bare_1_bare_renavam() {
-        let bare_renavam: &str = "79072338363";
-        assert_eq!(brado::renavam::is_bare(bare_renavam), true);
-    }
-
-    #[test]
-    fn renavam_is_bare_2_masked_renavam() {
-        let masked_renavam: &str = "7907233836-3";
-        assert_eq!(brado::renavam::is_bare(masked_renavam), false);
-    }
-
-    #[test]
-    fn renavam_is_bare_3_other_document() {
-        let bare_document: &str = "79072338362";
-        assert_eq!(brado::renavam::is_bare(bare_document), true);
-    }
-
-    #[test]
-    fn renavam_is_bare_4_other_document() {
-        let bare_document: &str = "790-72338362";
-        assert_eq!(brado::renavam::is_bare(bare_document), false);
-    }
-
-    #[test]
-    fn renavam_is_bare_5_other_document() {
-        let bare_document: &str = "790723383630";
-        assert_eq!(brado::renavam::is_bare(bare_document), false);
-    }
-
-    #[test]
-    fn renavam_is_masked_1_masked_renavam() {
-        let masked_renavam: &str = "7907233836-3";
-        assert_eq!(brado::renavam::is_masked(masked_renavam), true);
-    }
-
-    #[test]
-    fn renavam_is_masked_2_bare_renavam() {
-        let bare_renavam: &str = "79072338363";
-        assert_eq!(brado::renavam::is_masked(bare_renavam), false);
-    }
-
-    #[test]
-    fn renavam_is_masked_3_other_document() {
-        let masked_document: &str = "79072338-363";
-        assert_eq!(brado::renavam::is_masked(masked_document), false);
-    }
-
-    #[test]
-    fn renavam_is_masked_4_other_document() {
-        let masked_document: &str = "7907233836-30";
-        assert_eq!(brado::renavam::is_masked(masked_document), false);
-    }
-
-    #[test]
-    fn renavam_mask_1_bare_renavam() {
-        let bare_renavam: &str = "79072338363";
+    fn renavam_mask_1_valid_mask() {
+        let valid_renavam: &str = "79072338363";
         assert_eq!(
-            brado::renavam::mask(bare_renavam),
+            brado::renavam::mask(valid_renavam),
             Ok(String::from("7907233836-3"))
         );
-    }
-
-    #[test]
-    fn renavam_mask_2_masked_renavam() {
-        let masked_renavam: &str = "7907233836-3";
-        let result = brado::renavam::mask(masked_renavam);
+        let invalid_renavam: &str = "79072338362";
         assert_eq!(
-            result,
-            Err("The given string cannot be masked as RENAVAM!"),
+            brado::renavam::mask(invalid_renavam),
+            Ok(String::from("7907233836-2"))
         );
     }
 
     #[test]
-    fn renavam_mask_3_invalid_renavam() {
-        let document: &str = "790723383";
-        let result = brado::renavam::mask(document);
-        assert_eq!(
-            result,
-            Err("The given string cannot be masked as RENAVAM!"),
-        );
+    fn renavam_mask_2_invalid_mask() {
+        let documents = [
+            "7907233836-3", // Valid RENAVAM
+            "7907233836-2", // Invalid RENAVAM
+            "7907233836",   // Invalid RENAVAM
+            "790723383632", // Invalid RENAVAM
+        ];
+        for document in documents {
+            let result = brado::renavam::mask(document);
+            assert_eq!(
+                result,
+                Err("The given string cannot be masked as RENAVAM!"),
+            );
+        }
     }
 
     #[test]
     fn renavam_generate_1() {
-        let renavam = brado::renavam::generate();
-        assert_eq!(brado::renavam::validate(&renavam), true);
-        assert_eq!(brado::renavam::is_bare(&renavam), true);
+        for _ in 0..1000 {
+            let renavam = brado::renavam::generate();
+            assert_eq!(brado::renavam::validate(&renavam), true);
+            assert_eq!(brado::renavam::is_bare(&renavam), true);
+        }
     }
 
     #[test]
     fn renavam_generate_masked_1() {
-        let renavam = brado::renavam::generate_masked();
-        assert_eq!(brado::renavam::validate(&renavam), true);
-        assert_eq!(brado::renavam::is_masked(&renavam), true);
+        for _ in 0..1000 {
+            let renavam = brado::renavam::generate_masked();
+            assert_eq!(brado::renavam::validate(&renavam), true);
+            assert_eq!(brado::renavam::is_masked(&renavam), true);
+        }
     }
 }
