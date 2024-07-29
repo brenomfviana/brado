@@ -1,6 +1,6 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
-use crate::common::{get_digits, get_symbols, random_digit_vector};
+use crate::common::{get_symbols, random_digit_vector};
 
 /// Realiza validação de CNPJ, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CNPJ válido, caso contrário,
@@ -53,6 +53,19 @@ pub fn validate(doc: &str) -> bool {
     (d13, d14) == (digits[12], digits[13])
 }
 
+fn get_digits(doc: &str) -> Vec<u16> {
+    let doc = doc.to_ascii_uppercase();
+    doc.chars()
+        .filter_map(|c| {
+            let n = c as u16;
+            match n >= 48 {
+                true => Some(n - 48),
+                false => None,
+            }
+        })
+        .collect()
+}
+
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
     let weights: Vec<u16> = vec![5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
     let d13: u16 = generate_digit(doc_slice, weights);
@@ -77,7 +90,7 @@ fn generate_digit(
 
     let rest: u16 = sum % 11;
 
-    if rest < 10 {
+    if rest < 2 {
         0
     } else {
         11 - rest
