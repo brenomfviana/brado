@@ -112,10 +112,7 @@ pub fn unmask(
 ) -> String {
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| match cfn(i, c) {
-            Some(n) => Some(n.to_string()),
-            None => None,
-        })
+        .filter_map(|(i, c)| cfn(i, c).map(|n| n.to_string()))
         .collect::<Vec<String>>()
         .join("")
 }
