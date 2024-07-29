@@ -24,12 +24,6 @@ pub fn is_repeated(digits: &[u16]) -> bool {
     a_set.len() == 1
 }
 
-/// Tipos de dígitos
-pub enum DigitType {
-    NumericDigit,
-    CnpjDigit,
-}
-
 /// Recebe o índice da posição (`usize`) e um caractere (`char`)
 /// e retorna a conversão do caractere em um dígito decimal
 /// (Option<`u16`>).
