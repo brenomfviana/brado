@@ -4,7 +4,12 @@ mod cnpj_tests {
 
     #[test]
     fn cnpj_validate_1_valid_cnpjs() {
-        let valid_cnpjs = ["05200851000100", "05.200.851/0001-00"];
+        let valid_cnpjs = [
+            "05200851000100",
+            "05.200.851/0001-00",
+            "A5200851000123",
+            "A5.200.851/0001-23",
+        ];
         for valid_cnpj in valid_cnpjs {
             assert_eq!(brado::cnpj::validate(valid_cnpj), true);
         }
@@ -16,6 +21,8 @@ mod cnpj_tests {
             "0520085100010",
             "05200851000101",
             "052008510001001",
+            "052008510001A1",
+            "0520085100010A",
             "05.200.851/0001-0",
             "05.200.851/0001-01",
             "05.200.851/0001-001",
@@ -37,6 +44,7 @@ mod cnpj_tests {
     fn cnpj_is_bare_1_valid_bare() {
         let documents = [
             "05200851000100", // Valid CNPJ
+            "A5200851000100", // Valid CNPJ
             "05200851000101", // Invalid CNPJ
         ];
         for document in documents {

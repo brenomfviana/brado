@@ -1,7 +1,7 @@
 //! Utilitários para validação de Registro Nacional de Veículos Automotores
 //! (RENAVAM).
 
-use crate::common::{get_digits, get_symbols, random_digit_vector};
+use crate::common::{get_digits, get_symbols, random_digit_vector, DigitType};
 
 /// Realiza validação de RENAVAM, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um RENAVAM válido, caso contrário,
@@ -37,7 +37,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
 
     if digits.len() != 11 {
         return false;
@@ -90,7 +90,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11 && get_digits(doc).len() == 11
+    doc.chars().count() == 11
+        && get_digits(doc, DigitType::NumericDigit).len() == 11
 }
 
 /// Verifica se o argumento `doc` pode ser um RENAVAM com símbolos.
@@ -117,8 +118,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, DigitType::NumericDigit);
+    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
 
     if symbols.len() != 1 || digits.len() != 11 {
         return false;

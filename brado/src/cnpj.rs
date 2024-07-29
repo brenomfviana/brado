@@ -1,6 +1,6 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
-use crate::common::{get_symbols, random_digit_vector};
+use crate::common::{get_digits, get_symbols, random_digit_vector, DigitType};
 
 /// Realiza validação de CNPJ, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CNPJ válido, caso contrário,
@@ -31,16 +31,18 @@ use crate::common::{get_symbols, random_digit_vector};
 /// ```
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
+    println!("{:?}", doc);
 
     if size != 14 && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, DigitType::CnpjDigit);
 
     if digits.len() != 14 {
         return false;
     }
+    println!("{:?}", digits);
 
     for i in 0..10 {
         if digits.iter().filter(|&n| *n == i).count() == 14 {
@@ -50,20 +52,11 @@ pub fn validate(doc: &str) -> bool {
 
     let (d13, d14): (u16, u16) = generate_digits(&digits[..12]);
 
-    (d13, d14) == (digits[12], digits[13])
-}
+    println!("{:?} {:?}", (digits[12], digits[13]), (d13, d14));
+    println!("{:?}", (d13, d14) == (digits[12], digits[13]));
+    println!();
 
-fn get_digits(doc: &str) -> Vec<u16> {
-    let doc = doc.to_ascii_uppercase();
-    doc.chars()
-        .filter_map(|c| {
-            let n = c as u16;
-            match n >= 48 {
-                true => Some(n - 48),
-                false => None,
-            }
-        })
-        .collect()
+    (d13, d14) == (digits[12], digits[13])
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
@@ -121,7 +114,8 @@ fn generate_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 14 && get_digits(doc).len() == 14
+    doc.chars().count() == 14
+        && get_digits(doc, DigitType::CnpjDigit).len() == 14
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ com símbolos.
@@ -148,8 +142,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, DigitType::CnpjDigit);
+    let digits: Vec<u16> = get_digits(doc, DigitType::CnpjDigit);
 
     if symbols.len() != 4 || digits.len() != 14 {
         return false;

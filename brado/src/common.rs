@@ -24,6 +24,27 @@ pub fn is_repeated(digits: &[u16]) -> bool {
     a_set.len() == 1
 }
 
+/// Tipos de dígitos
+pub enum DigitType {
+    NumericDigit,
+    CnpjDigit,
+}
+
+fn to_number(c: char) -> Option<u16> {
+    c.to_digit(RADIX).map(|c| c as u16)
+}
+
+fn to_cnpj_digit(
+    c: char,
+    i: usize,
+) -> Option<u16> {
+    let n = c as u16;
+    match n >= 48 && i < 12 {
+        true => Some(n - 48),
+        false => c.to_digit(RADIX).map(|c| c as u16),
+    }
+}
+
 /// Extrai e retorna o vetor dígitos de uma string (`&str`).
 ///
 /// ## Exemplo
@@ -37,9 +58,16 @@ pub fn is_repeated(digits: &[u16]) -> bool {
 /// let result = get_digits("121");
 /// assert_eq!(result, vec![1, 2, 1]);
 /// ```
-pub fn get_digits(doc: &str) -> Vec<u16> {
+pub fn get_digits(
+    doc: &str,
+    digit_type: DigitType,
+) -> Vec<u16> {
     doc.chars()
-        .filter_map(|c| c.to_digit(RADIX).map(|c| c as u16))
+        .enumerate()
+        .filter_map(|(i, c)| match digit_type {
+            DigitType::NumericDigit => to_number(c),
+            DigitType::CnpjDigit => to_cnpj_digit(c, i),
+        })
         .collect()
 }
 
@@ -56,12 +84,21 @@ pub fn get_digits(doc: &str) -> Vec<u16> {
 /// let result = get_symbols("1.1-1");
 /// assert_eq!(result, vec![(1, '.'), (3, '-')]);
 /// ```
-pub fn get_symbols(doc: &str) -> Vec<(usize, char)> {
+pub fn get_symbols(
+    doc: &str,
+    digit_type: DigitType,
+) -> Vec<(usize, char)> {
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| match c.to_digit(RADIX) {
-            Some(_) => None,
-            None => Some((i, c)),
+        .filter_map(|(i, c)| {
+            let digit_or_none = match digit_type {
+                DigitType::NumericDigit => to_number(c),
+                DigitType::CnpjDigit => to_cnpj_digit(c, i),
+            };
+            match digit_or_none {
+                Some(_) => None,
+                None => Some((i, c)),
+            }
         })
         .collect()
 }
