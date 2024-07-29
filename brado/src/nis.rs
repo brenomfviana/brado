@@ -6,7 +6,7 @@
 //! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, DigitType,
+    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
 };
 
 /// Realiza validação de NIS/NIT/PIS/PASEP, máscarado ou não.
@@ -43,7 +43,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if digits.len() != 11 || is_repeated(&digits) {
         return false;
@@ -97,7 +97,7 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == 11
-        && get_digits(doc, DigitType::NumericDigit).len() == 11
+        && get_digits(doc, Box::new(to_decimal)).len() == 11
 }
 
 /// Verifica se o argumento `doc` pode ser um NIS/NIT/PIS/PASEP com símbolos.
@@ -124,8 +124,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, DigitType::NumericDigit);
-    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if symbols.len() != 3 || digits.len() != 11 {
         return false;

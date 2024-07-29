@@ -2,7 +2,7 @@
 
 use crate::common::{
     get_digits, get_symbols, random_digit_from_vector, random_digit_vector,
-    DigitType,
+    to_decimal,
 };
 
 /// Realiza validação de CNS, máscarado ou não.
@@ -39,7 +39,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if digits.len() != 15 || is_first_digit_invalid(&digits[0]) {
         return false;
@@ -128,7 +128,7 @@ fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == 15
-        && get_digits(doc, DigitType::NumericDigit).len() == 15
+        && get_digits(doc, Box::new(to_decimal)).len() == 15
 }
 
 /// Verifica se o argumento `doc` pode ser um CNS com símbolos.
@@ -155,8 +155,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, DigitType::NumericDigit);
-    let digits: Vec<u16> = get_digits(doc, DigitType::NumericDigit);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if symbols.len() != 3 || digits.len() != 15 {
         return false;

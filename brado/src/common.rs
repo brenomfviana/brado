@@ -30,48 +30,51 @@ pub enum DigitType {
     CnpjDigit,
 }
 
-fn to_number(c: char) -> Option<u16> {
-    c.to_digit(RADIX).map(|c| c as u16)
-}
-
-fn to_cnpj_digit(
-    c: char,
-    i: usize,
-) -> Option<u16> {
-    let n = c as u16;
-    match n >= 48 && i < 12 {
-        true => Some(n - 48),
-        false => c.to_digit(RADIX).map(|c| c as u16),
-    }
-}
-
-/// Extrai e retorna o vetor dígitos de uma string (`&str`).
+/// Recebe o índice da posição (`usize`) e um caractere (`char`)
+/// e retorna a conversão do caractere em um dígito decimal
+/// (Option<`u16`>).
 ///
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::get_digits;
+/// use brado::common::to_decimal;
 ///
-/// let result = get_digits("111");
+/// let result = to_decimal(0, '1');
+/// assert_eq!(result, Some(1));
+/// ```
+pub fn to_decimal(
+    _i: usize,
+    c: char,
+) -> Option<u16> {
+    c.to_digit(RADIX).map(|c| c as u16)
+}
+
+/// Extrai e retorna o vetor dígitos de uma string (`&str`)
+/// a partir da função de conversão passada.
+///
+/// ## Exemplo
+///
+/// ```
+/// use brado::common::{get_digits, to_decimal};
+///
+/// let result = get_digits("111", Box::new(to_decimal));
 /// assert_eq!(result, vec![1, 1, 1]);
 ///
-/// let result = get_digits("121");
+/// let result = get_digits("121", Box::new(to_decimal));
 /// assert_eq!(result, vec![1, 2, 1]);
 /// ```
 pub fn get_digits(
     doc: &str,
-    digit_type: DigitType,
+    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
 ) -> Vec<u16> {
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| match digit_type {
-            DigitType::NumericDigit => to_number(c),
-            DigitType::CnpjDigit => to_cnpj_digit(c, i),
-        })
+        .filter_map(|(i, c)| cfn(i, c))
         .collect()
 }
 
-/// Extrai e retorna o vetor de símbolos de uma string (`&str`).
+/// Extrai e retorna o vetor de símbolos de uma string (`&str`)
+/// a partir da função de conversão passada.
 /// O vetor resultante é um vetor de tuplas de dois elementos: o
 /// primeiro representa a posição do símbolo na string e o segundo
 /// o próprio símbolo.
@@ -79,44 +82,46 @@ pub fn get_digits(
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::get_symbols;
+/// use brado::common::{get_symbols, to_decimal};
 ///
-/// let result = get_symbols("1.1-1");
+/// let result = get_symbols("1.1-1", Box::new(to_decimal));
 /// assert_eq!(result, vec![(1, '.'), (3, '-')]);
 /// ```
 pub fn get_symbols(
     doc: &str,
-    digit_type: DigitType,
+    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
 ) -> Vec<(usize, char)> {
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| {
-            let digit_or_none = match digit_type {
-                DigitType::NumericDigit => to_number(c),
-                DigitType::CnpjDigit => to_cnpj_digit(c, i),
-            };
-            match digit_or_none {
-                Some(_) => None,
-                None => Some((i, c)),
-            }
+        .filter_map(|(i, c)| match cfn(i, c) {
+            Some(_) => None,
+            None => Some((i, c)),
         })
         .collect()
 }
 
 /// Desmascara uma string (`&str`), ou seja, remove os símbolos,
-/// e retorna a string resultante.
+/// a partir da função de conversão passada e retorna a string
+/// resultante.
 ///
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::unmask;
+/// use brado::common::{unmask, to_decimal};
 ///
-/// let result = unmask("1.1-1");
+/// let result = unmask("1.1-1", Box::new(to_decimal));
 /// assert_eq!(result, String::from("111"));
 /// ```
-pub fn unmask(doc: &str) -> String {
+pub fn unmask(
+    doc: &str,
+    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
+) -> String {
     doc.chars()
-        .filter_map(|c| c.to_digit(RADIX).map(|c| c.to_string()))
+        .enumerate()
+        .filter_map(|(i, c)| match cfn(i, c) {
+            Some(n) => Some(n.to_string()),
+            None => None,
+        })
         .collect::<Vec<String>>()
         .join("")
 }
