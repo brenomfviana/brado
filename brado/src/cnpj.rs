@@ -42,7 +42,6 @@ fn to_cnpj_digit(
 /// ```
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
-    println!("{:?}", doc);
 
     if size != 14 && !is_masked(doc) {
         return false;
@@ -53,7 +52,6 @@ pub fn validate(doc: &str) -> bool {
     if digits.len() != 14 {
         return false;
     }
-    println!("{:?}", digits);
 
     for i in 0..10 {
         if digits.iter().filter(|&n| *n == i).count() == 14 {
@@ -62,10 +60,6 @@ pub fn validate(doc: &str) -> bool {
     }
 
     let (d13, d14): (u16, u16) = generate_digits(&digits[..12]);
-
-    println!("{:?} {:?}", (digits[12], digits[13]), (d13, d14));
-    println!("{:?}", (d13, d14) == (digits[12], digits[13]));
-    println!();
 
     (d13, d14) == (digits[12], digits[13])
 }
@@ -155,8 +149,6 @@ pub fn is_bare(doc: &str) -> bool {
 pub fn is_masked(doc: &str) -> bool {
     let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_cnpj_digit));
     let digits: Vec<u16> = get_digits(doc, Box::new(to_cnpj_digit));
-
-    println!("{:?}", symbols);
 
     if symbols.len() != 4 || digits.len() != 14 {
         return false;
