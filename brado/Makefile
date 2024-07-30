@@ -6,7 +6,11 @@ fmt:
 
 test:
 	reset
-	cargo test $(args)
+	if [[ "$(mod)" = "" ]]; then \
+	   cargo test $(args) ; \
+	else \
+ 	  cargo test --test $(mod) $(args) ; \
+	fi;
 
 clippy:
 	reset
