@@ -240,7 +240,6 @@ fn alphabet() -> Vec<char> {
 /// ```
 pub fn generate() -> String {
     let cnpj: String = random_string_from_alphabet(12, &alphabet());
-
     let digits: Vec<u16> = get_digits(&cnpj, to_cnpj_digit);
     let (d13, d14): (u16, u16) = generate_digits(&digits);
 
