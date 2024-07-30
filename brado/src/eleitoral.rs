@@ -3,6 +3,8 @@
 use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 use rand::Rng;
 
+const ELEITORAL_SIZE: usize = 12;
+
 /// Realiza validação de Título Eleitoral, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um Título Eleitoral válido,
 /// caso contrário, retorna `false`.
@@ -33,13 +35,13 @@ use rand::Rng;
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 12 && !is_masked(doc) {
+    if size != ELEITORAL_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if digits.len() != 12 {
+    if digits.len() != ELEITORAL_SIZE {
         return false;
     }
 
@@ -121,8 +123,8 @@ fn generate_second_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 12
-        && get_digits(doc, Box::new(to_decimal)).len() == 12
+    doc.chars().count() == ELEITORAL_SIZE
+        && get_digits(doc, &to_decimal).len() == ELEITORAL_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um Título Eleitoral com símbolos.
@@ -149,10 +151,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if symbols.len() != 2 || digits.len() != 12 {
+    if symbols.len() != 2 || digits.len() != ELEITORAL_SIZE {
         return false;
     }
 
@@ -237,5 +239,5 @@ fn generate_state_identifier() -> Vec<u16> {
 /// assert!(eleitoral::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid Título Eleitoral!")
+    mask(&generate()).expect("Invalid Título Eleitoral!")
 }

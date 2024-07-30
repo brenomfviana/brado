@@ -2,6 +2,8 @@
 
 use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 
+const CNPJ_SIZE: usize = 14;
+
 fn to_cnpj_digit(
     i: usize,
     c: char,
@@ -43,18 +45,18 @@ fn to_cnpj_digit(
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 14 && !is_masked(doc) {
+    if size != CNPJ_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_cnpj_digit));
+    let digits: Vec<u16> = get_digits(doc, &to_cnpj_digit);
 
-    if digits.len() != 14 {
+    if digits.len() != CNPJ_SIZE {
         return false;
     }
 
-    for i in 0..10 {
-        if digits.iter().filter(|&n| *n == i).count() == 14 {
+    for i in 0..=9 {
+        if digits.iter().filter(|&n| *n == i).count() == CNPJ_SIZE {
             return false;
         }
     }
@@ -88,10 +90,9 @@ fn generate_digit(
 
     let rest: u16 = sum % 11;
 
-    if rest < 2 {
-        0
-    } else {
-        11 - rest
+    match rest < 2 {
+        true => 0,
+        false => 11 - rest,
     }
 }
 
@@ -119,8 +120,8 @@ fn generate_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 14
-        && get_digits(doc, Box::new(to_cnpj_digit)).len() == 14
+    doc.chars().count() == CNPJ_SIZE
+        && get_digits(doc, &to_cnpj_digit).len() == CNPJ_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ com símbolos.
@@ -147,10 +148,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_cnpj_digit));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_cnpj_digit));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_cnpj_digit);
+    let digits: Vec<u16> = get_digits(doc, &to_cnpj_digit);
 
-    if symbols.len() != 4 || digits.len() != 14 {
+    if symbols.len() != 4 || digits.len() != CNPJ_SIZE {
         return false;
     }
 
@@ -233,5 +234,5 @@ pub fn generate() -> String {
 /// assert!(cnpj::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid CNPJ!")
+    mask(&generate()).expect("Invalid CNPJ!")
 }

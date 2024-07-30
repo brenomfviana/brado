@@ -51,19 +51,22 @@ pub fn to_decimal(
 /// ```
 /// use brado::common::{get_digits, to_decimal};
 ///
-/// let result = get_digits("111", Box::new(to_decimal));
+/// let result = get_digits("111", &to_decimal);
 /// assert_eq!(result, vec![1, 1, 1]);
 ///
-/// let result = get_digits("121", Box::new(to_decimal));
+/// let result = get_digits("121", &to_decimal);
 /// assert_eq!(result, vec![1, 2, 1]);
 /// ```
-pub fn get_digits(
+pub fn get_digits<F>(
     doc: &str,
-    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
-) -> Vec<u16> {
+    convert: &F,
+) -> Vec<u16>
+where
+    F: Fn(usize, char) -> Option<u16>,
+{
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| cfn(i, c))
+        .filter_map(|(i, c)| convert(i, c))
         .collect()
 }
 
@@ -78,16 +81,19 @@ pub fn get_digits(
 /// ```
 /// use brado::common::{get_symbols, to_decimal};
 ///
-/// let result = get_symbols("1.1-1", Box::new(to_decimal));
+/// let result = get_symbols("1.1-1", &to_decimal);
 /// assert_eq!(result, vec![(1, '.'), (3, '-')]);
 /// ```
-pub fn get_symbols(
+pub fn get_symbols<F>(
     doc: &str,
-    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
-) -> Vec<(usize, char)> {
+    convert: F,
+) -> Vec<(usize, char)>
+where
+    F: Fn(usize, char) -> Option<u16>,
+{
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| match cfn(i, c) {
+        .filter_map(|(i, c)| match convert(i, c) {
             Some(_) => None,
             None => Some((i, c)),
         })
@@ -103,16 +109,19 @@ pub fn get_symbols(
 /// ```
 /// use brado::common::{unmask, to_decimal};
 ///
-/// let result = unmask("1.1-1", Box::new(to_decimal));
+/// let result = unmask("1.1-1", &to_decimal);
 /// assert_eq!(result, String::from("111"));
 /// ```
-pub fn unmask(
+pub fn unmask<F>(
     doc: &str,
-    cfn: Box<dyn Fn(usize, char) -> Option<u16>>,
-) -> String {
+    convert: F,
+) -> String
+where
+    F: Fn(usize, char) -> Option<u16>,
+{
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| cfn(i, c).map(|n| n.to_string()))
+        .filter_map(|(i, c)| convert(i, c).map(|n| n.to_string()))
         .collect::<Vec<String>>()
         .join("")
 }

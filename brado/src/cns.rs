@@ -5,6 +5,8 @@ use crate::common::{
     to_decimal,
 };
 
+const CNS_SIZE: usize = 15;
+
 /// Realiza validação de CNS, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CNS válido, caso contrário,
 /// retorna `false`.
@@ -35,13 +37,13 @@ use crate::common::{
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 15 && !is_masked(doc) {
+    if size != CNS_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if digits.len() != 15 || is_first_digit_invalid(&digits[0]) {
+    if digits.len() != CNS_SIZE || is_first_digit_invalid(&digits[0]) {
         return false;
     }
 
@@ -127,8 +129,8 @@ fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 15
-        && get_digits(doc, Box::new(to_decimal)).len() == 15
+    doc.chars().count() == CNS_SIZE
+        && get_digits(doc, &to_decimal).len() == CNS_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CNS com símbolos.
@@ -155,10 +157,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if symbols.len() != 3 || digits.len() != 15 {
+    if symbols.len() != 3 || digits.len() != CNS_SIZE {
         return false;
     }
 
@@ -297,5 +299,5 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
 /// assert!(cns::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid CNS!")
+    mask(&generate()).expect("Invalid CNS!")
 }

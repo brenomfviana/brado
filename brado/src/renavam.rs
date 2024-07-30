@@ -3,6 +3,8 @@
 
 use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 
+const RENAVAM_SIZE: usize = 11;
+
 /// Realiza validação de RENAVAM, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um RENAVAM válido, caso contrário,
 /// retorna `false`.
@@ -33,13 +35,13 @@ use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 11 && !is_masked(doc) {
+    if size != RENAVAM_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if digits.len() != 11 {
+    if digits.len() != RENAVAM_SIZE {
         return false;
     }
 
@@ -90,8 +92,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11
-        && get_digits(doc, Box::new(to_decimal)).len() == 11
+    doc.chars().count() == RENAVAM_SIZE
+        && get_digits(doc, &to_decimal).len() == RENAVAM_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um RENAVAM com símbolos.
@@ -118,10 +120,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if symbols.len() != 1 || digits.len() != 11 {
+    if symbols.len() != 1 || digits.len() != RENAVAM_SIZE {
         return false;
     }
 
@@ -194,5 +196,5 @@ pub fn generate() -> String {
 /// assert!(renavam::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid RENAVAM!")
+    mask(&generate()).expect("Invalid RENAVAM!")
 }

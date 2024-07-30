@@ -4,6 +4,8 @@ use crate::common::{
     get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
 };
 
+const CPF_SIZE: usize = 11;
+
 /// Realiza validação de CPF, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CPF válido, caso contrário,
 /// retorna `false`.
@@ -34,13 +36,13 @@ use crate::common::{
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 11 && !is_masked(doc) {
+    if size != CPF_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if digits.len() != 11 || is_repeated(&digits) {
+    if digits.len() != CPF_SIZE || is_repeated(&digits) {
         return false;
     }
 
@@ -67,10 +69,9 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = (sum * 10) % 11;
 
-    if rest == 10 {
-        0
-    } else {
-        rest
+    match rest {
+        10 => 0,
+        _ => rest,
     }
 }
 
@@ -98,8 +99,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11
-        && get_digits(doc, Box::new(to_decimal)).len() == 11
+    doc.chars().count() == CPF_SIZE
+        && get_digits(doc, &to_decimal).len() == CPF_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CPF com símbolos.
@@ -126,10 +127,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if symbols.len() != 3 || digits.len() != 11 {
+    if symbols.len() != 3 || digits.len() != CPF_SIZE {
         return false;
     }
 
@@ -208,5 +209,5 @@ pub fn generate() -> String {
 /// assert!(cpf::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid CPF!")
+    mask(&generate()).expect("Invalid CPF!")
 }

@@ -2,6 +2,8 @@
 
 use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 
+const CERTIDAO_SIZE: usize = 32;
+
 /// Realiza validação de Certidão, máscarada ou não.
 /// Retorna `true` se o argumento `doc` for uma Certidão válido, caso contrário,
 /// retorna `false`.
@@ -32,13 +34,13 @@ use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 32 && !is_masked(doc) {
+    if size != CERTIDAO_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if digits.len() != 32 {
+    if digits.len() != CERTIDAO_SIZE {
         return false;
     }
 
@@ -102,8 +104,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 32
-        && get_digits(doc, Box::new(to_decimal)).len() == 32
+    doc.chars().count() == CERTIDAO_SIZE
+        && get_digits(doc, &to_decimal).len() == CERTIDAO_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser uma Certidão com símbolos.
@@ -130,10 +132,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, &to_decimal);
 
-    if symbols.len() != 8 || digits.len() != 32 {
+    if symbols.len() != 8 || digits.len() != CERTIDAO_SIZE {
         return false;
     }
 
@@ -225,5 +227,5 @@ pub fn generate() -> String {
 /// assert!(certidao::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid Certidão!")
+    mask(&generate()).expect("Invalid Certidão!")
 }
