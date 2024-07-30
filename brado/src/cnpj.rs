@@ -1,6 +1,17 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
-use crate::common::{get_digits, get_symbols, random_digit_vector};
+use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+
+fn to_cnpj_digit(
+    i: usize,
+    c: char,
+) -> Option<u16> {
+    let n = c as u16;
+    match n >= 48 && i < 12 {
+        true => Some(n - 48),
+        false => to_decimal(i, c),
+    }
+}
 
 /// Realiza validação de CNPJ, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CNPJ válido, caso contrário,
@@ -36,7 +47,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_cnpj_digit));
 
     if digits.len() != 14 {
         return false;
@@ -77,7 +88,7 @@ fn generate_digit(
 
     let rest: u16 = sum % 11;
 
-    if rest < 10 {
+    if rest < 2 {
         0
     } else {
         11 - rest
@@ -108,7 +119,8 @@ fn generate_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 14 && get_digits(doc).len() == 14
+    doc.chars().count() == 14
+        && get_digits(doc, Box::new(to_cnpj_digit)).len() == 14
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ com símbolos.
@@ -135,8 +147,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_cnpj_digit));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_cnpj_digit));
 
     if symbols.len() != 4 || digits.len() != 14 {
         return false;

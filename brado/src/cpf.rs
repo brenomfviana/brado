@@ -1,7 +1,7 @@
 //! Utilitários para validação de Cadastro de Pessoa Física (CPF).
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector,
+    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
 };
 
 /// Realiza validação de CPF, máscarado ou não.
@@ -38,7 +38,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if digits.len() != 11 || is_repeated(&digits) {
         return false;
@@ -98,7 +98,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11 && get_digits(doc).len() == 11
+    doc.chars().count() == 11
+        && get_digits(doc, Box::new(to_decimal)).len() == 11
 }
 
 /// Verifica se o argumento `doc` pode ser um CPF com símbolos.
@@ -125,8 +126,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if symbols.len() != 3 || digits.len() != 11 {
         return false;

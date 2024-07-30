@@ -15,8 +15,8 @@ Brado é um pacote Rust para validação de documentos brasileiros. Este projeto
 
 Brado fornece funções para identificação, validação e geração de documentos brasileiros. O nome desta biblioteca (Brado) é um acrônimo de BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
 
+> :warning: Esta biblioteca tem suporte ao CNPJ alfanumérico.
 > :warning: A documentação desta biblioteca pode ser acessada [aqui](https://docs.rs/brado/).
-
 
 ## Guia Rápido
 

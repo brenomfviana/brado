@@ -1,6 +1,6 @@
 //! Utilitários para validação de Título Eleitoral.
 
-use crate::common::{get_digits, get_symbols, random_digit_vector};
+use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 use rand::Rng;
 
 /// Realiza validação de Título Eleitoral, máscarado ou não.
@@ -37,7 +37,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if digits.len() != 12 {
         return false;
@@ -121,7 +121,8 @@ fn generate_second_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 12 && get_digits(doc).len() == 12
+    doc.chars().count() == 12
+        && get_digits(doc, Box::new(to_decimal)).len() == 12
 }
 
 /// Verifica se o argumento `doc` pode ser um Título Eleitoral com símbolos.
@@ -148,8 +149,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if symbols.len() != 2 || digits.len() != 12 {
         return false;

@@ -1,6 +1,6 @@
 //! Utilitários para validação de Certidões de Nascimento, Casamento e Óbito.
 
-use crate::common::{get_digits, get_symbols, random_digit_vector};
+use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 
 /// Realiza validação de Certidão, máscarada ou não.
 /// Retorna `true` se o argumento `doc` for uma Certidão válido, caso contrário,
@@ -36,7 +36,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc);
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if digits.len() != 32 {
         return false;
@@ -102,7 +102,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 32 && get_digits(doc).len() == 32
+    doc.chars().count() == 32
+        && get_digits(doc, Box::new(to_decimal)).len() == 32
 }
 
 /// Verifica se o argumento `doc` pode ser uma Certidão com símbolos.
@@ -129,8 +130,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc);
-    let digits: Vec<u16> = get_digits(doc);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
 
     if symbols.len() != 8 || digits.len() != 32 {
         return false;
