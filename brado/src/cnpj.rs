@@ -1,6 +1,8 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
 
-use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+use crate::common::{
+    get_digits, get_symbols, random_document_from_domain, to_decimal,
+};
 
 const CNPJ_SIZE: usize = 14;
 
@@ -13,14 +15,11 @@ const CNPJ_SIZE: usize = 14;
 /// substituir os caracteres pelos valores respectivos
 /// da tabela ASCII e dele subtrair 48. Assim, '0'=0,
 /// '1'=1, ..., 'A'=17, 'B'=18, ...
-fn to_cnpj_digit(
-    i: usize,
-    c: char,
-) -> Option<u16> {
+fn to_cnpj_digit(c: char) -> Option<u16> {
     let n = c as u16;
-    match n >= 48 && i < 12 {
+    match n >= 48 {
         true => Some(n - 48),
-        false => to_decimal(i, c),
+        false => to_decimal(c),
     }
 }
 
@@ -157,7 +156,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_cnpj_digit);
+    let size: usize = doc.chars().count();
+    let doc_slice = &doc[..size - 2];
+
+    let symbols: Vec<(usize, char)> = get_symbols(doc_slice, &to_cnpj_digit);
     let digits: Vec<u16> = get_digits(doc, &to_cnpj_digit);
 
     if symbols.len() != 4 || digits.len() != CNPJ_SIZE {
@@ -223,14 +225,17 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cnpj::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let cnpj: Vec<u16> = random_digit_vector(12);
-    let (d13, d14): (u16, u16) = generate_digits(&cnpj);
-    let cnpj: Vec<u16> = [cnpj, vec![d13, d14]].concat();
+    let domain: Vec<char> = vec![
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+        'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    ];
+    let cnpj: String = random_document_from_domain(12, &domain);
+    let digits: Vec<u16> = get_digits(&cnpj, &to_cnpj_digit);
+    let (d13, d14): (u16, u16) = generate_digits(&digits);
+    let cnpj: String = [cnpj, d13.to_string(), d14.to_string()].concat();
 
-    cnpj.iter()
-        .map(|d| d.to_string())
-        .collect::<Vec<String>>()
-        .join("")
+    cnpj
 }
 
 /// Gera e retorna um CNPJ aleatório com máscara.

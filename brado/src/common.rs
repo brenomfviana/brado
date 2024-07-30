@@ -20,8 +20,10 @@ const RADIX: u32 = 10;
 /// assert!(!result);
 /// ```
 pub fn is_repeated(digits: &[u16]) -> bool {
-    let a_set: HashSet<u16> = HashSet::from_iter(digits.iter().cloned());
-    a_set.len() == 1
+    let digits_clone = digits.iter().cloned();
+    let unique_digits: HashSet<u16> = HashSet::from_iter(digits_clone);
+
+    unique_digits.len() == 1
 }
 
 /// Recebe o índice da posição (`usize`) e um caractere (`char`)
@@ -33,13 +35,10 @@ pub fn is_repeated(digits: &[u16]) -> bool {
 /// ```
 /// use brado::common::to_decimal;
 ///
-/// let result = to_decimal(0, '1');
+/// let result = to_decimal('1');
 /// assert_eq!(result, Some(1));
 /// ```
-pub fn to_decimal(
-    _i: usize,
-    c: char,
-) -> Option<u16> {
+pub fn to_decimal(c: char) -> Option<u16> {
     c.to_digit(RADIX).map(|c| c as u16)
 }
 
@@ -62,12 +61,9 @@ pub fn get_digits<F>(
     convert: &F,
 ) -> Vec<u16>
 where
-    F: Fn(usize, char) -> Option<u16>,
+    F: Fn(char) -> Option<u16>,
 {
-    doc.chars()
-        .enumerate()
-        .filter_map(|(i, c)| convert(i, c))
-        .collect()
+    doc.chars().filter_map(|c| convert(c)).collect()
 }
 
 /// Extrai e retorna o vetor de símbolos de uma string (`&str`)
@@ -89,11 +85,11 @@ pub fn get_symbols<F>(
     convert: F,
 ) -> Vec<(usize, char)>
 where
-    F: Fn(usize, char) -> Option<u16>,
+    F: Fn(char) -> Option<u16>,
 {
     doc.chars()
         .enumerate()
-        .filter_map(|(i, c)| match convert(i, c) {
+        .filter_map(|(i, c)| match convert(c) {
             Some(_) => None,
             None => Some((i, c)),
         })
@@ -117,11 +113,10 @@ pub fn unmask<F>(
     convert: F,
 ) -> String
 where
-    F: Fn(usize, char) -> Option<u16>,
+    F: Fn(char) -> Option<u16>,
 {
     doc.chars()
-        .enumerate()
-        .filter_map(|(i, c)| convert(i, c).map(|n| n.to_string()))
+        .filter_map(|c| convert(c).map(|n| n.to_string()))
         .collect::<Vec<String>>()
         .join("")
 }
@@ -156,8 +151,40 @@ pub fn random_digit_vector(size: usize) -> Vec<u16> {
 /// let result = random_digit_from_vector(&options);
 /// assert_eq!(options.contains(&result), true);
 /// ```
-pub fn random_digit_from_vector(options: &[u16]) -> u16 {
+pub fn random_digit_from_vector<T>(options: &[T]) -> T
+where
+    T: Clone,
+{
     let mut rng = rand::thread_rng();
     let idx = rng.gen_range(0..options.len());
-    options[idx]
+    options[idx].clone()
+}
+
+/// Gera e retorna um vetor de dígitos aleatórios com o tamanho `size`.
+///
+/// ## Exemplo
+///
+/// ```
+/// use brado::common::random_document_from_domain;
+///
+/// let result = random_document_from_domain(10, &[1,2,3]);
+/// assert_eq!(result.len(), 10);
+/// ```
+pub fn random_document_from_domain<T>(
+    size: usize,
+    domain: &[T],
+) -> String
+where
+    T: Clone + ToString,
+{
+    let mut vector: Vec<T> = vec![];
+    for _ in 0..size {
+        let element = random_digit_from_vector(domain);
+        vector.push(element);
+    }
+    vector
+        .into_iter()
+        .map(|c| c.to_string())
+        .collect::<Vec<String>>()
+        .join("")
 }
