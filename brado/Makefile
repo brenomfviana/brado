@@ -7,9 +7,9 @@ fmt:
 test:
 	reset
 	if [[ "$(mod)" = "" ]]; then \
-	   cargo test $(args) ; \
+	    cargo test $(args) ; \
 	else \
- 	  cargo test --test $(mod) $(args) ; \
+ 	    cargo test --test $(mod) $(args) ; \
 	fi;
 
 clippy:
