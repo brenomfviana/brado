@@ -40,7 +40,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if digits.len() != CPF_SIZE || is_repeated(&digits) {
         return false;
@@ -100,7 +100,7 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == CPF_SIZE
-        && get_digits(doc, &to_decimal).len() == CPF_SIZE
+        && get_digits(doc, to_decimal).len() == CPF_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CPF com símbolos.
@@ -127,8 +127,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if symbols.len() != 3 || digits.len() != CPF_SIZE {
         return false;

@@ -40,7 +40,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if digits.len() != CNH_SIZE || is_repeated(&digits) {
         return false;
@@ -120,7 +120,7 @@ fn generate_second_digit(
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == CNH_SIZE
-        && get_digits(doc, &to_decimal).len() == CNH_SIZE
+        && get_digits(doc, to_decimal).len() == CNH_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser uma CNH com símbolos.
@@ -147,8 +147,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if symbols.len() != 3 || digits.len() != CNH_SIZE {
         return false;

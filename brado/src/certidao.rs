@@ -38,7 +38,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if digits.len() != CERTIDAO_SIZE {
         return false;
@@ -107,7 +107,7 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == CERTIDAO_SIZE
-        && get_digits(doc, &to_decimal).len() == CERTIDAO_SIZE
+        && get_digits(doc, to_decimal).len() == CERTIDAO_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser uma Certidão com símbolos.
@@ -134,8 +134,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if symbols.len() != 8 || digits.len() != CERTIDAO_SIZE {
         return false;

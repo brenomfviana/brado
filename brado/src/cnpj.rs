@@ -57,7 +57,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_cnpj_digit);
+    let digits: Vec<u16> = get_digits(doc, to_cnpj_digit);
 
     if digits.len() != CNPJ_SIZE {
         return false;
@@ -129,7 +129,7 @@ fn generate_digit(
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == CNPJ_SIZE
-        && get_digits(doc, &to_cnpj_digit).len() == CNPJ_SIZE
+        && get_digits(doc, to_cnpj_digit).len() == CNPJ_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CNPJ com símbolos.
@@ -159,8 +159,8 @@ pub fn is_masked(doc: &str) -> bool {
     let size: usize = doc.chars().count();
     let doc_slice = &doc[..size - 2];
 
-    let symbols: Vec<(usize, char)> = get_symbols(doc_slice, &to_cnpj_digit);
-    let digits: Vec<u16> = get_digits(doc, &to_cnpj_digit);
+    let symbols: Vec<(usize, char)> = get_symbols(doc_slice, to_cnpj_digit);
+    let digits: Vec<u16> = get_digits(doc, to_cnpj_digit);
 
     if symbols.len() != 4 || digits.len() != CNPJ_SIZE {
         return false;
@@ -231,7 +231,7 @@ pub fn generate() -> String {
         'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     ];
     let cnpj: String = random_document_from_domain(12, &domain);
-    let digits: Vec<u16> = get_digits(&cnpj, &to_cnpj_digit);
+    let digits: Vec<u16> = get_digits(&cnpj, to_cnpj_digit);
     let (d13, d14): (u16, u16) = generate_digits(&digits);
     let cnpj: String = [cnpj, d13.to_string(), d14.to_string()].concat();
 

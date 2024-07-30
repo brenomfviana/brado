@@ -41,7 +41,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if digits.len() != CNS_SIZE || is_first_digit_invalid(&digits[0]) {
         return false;
@@ -130,7 +130,7 @@ fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == CNS_SIZE
-        && get_digits(doc, &to_decimal).len() == CNS_SIZE
+        && get_digits(doc, to_decimal).len() == CNS_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CNS com símbolos.
@@ -157,8 +157,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if symbols.len() != 3 || digits.len() != CNS_SIZE {
         return false;

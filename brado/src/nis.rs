@@ -45,7 +45,7 @@ pub fn validate(doc: &str) -> bool {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if digits.len() != NIS_SIZE || is_repeated(&digits) {
         return false;
@@ -98,7 +98,7 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// ```
 pub fn is_bare(doc: &str) -> bool {
     doc.chars().count() == NIS_SIZE
-        && get_digits(doc, &to_decimal).len() == NIS_SIZE
+        && get_digits(doc, to_decimal).len() == NIS_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um NIS/NIT/PIS/PASEP com símbolos.
@@ -125,8 +125,8 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, &to_decimal);
-    let digits: Vec<u16> = get_digits(doc, &to_decimal);
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
     if symbols.len() != 3 || digits.len() != NIS_SIZE {
         return false;

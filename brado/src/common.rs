@@ -50,20 +50,20 @@ pub fn to_decimal(c: char) -> Option<u16> {
 /// ```
 /// use brado::common::{get_digits, to_decimal};
 ///
-/// let result = get_digits("111", &to_decimal);
+/// let result = get_digits("111", to_decimal);
 /// assert_eq!(result, vec![1, 1, 1]);
 ///
-/// let result = get_digits("121", &to_decimal);
+/// let result = get_digits("121", to_decimal);
 /// assert_eq!(result, vec![1, 2, 1]);
 /// ```
 pub fn get_digits<F>(
     doc: &str,
-    convert: &F,
+    convert: F,
 ) -> Vec<u16>
 where
     F: Fn(char) -> Option<u16>,
 {
-    doc.chars().filter_map(|c| convert(c)).collect()
+    doc.chars().filter_map(convert).collect()
 }
 
 /// Extrai e retorna o vetor de símbolos de uma string (`&str`)
@@ -77,7 +77,7 @@ where
 /// ```
 /// use brado::common::{get_symbols, to_decimal};
 ///
-/// let result = get_symbols("1.1-1", &to_decimal);
+/// let result = get_symbols("1.1-1", to_decimal);
 /// assert_eq!(result, vec![(1, '.'), (3, '-')]);
 /// ```
 pub fn get_symbols<F>(
@@ -105,7 +105,7 @@ where
 /// ```
 /// use brado::common::{unmask, to_decimal};
 ///
-/// let result = unmask("1.1-1", &to_decimal);
+/// let result = unmask("1.1-1", to_decimal);
 /// assert_eq!(result, String::from("111"));
 /// ```
 pub fn unmask<F>(
