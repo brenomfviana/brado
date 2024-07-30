@@ -4,6 +4,15 @@ use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 
 const CNPJ_SIZE: usize = 14;
 
+/// Converte um caractere em um dígito válido de CNPJ.
+///
+/// CNPJ Alfanumérico: SS.SSS.SSS/SSSS-NN,
+/// onde N: Número; S: Letra ou Número.
+///
+/// A validação permanece igual, porém, é necessário
+/// substituir os caracteres pelos valores respectivos
+/// da tabela ASCII e dele subtrair 48. Assim, '0'=0,
+/// '1'=1, ..., 'A'=17, 'B'=18, ...
 fn to_cnpj_digit(
     i: usize,
     c: char,

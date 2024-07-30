@@ -67,10 +67,9 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = sum % 11;
 
-    if rest >= 2 {
-        11 - rest
-    } else {
-        0
+    match rest >= 2 {
+        true => 11 - rest,
+        false => 0,
     }
 }
 

@@ -68,10 +68,9 @@ fn generate_first_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = sum % 11;
 
-    if rest == 10 {
-        0
-    } else {
-        rest
+    match rest {
+        10 => 0,
+        _ => rest,
     }
 }
 
@@ -92,10 +91,9 @@ fn generate_second_digit(
 
     let rest: u16 = sum % 11;
 
-    if rest == 10 {
-        0
-    } else {
-        rest
+    match rest {
+        10 => 0,
+        _ => rest,
     }
 }
 

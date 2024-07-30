@@ -73,10 +73,9 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = d % 11;
 
-    if rest > 9 {
-        1
-    } else {
-        rest
+    match rest > 9 {
+        true => 1,
+        false => rest,
     }
 }
 
