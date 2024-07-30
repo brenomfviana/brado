@@ -232,7 +232,7 @@ pub fn generate() -> String {
     cns.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 fn generate_first_case(first_digit: u16) -> Vec<u16> {

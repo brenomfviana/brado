@@ -220,7 +220,7 @@ pub fn generate() -> String {
         .iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 fn generate_state_identifier() -> Vec<u16> {

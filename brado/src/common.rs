@@ -117,7 +117,7 @@ where
     doc.chars()
         .filter_map(|c| convert(c).map(|n| n.to_string()))
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna um vetor de números decimais aleatórios
@@ -187,5 +187,5 @@ where
         .into_iter()
         .map(|c| c.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }

@@ -196,7 +196,7 @@ pub fn generate() -> String {
     cpf.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna um CPF aleatório com máscara.

@@ -184,7 +184,7 @@ pub fn generate() -> String {
         .iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna um RENAVAM aleatório com máscara.

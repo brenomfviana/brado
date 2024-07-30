@@ -218,7 +218,7 @@ pub fn generate() -> String {
     cnh.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna uma CNH aleatório com máscara.

@@ -35,7 +35,7 @@ mod nis_tests {
     #[test]
     fn nis_validate_3_invalid_niss_repeated_numbers() {
         for i in 1..=9 {
-            let document: String = (vec![i.to_string(); 11]).join("");
+            let document: String = (vec![i.to_string(); 11]).concat();
             assert_eq!(brado::nis::validate(&document), false);
         }
     }

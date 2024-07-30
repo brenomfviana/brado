@@ -218,7 +218,7 @@ pub fn generate() -> String {
         .iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna uma Certidão aleatório com máscara.

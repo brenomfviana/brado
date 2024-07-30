@@ -193,7 +193,7 @@ pub fn generate() -> String {
     nis.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna um NIS/NIT/PIS/PASEP aleatório com máscara.
