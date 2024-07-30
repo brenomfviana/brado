@@ -1,7 +1,7 @@
 //! Utilitários para validação de Cadastro de Pessoa Física (CPF).
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
+    get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 
 const CPF_SIZE: usize = 11;
@@ -189,7 +189,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cpf::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut cpf: Vec<u16> = random_digit_vector(9);
+    let mut cpf: Vec<u16> = random_decimal_vector(9);
     cpf.push(generate_digit(&cpf));
     cpf.push(generate_digit(&cpf));
 

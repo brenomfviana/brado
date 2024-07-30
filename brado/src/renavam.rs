@@ -1,7 +1,9 @@
 //! Utilitários para validação de Registro Nacional de Veículos Automotores
 //! (RENAVAM).
 
-use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+use crate::common::{
+    get_digits, get_symbols, random_decimal_vector, to_decimal,
+};
 
 const RENAVAM_SIZE: usize = 11;
 
@@ -175,7 +177,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(renavam::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut renavam: Vec<u16> = random_digit_vector(10);
+    let mut renavam: Vec<u16> = random_decimal_vector(10);
     renavam.push(generate_digit(&renavam));
 
     renavam

@@ -1,7 +1,7 @@
 //! Utilitários para validação de Cartão Nacional de Saúde (CNS).
 
 use crate::common::{
-    get_digits, get_symbols, random_digit_from_vector, random_digit_vector,
+    get_digits, get_symbols, random_decimal_vector, random_element_from_vector,
     to_decimal,
 };
 
@@ -219,7 +219,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cns::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let first_digit: u16 = random_digit_from_vector(&valid_first_digits());
+    let first_digit: u16 = random_element_from_vector(&valid_first_digits());
 
     let cns: Vec<u16> = {
         if [1, 2].contains(&first_digit) {
@@ -237,7 +237,7 @@ pub fn generate() -> String {
 
 fn generate_first_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
-    cns.extend_from_slice(&random_digit_vector(10));
+    cns.extend_from_slice(&random_decimal_vector(10));
     cns.extend_from_slice(&generate_last_four_digits(&cns));
 
     cns
@@ -245,7 +245,7 @@ fn generate_first_case(first_digit: u16) -> Vec<u16> {
 
 fn generate_second_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
-    cns.extend_from_slice(&random_digit_vector(14));
+    cns.extend_from_slice(&random_decimal_vector(14));
 
     let checksum: u16 = cns_sum(&cns);
     let rest: u16 = checksum % 11;

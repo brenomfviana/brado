@@ -1,7 +1,7 @@
 //! Utilitários para validação de Carteira Nacional de Habilitação (CNH).
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
+    get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 
 const CNH_SIZE: usize = 11;
@@ -209,7 +209,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cnh::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut cnh: Vec<u16> = random_digit_vector(9);
+    let mut cnh: Vec<u16> = random_decimal_vector(9);
     let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
     cnh.push(d10);
     let d11: u16 = generate_second_digit(&cnh, dsc);

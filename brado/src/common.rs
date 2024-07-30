@@ -22,7 +22,6 @@ const RADIX: u32 = 10;
 pub fn is_repeated(digits: &[u16]) -> bool {
     let digits_clone = digits.iter().cloned();
     let unique_digits: HashSet<u16> = HashSet::from_iter(digits_clone);
-
     unique_digits.len() == 1
 }
 
@@ -121,17 +120,18 @@ where
         .join("")
 }
 
-/// Gera e retorna um vetor de dígitos aleatórios com o tamanho `size`.
+/// Gera e retorna um vetor de números decimais aleatórios
+/// com o tamanho `size`.
 ///
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_digit_vector;
+/// use brado::common::random_decimal_vector;
 ///
-/// let result = random_digit_vector(10);
+/// let result = random_decimal_vector(10);
 /// assert_eq!(result.len(), 10);
 /// ```
-pub fn random_digit_vector(size: usize) -> Vec<u16> {
+pub fn random_decimal_vector(size: usize) -> Vec<u16> {
     let mut rng = rand::thread_rng();
     let mut digits: Vec<u16> = vec![];
     for _ in 0..size {
@@ -140,18 +140,18 @@ pub fn random_digit_vector(size: usize) -> Vec<u16> {
     digits
 }
 
-/// Seleciona aleatoriamente um elemento de um vetor de digítos.
+/// Seleciona aleatoriamente um elemento de um vetor.
 ///
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_digit_from_vector;
+/// use brado::common::random_element_from_vector;
 ///
 /// let options = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
-/// let result = random_digit_from_vector(&options);
+/// let result = random_element_from_vector(&options);
 /// assert_eq!(options.contains(&result), true);
 /// ```
-pub fn random_digit_from_vector<T>(options: &[T]) -> T
+pub fn random_element_from_vector<T>(options: &[T]) -> T
 where
     T: Clone,
 {
@@ -160,26 +160,27 @@ where
     options[idx].clone()
 }
 
-/// Gera e retorna um vetor de dígitos aleatórios com o tamanho `size`.
+/// Gera e retorna uma string com o tamanho `size` composto por
+/// elementos aleatórios do alfabeto `alphabet`.
 ///
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_document_from_domain;
+/// use brado::common::random_string_from_alphabet;
 ///
-/// let result = random_document_from_domain(10, &[1,2,3]);
+/// let result = random_string_from_alphabet(10, &[1,2,3]);
 /// assert_eq!(result.len(), 10);
 /// ```
-pub fn random_document_from_domain<T>(
+pub fn random_string_from_alphabet<T>(
     size: usize,
-    domain: &[T],
+    alphabet: &[T],
 ) -> String
 where
     T: Clone + ToString,
 {
     let mut vector: Vec<T> = vec![];
     for _ in 0..size {
-        let element = random_digit_from_vector(domain);
+        let element = random_element_from_vector(alphabet);
         vector.push(element);
     }
     vector

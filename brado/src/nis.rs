@@ -6,7 +6,7 @@
 //! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
+    get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 
 const NIS_SIZE: usize = 11;
@@ -187,7 +187,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(nis::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut nis: Vec<u16> = random_digit_vector(10);
+    let mut nis: Vec<u16> = random_decimal_vector(10);
     nis.push(generate_digit(&nis));
 
     nis.iter()

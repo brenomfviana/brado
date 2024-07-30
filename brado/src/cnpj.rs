@@ -1,7 +1,6 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
-
 use crate::common::{
-    get_digits, get_symbols, random_document_from_domain, to_decimal,
+    get_digits, get_symbols, random_string_from_alphabet, to_decimal,
 };
 
 const CNPJ_SIZE: usize = 14;
@@ -156,10 +155,17 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let size: usize = doc.chars().count();
-    let doc_slice = &doc[..size - 2];
+    let div: usize = doc.chars().count() - 2;
+    let doc_slice1 = &doc[..div];
+    let doc_slice2 = &doc[div..];
 
-    let symbols: Vec<(usize, char)> = get_symbols(doc_slice, to_cnpj_digit);
+    let mut symbols: Vec<(usize, char)> =
+        get_symbols(doc_slice1, to_cnpj_digit);
+
+    for symbol in get_symbols(doc_slice2, to_decimal) {
+        symbols.push(symbol);
+    }
+
     let digits: Vec<u16> = get_digits(doc, to_cnpj_digit);
 
     if symbols.len() != 4 || digits.len() != CNPJ_SIZE {
@@ -215,6 +221,14 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
     Ok(masked_doc)
 }
 
+fn alphabet() -> Vec<char> {
+    vec![
+        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
+        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
+        'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    ]
+}
+
 /// Gera e retorna um CNPJ aleatório sem máscara.
 ///
 /// ## Exemplo
@@ -225,12 +239,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cnpj::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let domain: Vec<char> = vec![
-        '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'A', 'B', 'C', 'D',
-        'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
-        'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
-    ];
-    let cnpj: String = random_document_from_domain(12, &domain);
+    let cnpj: String = random_string_from_alphabet(12, &alphabet());
     let digits: Vec<u16> = get_digits(&cnpj, to_cnpj_digit);
     let (d13, d14): (u16, u16) = generate_digits(&digits);
     let cnpj: String = [cnpj, d13.to_string(), d14.to_string()].concat();

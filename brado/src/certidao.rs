@@ -1,6 +1,8 @@
 //! Utilitários para validação de Certidões de Nascimento, Casamento e Óbito.
 
-use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+use crate::common::{
+    get_digits, get_symbols, random_decimal_vector, to_decimal,
+};
 
 const CERTIDAO_SIZE: usize = 32;
 
@@ -208,7 +210,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(certidao::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut certidao: Vec<u16> = random_digit_vector(30);
+    let mut certidao: Vec<u16> = random_decimal_vector(30);
     certidao.push(generate_digit(&certidao));
     certidao.push(generate_digit(&certidao));
 

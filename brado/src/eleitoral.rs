@@ -1,6 +1,8 @@
 //! Utilitários para validação de Título Eleitoral.
 
-use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+use crate::common::{
+    get_digits, get_symbols, random_decimal_vector, to_decimal,
+};
 use rand::Rng;
 
 const ELEITORAL_SIZE: usize = 12;
@@ -206,7 +208,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(eleitoral::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut eleitoral: Vec<u16> = random_digit_vector(8);
+    let mut eleitoral: Vec<u16> = random_decimal_vector(8);
     eleitoral.extend(generate_state_identifier());
 
     let d11: u16 = generate_first_digit(&eleitoral[0..8]);
