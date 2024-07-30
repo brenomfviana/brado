@@ -1,9 +1,11 @@
 //! Utilitários para validação de Cartão Nacional de Saúde (CNS).
 
 use crate::common::{
-    get_digits, get_symbols, random_digit_from_vector, random_digit_vector,
+    get_digits, get_symbols, random_decimal_vector, random_element_from_vector,
     to_decimal,
 };
+
+const CNS_SIZE: usize = 15;
 
 /// Realiza validação de CNS, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um CNS válido, caso contrário,
@@ -35,13 +37,13 @@ use crate::common::{
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 15 && !is_masked(doc) {
+    if size != CNS_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if digits.len() != 15 || is_first_digit_invalid(&digits[0]) {
+    if digits.len() != CNS_SIZE || is_first_digit_invalid(&digits[0]) {
         return false;
     }
 
@@ -127,8 +129,8 @@ fn generate_last_four_digits(doc_slice: &[u16]) -> Vec<u16> {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 15
-        && get_digits(doc, Box::new(to_decimal)).len() == 15
+    doc.chars().count() == CNS_SIZE
+        && get_digits(doc, to_decimal).len() == CNS_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um CNS com símbolos.
@@ -155,10 +157,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if symbols.len() != 3 || digits.len() != 15 {
+    if symbols.len() != 3 || digits.len() != CNS_SIZE {
         return false;
     }
 
@@ -217,7 +219,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cns::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let first_digit: u16 = random_digit_from_vector(&valid_first_digits());
+    let first_digit: u16 = random_element_from_vector(&valid_first_digits());
 
     let cns: Vec<u16> = {
         if [1, 2].contains(&first_digit) {
@@ -230,12 +232,12 @@ pub fn generate() -> String {
     cns.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 fn generate_first_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
-    cns.extend_from_slice(&random_digit_vector(10));
+    cns.extend_from_slice(&random_decimal_vector(10));
     cns.extend_from_slice(&generate_last_four_digits(&cns));
 
     cns
@@ -243,7 +245,7 @@ fn generate_first_case(first_digit: u16) -> Vec<u16> {
 
 fn generate_second_case(first_digit: u16) -> Vec<u16> {
     let mut cns: Vec<u16> = vec![first_digit];
-    cns.extend_from_slice(&random_digit_vector(14));
+    cns.extend_from_slice(&random_decimal_vector(14));
 
     let checksum: u16 = cns_sum(&cns);
     let rest: u16 = checksum % 11;
@@ -297,5 +299,5 @@ fn generate_second_case(first_digit: u16) -> Vec<u16> {
 /// assert!(cns::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid CNS!")
+    mask(&generate()).expect("Invalid CNS!")
 }

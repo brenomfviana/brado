@@ -9,6 +9,8 @@ mod cnpj_tests {
             "05.200.851/0001-00",
             "A5200851000123",
             "A5.200.851/0001-23",
+            "AAAAAAAAAAAA45",
+            "AA.AAA.AAA/AAAA-45",
         ];
         for valid_cnpj in valid_cnpjs {
             assert_eq!(brado::cnpj::validate(valid_cnpj), true);
@@ -23,6 +25,7 @@ mod cnpj_tests {
             "052008510001001",
             "052008510001A1",
             "0520085100010A",
+            "05.200.851/0001-0-0",
             "05.200.851/0001-0",
             "05.200.851/0001-01",
             "05.200.851/0001-001",

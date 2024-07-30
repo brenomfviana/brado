@@ -6,8 +6,10 @@
 //! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
+    get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
+
+const NIS_SIZE: usize = 11;
 
 /// Realiza validação de NIS/NIT/PIS/PASEP, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for um NIS/NIT/PIS/PASEP válido,
@@ -39,13 +41,13 @@ use crate::common::{
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 11 && !is_masked(doc) {
+    if size != NIS_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if digits.len() != 11 || is_repeated(&digits) {
+    if digits.len() != NIS_SIZE || is_repeated(&digits) {
         return false;
     }
 
@@ -65,10 +67,9 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = sum % 11;
 
-    if rest >= 2 {
-        11 - rest
-    } else {
-        0
+    match rest >= 2 {
+        true => 11 - rest,
+        false => 0,
     }
 }
 
@@ -96,8 +97,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11
-        && get_digits(doc, Box::new(to_decimal)).len() == 11
+    doc.chars().count() == NIS_SIZE
+        && get_digits(doc, to_decimal).len() == NIS_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser um NIS/NIT/PIS/PASEP com símbolos.
@@ -124,10 +125,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if symbols.len() != 3 || digits.len() != 11 {
+    if symbols.len() != 3 || digits.len() != NIS_SIZE {
         return false;
     }
 
@@ -186,13 +187,13 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(nis::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut nis: Vec<u16> = random_digit_vector(10);
+    let mut nis: Vec<u16> = random_decimal_vector(10);
     nis.push(generate_digit(&nis));
 
     nis.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna um NIS/NIT/PIS/PASEP aleatório com máscara.
@@ -205,5 +206,5 @@ pub fn generate() -> String {
 /// assert!(nis::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid NIS/NIT/PIS/PASEP!")
+    mask(&generate()).expect("Invalid NIS/NIT/PIS/PASEP!")
 }

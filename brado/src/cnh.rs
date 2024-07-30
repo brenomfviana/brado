@@ -1,8 +1,10 @@
 //! Utilitários para validação de Carteira Nacional de Habilitação (CNH).
 
 use crate::common::{
-    get_digits, get_symbols, is_repeated, random_digit_vector, to_decimal,
+    get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
+
+const CNH_SIZE: usize = 11;
 
 /// Realiza validação de CNH, máscarado ou não.
 /// Retorna `true` se o argumento `doc` for uma CNH válida, caso contrário,
@@ -34,13 +36,13 @@ use crate::common::{
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 11 && !is_masked(doc) {
+    if size != CNH_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if digits.len() != 11 || is_repeated(&digits) {
+    if digits.len() != CNH_SIZE || is_repeated(&digits) {
         return false;
     }
 
@@ -65,10 +67,9 @@ fn generate_first_digit(doc_slice: &[u16]) -> (u16, u16) {
 
     let rest: u16 = sum % 11;
 
-    if rest >= 10 {
-        (0, 2)
-    } else {
-        (rest, 0)
+    match rest >= 10 {
+        true => (0, 2),
+        false => (rest, 0),
     }
 }
 
@@ -83,16 +84,14 @@ fn generate_second_digit(
     }
 
     let rest: u16 = sum % 11;
-    let second: u16 = if rest >= dsc {
-        rest - dsc
-    } else {
-        11 + rest - dsc
+    let second: u16 = match rest >= dsc {
+        true => rest - dsc,
+        false => 11 + rest - dsc,
     };
 
-    if second >= 10 {
-        0
-    } else {
-        second
+    match second >= 10 {
+        true => 0,
+        false => second,
     }
 }
 
@@ -120,8 +119,8 @@ fn generate_second_digit(
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 11
-        && get_digits(doc, Box::new(to_decimal)).len() == 11
+    doc.chars().count() == CNH_SIZE
+        && get_digits(doc, to_decimal).len() == CNH_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser uma CNH com símbolos.
@@ -148,10 +147,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if symbols.len() != 3 || digits.len() != 11 {
+    if symbols.len() != 3 || digits.len() != CNH_SIZE {
         return false;
     }
 
@@ -210,7 +209,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(cnh::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut cnh: Vec<u16> = random_digit_vector(9);
+    let mut cnh: Vec<u16> = random_decimal_vector(9);
     let (d10, dsc): (u16, u16) = generate_first_digit(&cnh);
     cnh.push(d10);
     let d11: u16 = generate_second_digit(&cnh, dsc);
@@ -219,7 +218,7 @@ pub fn generate() -> String {
     cnh.iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna uma CNH aleatório com máscara.
@@ -232,5 +231,5 @@ pub fn generate() -> String {
 /// assert!(cnh::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid CNH!")
+    mask(&generate()).expect("Invalid CNH!")
 }

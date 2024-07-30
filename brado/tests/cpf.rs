@@ -35,7 +35,7 @@ mod cpf_tests {
     #[test]
     fn cpf_validate_3_invalid_cpfs_repeated_numbers() {
         for i in 1..=9 {
-            let cpf_rep_num = (vec![i.to_string(); 11]).join("");
+            let cpf_rep_num = (vec![i.to_string(); 11]).concat();
             assert_eq!(brado::cpf::validate(&cpf_rep_num), false);
         }
     }

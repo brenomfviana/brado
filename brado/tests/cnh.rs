@@ -35,7 +35,7 @@ mod cnh_tests {
     #[test]
     fn cnh_validate_3_invalid_cnhs_repeated_numbers() {
         for i in 1..=9 {
-            let document: String = (vec![i.to_string(); 11]).join("");
+            let document: String = (vec![i.to_string(); 11]).concat();
             assert_eq!(brado::cnh::validate(&document), false);
         }
     }

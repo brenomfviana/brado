@@ -1,6 +1,10 @@
 //! Utilitários para validação de Certidões de Nascimento, Casamento e Óbito.
 
-use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
+use crate::common::{
+    get_digits, get_symbols, random_decimal_vector, to_decimal,
+};
+
+const CERTIDAO_SIZE: usize = 32;
 
 /// Realiza validação de Certidão, máscarada ou não.
 /// Retorna `true` se o argumento `doc` for uma Certidão válido, caso contrário,
@@ -32,19 +36,19 @@ use crate::common::{get_digits, get_symbols, random_digit_vector, to_decimal};
 pub fn validate(doc: &str) -> bool {
     let size: usize = doc.chars().count();
 
-    if size != 32 && !is_masked(doc) {
+    if size != CERTIDAO_SIZE && !is_masked(doc) {
         return false;
     }
 
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if digits.len() != 32 {
+    if digits.len() != CERTIDAO_SIZE {
         return false;
     }
 
     let (d30, d31): (u16, u16) = generate_digits(&digits[..30]);
 
-    d30 == digits[30] && d31 == digits[31]
+    (d30, d31) == (digits[30], digits[31])
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
@@ -63,7 +67,10 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
             let result: u16 = x * multiplier;
 
             multiplier += 1;
-            multiplier = if multiplier > 10 { 0 } else { multiplier };
+            multiplier = match multiplier > 10 {
+                true => 0,
+                false => multiplier,
+            };
 
             result
         })
@@ -71,10 +78,9 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 
     let rest: u16 = d % 11;
 
-    if rest > 9 {
-        1
-    } else {
-        rest
+    match rest > 9 {
+        true => 1,
+        false => rest,
     }
 }
 
@@ -102,8 +108,8 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
 /// assert!(result);
 /// ```
 pub fn is_bare(doc: &str) -> bool {
-    doc.chars().count() == 32
-        && get_digits(doc, Box::new(to_decimal)).len() == 32
+    doc.chars().count() == CERTIDAO_SIZE
+        && get_digits(doc, to_decimal).len() == CERTIDAO_SIZE
 }
 
 /// Verifica se o argumento `doc` pode ser uma Certidão com símbolos.
@@ -130,10 +136,10 @@ pub fn is_bare(doc: &str) -> bool {
 /// assert!(result);
 /// ```
 pub fn is_masked(doc: &str) -> bool {
-    let symbols: Vec<(usize, char)> = get_symbols(doc, Box::new(to_decimal));
-    let digits: Vec<u16> = get_digits(doc, Box::new(to_decimal));
+    let symbols: Vec<(usize, char)> = get_symbols(doc, to_decimal);
+    let digits: Vec<u16> = get_digits(doc, to_decimal);
 
-    if symbols.len() != 8 || digits.len() != 32 {
+    if symbols.len() != 8 || digits.len() != CERTIDAO_SIZE {
         return false;
     }
 
@@ -204,7 +210,7 @@ pub fn mask(doc: &str) -> Result<String, &'static str> {
 /// assert!(certidao::is_bare(&result)); // true
 /// ```
 pub fn generate() -> String {
-    let mut certidao: Vec<u16> = random_digit_vector(30);
+    let mut certidao: Vec<u16> = random_decimal_vector(30);
     certidao.push(generate_digit(&certidao));
     certidao.push(generate_digit(&certidao));
 
@@ -212,7 +218,7 @@ pub fn generate() -> String {
         .iter()
         .map(|d| d.to_string())
         .collect::<Vec<String>>()
-        .join("")
+        .concat()
 }
 
 /// Gera e retorna uma Certidão aleatório com máscara.
@@ -225,5 +231,5 @@ pub fn generate() -> String {
 /// assert!(certidao::is_masked(&result)); // true
 /// ```
 pub fn generate_masked() -> String {
-    mask(&generate()).expect("Valid Certidão!")
+    mask(&generate()).expect("Invalid Certidão!")
 }
