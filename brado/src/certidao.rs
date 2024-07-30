@@ -46,7 +46,7 @@ pub fn validate(doc: &str) -> bool {
 
     let (d30, d31): (u16, u16) = generate_digits(&digits[..30]);
 
-    d30 == digits[30] && d31 == digits[31]
+    (d30, d31) == (digits[30], digits[31])
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
@@ -65,7 +65,10 @@ fn generate_digit(doc_slice: &[u16]) -> u16 {
             let result: u16 = x * multiplier;
 
             multiplier += 1;
-            multiplier = if multiplier > 10 { 0 } else { multiplier };
+            multiplier = match multiplier > 10 {
+                true => 0,
+                false => multiplier,
+            };
 
             result
         })

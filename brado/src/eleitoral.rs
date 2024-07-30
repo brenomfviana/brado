@@ -47,7 +47,7 @@ pub fn validate(doc: &str) -> bool {
 
     let (d11, d12): (u16, u16) = generate_digits(&digits);
 
-    d11 == digits[10] && d12 == digits[11]
+    (d11, d12) == (digits[10], digits[11])
 }
 
 fn generate_digits(doc_slice: &[u16]) -> (u16, u16) {
