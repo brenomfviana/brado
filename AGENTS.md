@@ -9,7 +9,7 @@ documentos brasileiros (CPF, CNPJ, CNH, CNS, NIS, Título Eleitoral, RENAVAM,
 Certidões de Nascimento, Casamento e Óbito). O nome é um acrônimo de
 BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
 
-- **Linguagem:** Rust (edição 2021)
+- **Linguagem:** Rust (edição 2024)
 - **Licença:** MIT
 - **Idioma da documentação:** a documentação e os comentários voltados ao
   usuário são escritos em português brasileiro (`pt-BR`). Mantenha assim.

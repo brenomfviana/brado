@@ -4,7 +4,7 @@ resolver = "2"
 
 [workspace.package]
 version = "1.1.0"
-edition = "2021"
+edition = "2024"
 license = "MIT"
 homepage = "https://github.com/brenomfviana/brado"
 documentation = "https://docs.rs/brado"

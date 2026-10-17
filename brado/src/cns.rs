@@ -71,7 +71,7 @@ fn validate_checksum(doc_slice: &[u16]) -> bool {
     } else {
         let checksum: u16 = cns_sum(doc_slice);
 
-        checksum % 11 == 0
+        checksum.is_multiple_of(11)
     }
 }
 
