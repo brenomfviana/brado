@@ -100,20 +100,23 @@ cpf::validate("639.292.470-11");
 
 ## Estado Atual & Plano de Migração
 
-**Estado atual:** crate única em `brado/` (`brado/src/<doc>.rs` + `common.rs`
-+ `docs.rs`), sem features. A arquitetura acima é o **alvo**; até que a
-migração termine, comandos rodam dentro de `brado/` e novos documentos
-seguem o padrão de módulo existente (mantendo-os autocontidos e sem
-dependências, para facilitar a extração posterior).
+**Estado atual:** Fase 1 concluída — o repositório é um **workspace Cargo**
+(raiz + `brado_core` + fachada `brado`); `common.rs` vive em
+`brado_core::common` e o traço `Document` em `brado_core`. A fachada `brado`
+ainda contém os módulos de documento (`brado/src/<doc>.rs` + `docs.rs`), sem
+features; a arquitetura completa é o **alvo**. Comandos ainda rodam dentro
+de `brado/` e novos documentos seguem o padrão de módulo existente
+(mantendo-os autocontidos, para facilitar a extração posterior).
 
 Fases da migração (concluídas em ordem, cada uma mantendo build, testes,
 clippy e a API `brado::<doc>::<fn>` verde):
 
-1. **Workspace + `brado_core`.** Criar o `Cargo.toml` de workspace na raiz
-   (`members = ["brado", "brado_core"]`, `[workspace.package]`,
-   `[workspace.dependencies]`); mover `common.rs` para `brado_core::common`
-   e o traço `Document` para `brado_core`; a crate `brado` passa a
-   depender de `brado_core`.
+1. **Workspace + `brado_core` (concluída).** Criado o `Cargo.toml` de
+   workspace na raiz (`members = ["brado", "brado_core"]`,
+   `[workspace.package]`, `[workspace.dependencies]`); `common.rs` movido
+   para `brado_core::common` e o traço `Document` criado em `brado_core`; a
+   crate `brado` depende de `brado_core` e re-exporta `common` (`pub use
+   brado_core::common;`) para manter a API pública.
 2. **Extrair documentos (um PR por documento, comece pelo `cpf`).** Mover
    `brado/src/<doc>.rs` para a crate `brado_<doc>`; implementar
    `Document`; substituir na fachada o módulo por feature + re-export;
