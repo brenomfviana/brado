@@ -1,15 +1,15 @@
 [package]
 name = "brado"
-version = "1.1.0"
-edition = "2021"
-license = "MIT"
-readme = "../README.md"
 description = "brado is a brazilian docs validator"
-homepage = "https://github.com/brenomfviana/brado"
-documentation = "https://docs.rs/brado"
-repository = "https://github.com/brenomfviana/brado"
+readme = "../README.md"
 keywords = ["brazilian", "docs", "validator"]
-authors = ["Breno Viana", "Pedro Regis"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+authors.workspace = true
 
 [dependencies]
-rand = "0.8.5"
+rand.workspace = true
