@@ -27,7 +27,7 @@ jobs:
         printf 'experimental-features = nix-command flakes\nsandbox = false\n' > "$HOME/.config/nix/nix.conf"
         BASE_URL='https://raw.githubusercontent.com/ES-Nix/get-nix/'
         SHA256=87fa0f1dbfdd28a1f99b39d5bd4dcc39de97bc64
-        NIX_RELEASE_VERSION='2.10.2'
+        NIX_RELEASE_VERSION='2.35.3'
         curl -fsSL --retry 3 "${BASE_URL}${SHA256}/get-nix.sh" | sh -s -- "${NIX_RELEASE_VERSION}"
         . "$HOME"/.nix-profile/etc/profile.d/nix.sh
         export TMPDIR=/tmp
@@ -53,7 +53,7 @@ jobs:
         printf 'experimental-features = nix-command flakes\nsandbox = false\n' > "$HOME/.config/nix/nix.conf"
         BASE_URL='https://raw.githubusercontent.com/ES-Nix/get-nix/'
         SHA256=87fa0f1dbfdd28a1f99b39d5bd4dcc39de97bc64
-        NIX_RELEASE_VERSION='2.10.2'
+        NIX_RELEASE_VERSION='2.35.3'
         curl -fsSL --retry 3 "${BASE_URL}${SHA256}/get-nix.sh" | sh -s -- "${NIX_RELEASE_VERSION}"
         . "$HOME"/.nix-profile/etc/profile.d/nix.sh
         export TMPDIR=/tmp
@@ -82,7 +82,7 @@ jobs:
         printf 'experimental-features = nix-command flakes\nsandbox = false\n' > "$HOME/.config/nix/nix.conf"
         BASE_URL='https://raw.githubusercontent.com/ES-Nix/get-nix/'
         SHA256=87fa0f1dbfdd28a1f99b39d5bd4dcc39de97bc64
-        NIX_RELEASE_VERSION='2.10.2'
+        NIX_RELEASE_VERSION='2.35.3'
         curl -fsSL --retry 3 "${BASE_URL}${SHA256}/get-nix.sh" | sh -s -- "${NIX_RELEASE_VERSION}"
         . "$HOME"/.nix-profile/etc/profile.d/nix.sh
         export TMPDIR=/tmp
