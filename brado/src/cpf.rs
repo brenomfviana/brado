@@ -1,6 +1,6 @@
 //! Utilitários para validação de Cadastro de Pessoa Física (CPF).
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 

@@ -11,7 +11,7 @@ const RADIX: u32 = 10;
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::is_repeated;
+/// use brado_core::common::is_repeated;
 ///
 /// let result = is_repeated(&vec![1, 1, 1]); // true
 /// assert!(result);
@@ -32,7 +32,7 @@ pub fn is_repeated(digits: &[u16]) -> bool {
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::to_decimal;
+/// use brado_core::common::to_decimal;
 ///
 /// let result = to_decimal('1');
 /// assert_eq!(result, Some(1));
@@ -47,7 +47,7 @@ pub fn to_decimal(c: char) -> Option<u16> {
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::{get_digits, to_decimal};
+/// use brado_core::common::{get_digits, to_decimal};
 ///
 /// let result = get_digits("111", to_decimal);
 /// assert_eq!(result, vec![1, 1, 1]);
@@ -74,7 +74,7 @@ where
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::{get_symbols, to_decimal};
+/// use brado_core::common::{get_symbols, to_decimal};
 ///
 /// let result = get_symbols("1.1-1", to_decimal);
 /// assert_eq!(result, vec![(1, '.'), (3, '-')]);
@@ -102,7 +102,7 @@ where
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::{unmask, to_decimal};
+/// use brado_core::common::{unmask, to_decimal};
 ///
 /// let result = unmask("1.1-1", to_decimal);
 /// assert_eq!(result, String::from("111"));
@@ -126,7 +126,7 @@ where
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_decimal_vector;
+/// use brado_core::common::random_decimal_vector;
 ///
 /// let result = random_decimal_vector(10);
 /// assert_eq!(result.len(), 10);
@@ -145,7 +145,7 @@ pub fn random_decimal_vector(size: usize) -> Vec<u16> {
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_element_from_vector;
+/// use brado_core::common::random_element_from_vector;
 ///
 /// let options = vec![0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 /// let result = random_element_from_vector(&options);
@@ -166,7 +166,7 @@ where
 /// ## Exemplo
 ///
 /// ```
-/// use brado::common::random_string_from_alphabet;
+/// use brado_core::common::random_string_from_alphabet;
 ///
 /// let result = random_string_from_alphabet(10, &[1,2,3]);
 /// assert_eq!(result.len(), 10);

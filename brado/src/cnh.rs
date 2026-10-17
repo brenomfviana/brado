@@ -1,6 +1,6 @@
 //! Utilitários para validação de Carteira Nacional de Habilitação (CNH).
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 

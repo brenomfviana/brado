@@ -1,6 +1,6 @@
 //! Utilitários para validação de Cartão Nacional de Saúde (CNS).
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, random_decimal_vector, random_element_from_vector,
     to_decimal,
 };
