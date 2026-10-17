@@ -1,12 +1,10 @@
 #[cfg(test)]
 mod eleitoral_tests {
-    use brado;
-
     #[test]
     fn eleitoral_validate_1_valid_eleitorais() {
         let valid_eleitorais = ["773537801651", "7735 3780 1651"];
         for valid_eleitoral in valid_eleitorais {
-            assert_eq!(brado::eleitoral::validate(valid_eleitoral), true);
+            assert!(brado::eleitoral::validate(valid_eleitoral));
         }
     }
 
@@ -27,7 +25,7 @@ mod eleitoral_tests {
             "AAAA AAAA AAAA",
         ];
         for invalid_eleitoral in invalid_eleitorais {
-            assert_eq!(brado::eleitoral::validate(invalid_eleitoral), false);
+            assert!(!brado::eleitoral::validate(invalid_eleitoral));
         }
     }
 
@@ -38,7 +36,7 @@ mod eleitoral_tests {
             "773537801650", // Invalid Título Eleitoral
         ];
         for document in documents {
-            assert_eq!(brado::eleitoral::is_bare(document), true);
+            assert!(brado::eleitoral::is_bare(document));
         }
     }
 
@@ -53,7 +51,7 @@ mod eleitoral_tests {
             "7735378016510",  // Invalid Título Eleitoral
         ];
         for document in documents {
-            assert_eq!(brado::eleitoral::is_bare(document), false);
+            assert!(!brado::eleitoral::is_bare(document));
         }
     }
 
@@ -64,7 +62,7 @@ mod eleitoral_tests {
             "7735 3780 1650", // Invalid Título Eleitoral
         ];
         for document in documents {
-            assert_eq!(brado::eleitoral::is_masked(document), true);
+            assert!(brado::eleitoral::is_masked(document));
         }
     }
 
@@ -85,7 +83,7 @@ mod eleitoral_tests {
             "77353780:1651",   // Invalid Título Eleitoral
         ];
         for document in documents {
-            assert_eq!(brado::eleitoral::is_masked(document), false);
+            assert!(!brado::eleitoral::is_masked(document));
         }
     }
 
@@ -124,8 +122,8 @@ mod eleitoral_tests {
     fn eleitoral_generate_1() {
         for _ in 0..1000 {
             let eleitoral = brado::eleitoral::generate();
-            assert_eq!(brado::eleitoral::validate(&eleitoral), true);
-            assert_eq!(brado::eleitoral::is_bare(&eleitoral), true);
+            assert!(brado::eleitoral::validate(&eleitoral));
+            assert!(brado::eleitoral::is_bare(&eleitoral));
         }
     }
 
@@ -133,8 +131,8 @@ mod eleitoral_tests {
     fn eleitoral_generate_masked_1() {
         for _ in 0..1000 {
             let eleitoral = brado::eleitoral::generate_masked();
-            assert_eq!(brado::eleitoral::validate(&eleitoral), true);
-            assert_eq!(brado::eleitoral::is_masked(&eleitoral), true);
+            assert!(brado::eleitoral::validate(&eleitoral));
+            assert!(brado::eleitoral::is_masked(&eleitoral));
         }
     }
 }

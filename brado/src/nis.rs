@@ -5,7 +5,7 @@
 //! PIS: Programa de Integração Social;
 //! PASEP: Programa de Formação do Patrimônio do Servidor Público.
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, is_repeated, random_decimal_vector, to_decimal,
 };
 

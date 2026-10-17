@@ -1,6 +1,6 @@
 //! Utilitários para validação de Cartão Nacional de Saúde (CNS).
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, random_decimal_vector, random_element_from_vector,
     to_decimal,
 };
@@ -71,7 +71,7 @@ fn validate_checksum(doc_slice: &[u16]) -> bool {
     } else {
         let checksum: u16 = cns_sum(doc_slice);
 
-        checksum % 11 == 0
+        checksum.is_multiple_of(11)
     }
 }
 

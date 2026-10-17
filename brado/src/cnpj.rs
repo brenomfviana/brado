@@ -1,5 +1,5 @@
 //! Utilitários para validação de Cadastro Nacional de Pessoa Jurídica (CNPJ).
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, random_string_from_alphabet, to_decimal,
 };
 

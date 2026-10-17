@@ -1,7 +1,7 @@
 //! Utilitários para validação de Registro Nacional de Veículos Automotores
 //! (RENAVAM).
 
-use crate::common::{
+use brado_core::common::{
     get_digits, get_symbols, random_decimal_vector, to_decimal,
 };
 
