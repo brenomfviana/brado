@@ -145,7 +145,8 @@ clippy e a API `brado::<doc>::<fn>` verde):
 ├── brado_core/           # traço Document + auxiliares comuns
 │   └── src/
 │       ├── lib.rs
-│       └── common.rs
+│       ├── common.rs
+│       └── document.rs
 ├── brado_derive/         # macros #[derive(Brado)] e #[brado(...)]
 │   └── src/lib.rs
 ├── brado/                # crate fachada (features por documento + re-exports)
