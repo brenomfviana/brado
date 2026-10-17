@@ -25,22 +25,6 @@ pub fn is_repeated(digits: &[u16]) -> bool {
     unique_digits.len() == 1
 }
 
-/// Recebe o índice da posição (`usize`) e um caractere (`char`)
-/// e retorna a conversão do caractere em um dígito decimal
-/// (Option<`u16`>).
-///
-/// ## Exemplo
-///
-/// ```
-/// use brado_core::common::to_decimal;
-///
-/// let result = to_decimal('1');
-/// assert_eq!(result, Some(1));
-/// ```
-pub fn to_decimal(c: char) -> Option<u16> {
-    c.to_digit(RADIX).map(|c| c as u16)
-}
-
 /// Extrai e retorna o vetor dígitos de uma string (`&str`)
 /// a partir da função de conversão passada.
 ///
@@ -93,6 +77,22 @@ where
             None => Some((i, c)),
         })
         .collect()
+}
+
+/// Recebe o índice da posição (`usize`) e um caractere (`char`)
+/// e retorna a conversão do caractere em um dígito decimal
+/// (Option<`u16`>).
+///
+/// ## Exemplo
+///
+/// ```
+/// use brado_core::common::to_decimal;
+///
+/// let result = to_decimal('1');
+/// assert_eq!(result, Some(1));
+/// ```
+pub fn to_decimal(c: char) -> Option<u16> {
+    c.to_digit(RADIX).map(|c| c as u16)
 }
 
 /// Desmascara uma string (`&str`), ou seja, remove os símbolos,
