@@ -6,14 +6,14 @@
 
 //! Núcleo compartilhado da biblioteca brado.
 //!
-//! `brado_core` reúne o traço [`Document`], que define a interface comum de
+//! `brado_core` reúne o trait [`Document`], que define a interface comum de
 //! todos os documentos brasileiros, e as funções auxiliares genéricas do
 //! módulo [`common`], utilizadas na validação e geração de documentos.
 //!
 //! # Guia Rápido
 //!
 //! Normalmente, o usuário interage com este núcleo por meio da fachada
-//! `brado`. A implementação do traço [`Document`] para um documento qualquer
+//! `brado`. A implementação do trait [`Document`] para um documento qualquer
 //! segue o exemplo abaixo:
 //!
 //! ```

@@ -22,7 +22,7 @@ BRAzilian DOcs validator (validador de DOcumentos BRAsileiros).
 
 O projeto é (em migração, ver [Plano de Migração](#estado-atual--plano-de-migração))
 um **workspace Cargo** organizado como o `serde`: uma crate fachada, uma
-crate core com os traços e utilitários, uma crate de macros procedural e
+crate core com os traits e utilitários, uma crate de macros procedural e
 **uma crate por documento**. O usuário importa apenas os documentos de que
 precisa, via features da fachada:
 
@@ -42,9 +42,9 @@ cpf::validate("639.292.470-11");
 | Crate | Papel | Análogo no `serde` |
 |-------|-------|--------------------|
 | `brado` | **Fachada.** Re-exporta as crates de documento como módulos (`brado::cpf`), expõe os atalhos de identificação (`docs::is_cpf`, ...) e define as features por documento. É a única crate que o usuário precisa adicionar. | `serde` |
-| `brado_core` | **Núcleo compartilhado.** Traço `Document` (API uniforme), auxiliares genéricos (`common`) e tipos de erro. Sem dependências de outros crates do workspace. | `serde_core` |
+| `brado_core` | **Núcleo compartilhado.** Trait `Document` (API uniforme), auxiliares genéricos (`common`) e tipos de erro. Sem dependências de outros crates do workspace. | `serde_core` |
 | `brado_derive` | **Macros procedural.** `#[derive(Brado)]` e atributos `#[brado(...)]` para validar structs cujos campos são documentos brasileiros. Única crate com dependências pesadas. | `serde_derive` |
-| `brado_cpf`, `brado_cnpj`, `brado_cnh`, `brado_cns`, `brado_nis`, `brado_eleitoral`, `brado_renavam`, `brado_certidao` | **Uma crate por documento.** Implementa o traço `Document` e as funções livres do documento. | `serde_json`, `serde_yaml`, ... |
+| `brado_cpf`, `brado_cnpj`, `brado_cnh`, `brado_cns`, `brado_nis`, `brado_eleitoral`, `brado_renavam`, `brado_certidao` | **Uma crate por documento.** Implementa o trait `Document` e as funções livres do documento. | `serde_json`, `serde_yaml`, ... |
 
 ### Regras
 
@@ -64,7 +64,7 @@ cpf::validate("639.292.470-11");
 - **`brado_core` é o único lugar de compartilhamento.** Auxiliares
   genéricos (`get_digits`, `get_symbols`, `unmask`, `is_repeated`,
   `random_decimal_vector`, ...) ficam em `brado_core::common` (públicos e
-  documentados). O traço `Document` captura a API uniforme:
+  documentados). O trait `Document` captura a API uniforme:
 
   ```rust
   pub trait Document {
@@ -102,7 +102,7 @@ cpf::validate("639.292.470-11");
 
 **Estado atual:** Fase 1 concluída — o repositório é um **workspace Cargo**
 (raiz + `brado_core` + fachada `brado`); `common.rs` vive em
-`brado_core::common` e o traço `Document` em `brado_core`. A fachada `brado`
+`brado_core::common` e o trait `Document` em `brado_core`. A fachada `brado`
 ainda contém os módulos de documento (`brado/src/<doc>.rs` + `docs.rs`), sem
 features; a arquitetura completa é o **alvo**. Comandos ainda rodam dentro
 de `brado/` e novos documentos seguem o padrão de módulo existente
@@ -114,7 +114,7 @@ clippy e a API `brado::<doc>::<fn>` verde):
 1. **Workspace + `brado_core` (concluída).** Criado o `Cargo.toml` de
    workspace na raiz (`members = ["brado", "brado_core"]`,
    `[workspace.package]`, `[workspace.dependencies]`); `common.rs` movido
-   para `brado_core::common` e o traço `Document` criado em `brado_core`; a
+   para `brado_core::common` e o trait `Document` criado em `brado_core`; a
    crate `brado` depende de `brado_core` e re-exporta `common` (`pub use
    brado_core::common;`) para manter a API pública.
 2. **Extrair documentos (um PR por documento, comece pelo `cpf`).** Mover
@@ -142,7 +142,7 @@ clippy e a API `brado::<doc>::<fn>` verde):
 ├── Makefile              # atalhos de fmt / test / clippy no nível do workspace
 ├── flake.nix             # shell de dev Nix (git, gnumake, cargo, rustc, rustfmt, clippy)
 ├── README.md             # documentação do usuário em pt-BR
-├── brado_core/           # traço Document + auxiliares comuns
+├── brado_core/           # trait Document + auxiliares comuns
 │   └── src/
 │       ├── lib.rs
 │       ├── common.rs
@@ -240,7 +240,7 @@ na ordem de dependência: `brado_core` → crates de documento →
   nomes `<doc>_<função>_<caso>` (ex.: `cpf_validate_1_valid_cpfs`).
 - Cada documento precisa cobrir: `validate` (válido, inválido, dígitos
   repetidos, máscaras malformadas), `is_bare`, `is_masked`, `mask` (sucesso
-  e falha), `generate` e `generate_masked`, além dos métodos do traço
+  e falha), `generate` e `generate_masked`, além dos métodos do trait
   `Document`.
 - A fachada mantém testes de fumaça em `brado/src/tests.rs` garantindo que
   os re-exports guiados por feature funcionam (`brado::cpf::validate`,
@@ -254,7 +254,7 @@ na ordem de dependência: `brado_core` → crates de documento →
 1. Crie a crate `brado_<doc>/` (nome publicado `brado-<doc>`) dependendo
    apenas de `brado_core` via `[workspace.dependencies]`.
 2. Implemente as funções livres públicas (`validate`, `is_bare`,
-   `is_masked`, `mask`, `generate`, `generate_masked`) e o traço
+   `is_masked`, `mask`, `generate`, `generate_masked`) e o trait
    `Document` para um marcador (ex.: `Cpf`).
 3. Reutilize auxiliares de `brado_core::common`; adicione novos auxiliares
    genéricos lá.

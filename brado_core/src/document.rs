@@ -1,8 +1,8 @@
-//! Traço que define a interface comum de todos os documentos brasileiros.
+//! Trait que define a interface comum de todos os documentos brasileiros.
 
 /// Interface comum a todos os documentos brasileiros.
 ///
-/// O traço [`Document`] captura a API uniforme dos documentos: funções
+/// O trait [`Document`] captura a API uniforme dos documentos: funções
 /// livres de validação, checagem de máscara, mascaramento e geração. Cada
 /// crate de documento expõe um marcador que o implementa.
 ///
