@@ -1,12 +1,10 @@
 #[cfg(test)]
 mod nis_tests {
-    use brado;
-
     #[test]
     fn nis_validate_1_valid_niss() {
         let valid_niss = ["40865658047", "408.65658.04-7"];
         for valid_nis in valid_niss {
-            assert_eq!(brado::nis::validate(valid_nis), true);
+            assert!(brado::nis::validate(valid_nis));
         }
     }
 
@@ -28,7 +26,7 @@ mod nis_tests {
             "AAA.AAAAA.AA-A",
         ];
         for invalid_nis in invalid_niss {
-            assert_eq!(brado::nis::validate(invalid_nis), false);
+            assert!(!brado::nis::validate(invalid_nis));
         }
     }
 
@@ -36,7 +34,7 @@ mod nis_tests {
     fn nis_validate_3_invalid_niss_repeated_numbers() {
         for i in 1..=9 {
             let document: String = (vec![i.to_string(); 11]).concat();
-            assert_eq!(brado::nis::validate(&document), false);
+            assert!(!brado::nis::validate(&document));
         }
     }
 
@@ -47,7 +45,7 @@ mod nis_tests {
             "40865658046", // Invalid NIS/NIT/PIS/PASEP
         ];
         for document in documents {
-            assert_eq!(brado::nis::is_bare(document), true);
+            assert!(brado::nis::is_bare(document));
         }
     }
 
@@ -63,7 +61,7 @@ mod nis_tests {
             "408656580476",   // Invalid NIS/NIT/PIS/PASEP
         ];
         for document in documents {
-            assert_eq!(brado::nis::is_bare(document), false);
+            assert!(!brado::nis::is_bare(document));
         }
     }
 
@@ -74,7 +72,7 @@ mod nis_tests {
             "408.65658.04-6", // Invalid NIS/NIT/PIS/PASEP
         ];
         for document in documents {
-            assert_eq!(brado::nis::is_masked(document), true);
+            assert!(brado::nis::is_masked(document));
         }
     }
 
@@ -97,7 +95,7 @@ mod nis_tests {
             "408.65658.04:7",  // Invalid NIS/NIT/PIS/PASEP
         ];
         for document in documents {
-            assert_eq!(brado::nis::is_masked(document), false);
+            assert!(!brado::nis::is_masked(document));
         }
     }
 
@@ -136,8 +134,8 @@ mod nis_tests {
     fn nis_generate_1() {
         for _ in 0..1000 {
             let nis = brado::nis::generate();
-            assert_eq!(brado::nis::validate(&nis), true);
-            assert_eq!(brado::nis::is_bare(&nis), true);
+            assert!(brado::nis::validate(&nis));
+            assert!(brado::nis::is_bare(&nis));
         }
     }
 
@@ -145,8 +143,8 @@ mod nis_tests {
     fn nis_generate_masked_1() {
         for _ in 0..1000 {
             let nis = brado::nis::generate_masked();
-            assert_eq!(brado::nis::validate(&nis), true);
-            assert_eq!(brado::nis::is_masked(&nis), true);
+            assert!(brado::nis::validate(&nis));
+            assert!(brado::nis::is_masked(&nis));
         }
     }
 }

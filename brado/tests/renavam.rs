@@ -1,12 +1,10 @@
 #[cfg(test)]
 mod renavam_tests {
-    use brado;
-
     #[test]
     fn renavam_validate_1_valid_renavams() {
         let valid_renavams = ["79072338363", "7907233836-3"];
         for valid_renavam in valid_renavams {
-            assert_eq!(brado::renavam::validate(valid_renavam), true);
+            assert!(brado::renavam::validate(valid_renavam));
         }
     }
 
@@ -26,7 +24,7 @@ mod renavam_tests {
             "AAAAAAAAAA-A",
         ];
         for invalid_renavam in invalid_renavams {
-            assert_eq!(brado::renavam::validate(invalid_renavam), false);
+            assert!(!brado::renavam::validate(invalid_renavam));
         }
     }
 
@@ -37,7 +35,7 @@ mod renavam_tests {
             "79072338362", // Invalid RENAVAM
         ];
         for document in documents {
-            assert_eq!(brado::renavam::is_bare(document), true);
+            assert!(brado::renavam::is_bare(document));
         }
     }
 
@@ -50,7 +48,7 @@ mod renavam_tests {
             "790723383632", // Invalid RENAVAM
         ];
         for document in documents {
-            assert_eq!(brado::renavam::is_bare(document), false);
+            assert!(!brado::renavam::is_bare(document));
         }
     }
 
@@ -61,7 +59,7 @@ mod renavam_tests {
             "7907233836-2", // Invalid RENAVAM
         ];
         for document in documents {
-            assert_eq!(brado::renavam::is_masked(document), true);
+            assert!(brado::renavam::is_masked(document));
         }
     }
 
@@ -79,7 +77,7 @@ mod renavam_tests {
             "7907233836:3",  // Invalid RENAVAM
         ];
         for document in documents {
-            assert_eq!(brado::renavam::is_masked(document), false);
+            assert!(!brado::renavam::is_masked(document));
         }
     }
 
@@ -118,8 +116,8 @@ mod renavam_tests {
     fn renavam_generate_1() {
         for _ in 0..1000 {
             let renavam = brado::renavam::generate();
-            assert_eq!(brado::renavam::validate(&renavam), true);
-            assert_eq!(brado::renavam::is_bare(&renavam), true);
+            assert!(brado::renavam::validate(&renavam));
+            assert!(brado::renavam::is_bare(&renavam));
         }
     }
 
@@ -127,8 +125,8 @@ mod renavam_tests {
     fn renavam_generate_masked_1() {
         for _ in 0..1000 {
             let renavam = brado::renavam::generate_masked();
-            assert_eq!(brado::renavam::validate(&renavam), true);
-            assert_eq!(brado::renavam::is_masked(&renavam), true);
+            assert!(brado::renavam::validate(&renavam));
+            assert!(brado::renavam::is_masked(&renavam));
         }
     }
 }

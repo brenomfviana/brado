@@ -1,7 +1,5 @@
 #[cfg(test)]
 mod cnpj_tests {
-    use brado;
-
     #[test]
     fn cnpj_validate_1_valid_cnpjs() {
         let valid_cnpjs = [
@@ -13,7 +11,7 @@ mod cnpj_tests {
             "AA.AAA.AAA/AAAA-45",
         ];
         for valid_cnpj in valid_cnpjs {
-            assert_eq!(brado::cnpj::validate(valid_cnpj), true);
+            assert!(brado::cnpj::validate(valid_cnpj));
         }
     }
 
@@ -39,7 +37,7 @@ mod cnpj_tests {
             "AA.AAA.AAA/AAAA-AA",
         ];
         for invalid_cnpj in invalid_cnpjs {
-            assert_eq!(brado::cnpj::validate(invalid_cnpj), false);
+            assert!(!brado::cnpj::validate(invalid_cnpj));
         }
     }
 
@@ -51,7 +49,7 @@ mod cnpj_tests {
             "05200851000101", // Invalid CNPJ
         ];
         for document in documents {
-            assert_eq!(brado::cnpj::is_bare(document), true);
+            assert!(brado::cnpj::is_bare(document));
         }
     }
 
@@ -68,7 +66,7 @@ mod cnpj_tests {
             "052008510001001",    // Invalid CNPJ
         ];
         for document in documents {
-            assert_eq!(brado::cnpj::is_bare(document), false);
+            assert!(!brado::cnpj::is_bare(document));
         }
     }
 
@@ -79,7 +77,7 @@ mod cnpj_tests {
             "05.200.851/0001-01", // Invalid CNPJ
         ];
         for document in documents {
-            assert_eq!(brado::cnpj::is_masked(document), true);
+            assert!(brado::cnpj::is_masked(document));
         }
     }
 
@@ -104,7 +102,7 @@ mod cnpj_tests {
             "05.200.851/0001:00",  // Invalid CNPJ
         ];
         for document in documents {
-            assert_eq!(brado::cnpj::is_masked(document), false);
+            assert!(!brado::cnpj::is_masked(document));
         }
     }
 
@@ -143,8 +141,8 @@ mod cnpj_tests {
     fn cnpj_generate_1() {
         for _ in 0..1000 {
             let cnpj = brado::cnpj::generate();
-            assert_eq!(brado::cnpj::validate(&cnpj), true);
-            assert_eq!(brado::cnpj::is_bare(&cnpj), true);
+            assert!(brado::cnpj::validate(&cnpj));
+            assert!(brado::cnpj::is_bare(&cnpj));
         }
     }
 
@@ -152,8 +150,8 @@ mod cnpj_tests {
     fn cnpj_generate_masked_1() {
         for _ in 0..1000 {
             let cnpj = brado::cnpj::generate_masked();
-            assert_eq!(brado::cnpj::validate(&cnpj), true);
-            assert_eq!(brado::cnpj::is_masked(&cnpj), true);
+            assert!(brado::cnpj::validate(&cnpj));
+            assert!(brado::cnpj::is_masked(&cnpj));
         }
     }
 }

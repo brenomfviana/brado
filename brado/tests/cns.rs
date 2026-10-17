@@ -1,7 +1,5 @@
 #[cfg(test)]
 mod cns_tests {
-    use brado;
-
     #[test]
     fn cns_validate_1_valid_cnss() {
         let valid_cnss = [
@@ -11,7 +9,7 @@ mod cns_tests {
             "812 2973 4650 0000",
         ];
         for valid_cns in valid_cnss {
-            assert_eq!(brado::cns::validate(valid_cns), true);
+            assert!(brado::cns::validate(valid_cns));
         }
     }
 
@@ -33,7 +31,7 @@ mod cns_tests {
             "AAA AAAA AAAA AAAA",
         ];
         for invalid_cns in invalid_cnss {
-            assert_eq!(brado::cns::validate(invalid_cns), false);
+            assert!(!brado::cns::validate(invalid_cns));
         }
     }
 
@@ -44,7 +42,7 @@ mod cns_tests {
             "144082627260003", // Invalid CNS
         ];
         for document in documents {
-            assert_eq!(brado::cns::is_bare(document), true);
+            assert!(brado::cns::is_bare(document));
         }
     }
 
@@ -60,7 +58,7 @@ mod cns_tests {
             "1440826272600043",   // Invalid CNS
         ];
         for document in documents {
-            assert_eq!(brado::cns::is_bare(document), false);
+            assert!(!brado::cns::is_bare(document));
         }
     }
 
@@ -71,7 +69,7 @@ mod cns_tests {
             "144 0826 2726 0003", // Invalid CNS
         ];
         for document in documents {
-            assert_eq!(brado::cns::is_masked(document), true);
+            assert!(brado::cns::is_masked(document));
         }
     }
 
@@ -94,7 +92,7 @@ mod cns_tests {
             "144 0826 2726:0004",  // Invalid CNS
         ];
         for document in documents {
-            assert_eq!(brado::cns::is_masked(document), false);
+            assert!(!brado::cns::is_masked(document));
         }
     }
 
@@ -133,8 +131,8 @@ mod cns_tests {
     fn cns_generate_1() {
         for _ in 0..1000 {
             let cns = brado::cns::generate();
-            assert_eq!(brado::cns::validate(&cns), true);
-            assert_eq!(brado::cns::is_bare(&cns), true);
+            assert!(brado::cns::validate(&cns));
+            assert!(brado::cns::is_bare(&cns));
         }
     }
 
@@ -142,8 +140,8 @@ mod cns_tests {
     fn cns_generate_masked_1() {
         for _ in 0..1000 {
             let cns = brado::cns::generate_masked();
-            assert_eq!(brado::cns::validate(&cns), true);
-            assert_eq!(brado::cns::is_masked(&cns), true);
+            assert!(brado::cns::validate(&cns));
+            assert!(brado::cns::is_masked(&cns));
         }
     }
 }

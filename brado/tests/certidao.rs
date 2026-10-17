@@ -1,7 +1,5 @@
 #[cfg(test)]
 mod certidao_tests {
-    use brado;
-
     #[test]
     fn certidao_validate_1_valid_certidaos() {
         let valid_certidaos = [
@@ -9,7 +7,7 @@ mod certidao_tests {
             "219242 01 55 2023 1 06304 243 1158185-36",
         ];
         for valid_certidao in valid_certidaos {
-            assert_eq!(brado::certidao::validate(valid_certidao), true);
+            assert!(brado::certidao::validate(valid_certidao));
         }
     }
 
@@ -44,7 +42,7 @@ mod certidao_tests {
             "AAAAAA AA AA AAAA A AAAAA AAA AAAAAAA-AA",
         ];
         for invalid_certidao in invalid_certidaos {
-            assert_eq!(brado::certidao::validate(invalid_certidao), false);
+            assert!(!brado::certidao::validate(invalid_certidao));
         }
     }
 
@@ -55,7 +53,7 @@ mod certidao_tests {
             "21924201552023106304243115818535", // Invalid Certidão
         ];
         for document in documents {
-            assert_eq!(brado::certidao::is_bare(document), true);
+            assert!(brado::certidao::is_bare(document));
         }
     }
 
@@ -76,7 +74,7 @@ mod certidao_tests {
             "219242015520231063042431158185365",        // Invalid Certidão
         ];
         for document in documents {
-            assert_eq!(brado::certidao::is_bare(document), false);
+            assert!(!brado::certidao::is_bare(document));
         }
     }
 
@@ -87,7 +85,7 @@ mod certidao_tests {
             "219242 01 55 2023 1 06304 243 1158185-35", // Invalid Certidão
         ];
         for document in documents {
-            assert_eq!(brado::certidao::is_masked(document), true);
+            assert!(brado::certidao::is_masked(document));
         }
     }
 
@@ -118,7 +116,7 @@ mod certidao_tests {
             "219242 01 55 2023 1 06304 243 1158185:36", // Invalid Certidão
         ];
         for document in documents {
-            assert_eq!(brado::certidao::is_masked(document), false);
+            assert!(!brado::certidao::is_masked(document));
         }
     }
 
@@ -157,8 +155,8 @@ mod certidao_tests {
     fn certidao_generate_1() {
         for _ in 0..1000 {
             let certidao = brado::certidao::generate();
-            assert_eq!(brado::certidao::validate(&certidao), true);
-            assert_eq!(brado::certidao::is_bare(&certidao), true);
+            assert!(brado::certidao::validate(&certidao));
+            assert!(brado::certidao::is_bare(&certidao));
         }
     }
 
@@ -166,8 +164,8 @@ mod certidao_tests {
     fn certidao_generate_masked_1() {
         for _ in 0..1000 {
             let certidao = brado::certidao::generate_masked();
-            assert_eq!(brado::certidao::validate(&certidao), true);
-            assert_eq!(brado::certidao::is_masked(&certidao), true);
+            assert!(brado::certidao::validate(&certidao));
+            assert!(brado::certidao::is_masked(&certidao));
         }
     }
 }

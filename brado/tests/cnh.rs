@@ -1,12 +1,10 @@
 #[cfg(test)]
 mod cnh_tests {
-    use brado;
-
     #[test]
     fn cnh_validate_1_valid_cnhs() {
         let valid_cnhs = ["84718735264", "847 187 352 64"];
         for valid_cnh in valid_cnhs {
-            assert_eq!(brado::cnh::validate(valid_cnh), true);
+            assert!(brado::cnh::validate(valid_cnh));
         }
     }
 
@@ -28,7 +26,7 @@ mod cnh_tests {
             "AAA AAA AAA AA",
         ];
         for invalid_cnh in invalid_cnhs {
-            assert_eq!(brado::cnh::validate(invalid_cnh), false);
+            assert!(!brado::cnh::validate(invalid_cnh));
         }
     }
 
@@ -36,7 +34,7 @@ mod cnh_tests {
     fn cnh_validate_3_invalid_cnhs_repeated_numbers() {
         for i in 1..=9 {
             let document: String = (vec![i.to_string(); 11]).concat();
-            assert_eq!(brado::cnh::validate(&document), false);
+            assert!(!brado::cnh::validate(&document));
         }
     }
 
@@ -47,7 +45,7 @@ mod cnh_tests {
             "84718735263", // Invalid CNH
         ];
         for document in documents {
-            assert_eq!(brado::cnh::is_bare(document), true);
+            assert!(brado::cnh::is_bare(document));
         }
     }
 
@@ -63,7 +61,7 @@ mod cnh_tests {
             "847187352643",   // Invalid CNH
         ];
         for document in documents {
-            assert_eq!(brado::cnh::is_bare(document), false);
+            assert!(!brado::cnh::is_bare(document));
         }
     }
 
@@ -74,7 +72,7 @@ mod cnh_tests {
             "847 187 352 63", // Invalid CNH
         ];
         for document in documents {
-            assert_eq!(brado::cnh::is_masked(document), true);
+            assert!(brado::cnh::is_masked(document));
         }
     }
 
@@ -97,7 +95,7 @@ mod cnh_tests {
             "847 187 352:64",  // Invalid CNH
         ];
         for document in documents {
-            assert_eq!(brado::cnh::is_masked(document), false);
+            assert!(!brado::cnh::is_masked(document));
         }
     }
 
@@ -136,8 +134,8 @@ mod cnh_tests {
     fn cnh_generate_1() {
         for _ in 0..1000 {
             let cnh = brado::cnh::generate();
-            assert_eq!(brado::cnh::validate(&cnh), true);
-            assert_eq!(brado::cnh::is_bare(&cnh), true);
+            assert!(brado::cnh::validate(&cnh));
+            assert!(brado::cnh::is_bare(&cnh));
         }
     }
 
@@ -145,8 +143,8 @@ mod cnh_tests {
     fn cnh_generate_masked_1() {
         for _ in 0..1000 {
             let cnh = brado::cnh::generate_masked();
-            assert_eq!(brado::cnh::validate(&cnh), true);
-            assert_eq!(brado::cnh::is_masked(&cnh), true);
+            assert!(brado::cnh::validate(&cnh));
+            assert!(brado::cnh::is_masked(&cnh));
         }
     }
 }

@@ -1,12 +1,10 @@
 #[cfg(test)]
 mod cpf_tests {
-    use brado;
-
     #[test]
     fn cpf_validate_1_valid_cpfs() {
         let valid_cpfs = ["63929247011", "639.292.470-11"];
         for valid_cpf in valid_cpfs {
-            assert_eq!(brado::cpf::validate(valid_cpf), true);
+            assert!(brado::cpf::validate(valid_cpf));
         }
     }
 
@@ -28,7 +26,7 @@ mod cpf_tests {
             "AAA.AAA.AAA-AA",
         ];
         for invalid_cpf in invalid_cpfs {
-            assert_eq!(brado::cpf::validate(invalid_cpf), false);
+            assert!(!brado::cpf::validate(invalid_cpf));
         }
     }
 
@@ -36,7 +34,7 @@ mod cpf_tests {
     fn cpf_validate_3_invalid_cpfs_repeated_numbers() {
         for i in 1..=9 {
             let cpf_rep_num = (vec![i.to_string(); 11]).concat();
-            assert_eq!(brado::cpf::validate(&cpf_rep_num), false);
+            assert!(!brado::cpf::validate(&cpf_rep_num));
         }
     }
 
@@ -47,7 +45,7 @@ mod cpf_tests {
             "63929247010", // Invalid CPF
         ];
         for document in documents {
-            assert_eq!(brado::cpf::is_bare(document), true);
+            assert!(brado::cpf::is_bare(document));
         }
     }
 
@@ -63,7 +61,7 @@ mod cpf_tests {
             "639292470110",   // Invalid CPF
         ];
         for document in documents {
-            assert_eq!(brado::cpf::is_bare(document), false);
+            assert!(!brado::cpf::is_bare(document));
         }
     }
 
@@ -74,7 +72,7 @@ mod cpf_tests {
             "639.292.470-10", // Invalid CPF
         ];
         for document in documents {
-            assert_eq!(brado::cpf::is_masked(document), true);
+            assert!(brado::cpf::is_masked(document));
         }
     }
 
@@ -97,7 +95,7 @@ mod cpf_tests {
             "639.292.470:11",  // Invalid CPF
         ];
         for document in documents {
-            assert_eq!(brado::cpf::is_masked(document), false);
+            assert!(!brado::cpf::is_masked(document));
         }
     }
 
@@ -136,8 +134,8 @@ mod cpf_tests {
     fn cpf_generate_1() {
         for _ in 0..1000 {
             let cpf = brado::cpf::generate();
-            assert_eq!(brado::cpf::validate(&cpf), true);
-            assert_eq!(brado::cpf::is_bare(&cpf), true);
+            assert!(brado::cpf::validate(&cpf));
+            assert!(brado::cpf::is_bare(&cpf));
         }
     }
 
@@ -145,8 +143,8 @@ mod cpf_tests {
     fn cpf_generate_masked_1() {
         for _ in 0..1000 {
             let cpf = brado::cpf::generate_masked();
-            assert_eq!(brado::cpf::validate(&cpf), true);
-            assert_eq!(brado::cpf::is_masked(&cpf), true);
+            assert!(brado::cpf::validate(&cpf));
+            assert!(brado::cpf::is_masked(&cpf));
         }
     }
 }
