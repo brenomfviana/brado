@@ -350,48 +350,56 @@ mod docs_tests {
 
     /* RENAVAM */
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_cpf() {
         let cpf: &str = "63929247011";
         assert!(!brado::docs::is_renavam(cpf));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(!brado::docs::is_renavam(cnpj));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_renavam(cnh));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_cns() {
         let cns: &str = "144082627260004";
         assert!(!brado::docs::is_renavam(cns));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_nis() {
         let nis: &str = "40865658047";
         assert!(brado::docs::is_renavam(nis));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_renavam(eleitoral));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_renavam() {
         let renavam: &str = "79072338363";
         assert!(brado::docs::is_renavam(renavam));
     }
 
+    #[cfg(feature = "renavam")]
     #[test]
     fn docs_is_renavam_certidao() {
         let certidao: &str = "21924201552023106304243115818536";

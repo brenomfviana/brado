@@ -13,6 +13,7 @@ use crate::cpf;
 use crate::eleitoral;
 #[cfg(feature = "nis")]
 use crate::nis;
+#[cfg(feature = "renavam")]
 use crate::renavam;
 
 /// Verifica se um documento `doc` é um CPF, máscarado ou não.
@@ -234,6 +235,7 @@ pub fn is_eleitoral(doc: &str) -> bool {
 /// let result = docs::is_renavam("7907233836-2"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "renavam")]
 pub fn is_renavam(doc: &str) -> bool {
     renavam::validate(doc)
 }
