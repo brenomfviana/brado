@@ -100,13 +100,14 @@ cpf::validate("639.292.470-11");
 
 ## Estado Atual & Plano de Migração
 
-**Estado atual:** Fase 1 concluída — o repositório é um **workspace Cargo**
-(raiz + `brado_core` + fachada `brado`); `common.rs` vive em
-`brado_core::common` e o trait `Document` em `brado_core`. A fachada `brado`
-ainda contém os módulos de documento (`brado/src/<doc>.rs` + `docs.rs`), sem
-features; a arquitetura completa é o **alvo**. Comandos ainda rodam dentro
-de `brado/` e novos documentos seguem o padrão de módulo existente
-(mantendo-os autocontidos, para facilitar a extração posterior).
+**Estado atual:** Fases 1 e 2 em andamento — o repositório é um **workspace
+Cargo** (raiz + `brado_core` + fachada `brado` + `brado_cpf`); `common.rs`
+vive em `brado_core::common` e o trait `Document` em `brado_core`. O CPF já
+foi extraído para a crate `brado_cpf` (testes em `brado_cpf/src/tests.rs` e
+re-export na fachada guiado pela feature `cpf`); os demais documentos ainda
+são módulos autocontidos da fachada (`brado/src/<doc>.rs` + `docs.rs`). A
+arquitetura completa é o **alvo**; novos documentos devem seguir o padrão
+da `brado_cpf` (uma crate por documento, guiada por feature).
 
 Fases da migração (concluídas em ordem, cada uma mantendo build, testes,
 clippy e a API `brado::<doc>::<fn>` verde):
