@@ -1,0 +1,15 @@
+[package]
+name = "brado_nis"
+description = "brado_nis is the NIS (Número de Identificação Social) module of the brado brazilian docs validator"
+readme = "../README.md"
+keywords = ["brazilian", "docs", "validator", "nis"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+brado_core.workspace = true

@@ -6,6 +6,7 @@ members = [
     "brado_cnpj",
     "brado_cns",
     "brado_cpf",
+    "brado_nis",
 ]
 resolver = "2"
 
@@ -25,3 +26,4 @@ brado_cnh = { path = "brado_cnh", version = "1.1.0" }
 brado_cnpj = { path = "brado_cnpj", version = "1.1.0" }
 brado_cns = { path = "brado_cns", version = "1.1.0" }
 brado_cpf = { path = "brado_cpf", version = "1.1.0" }
+brado_nis = { path = "brado_nis", version = "1.1.0" }
