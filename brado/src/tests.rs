@@ -129,3 +129,29 @@ fn docs_is_nis_1_validate() {
     assert!(crate::docs::is_nis("40865658047"));
     assert!(!crate::docs::is_nis("40865658046"));
 }
+
+#[cfg(feature = "eleitoral")]
+#[test]
+fn brado_eleitoral_reexport_1_validate() {
+    assert!(crate::eleitoral::validate("773537801651"));
+    assert!(crate::eleitoral::validate("7735 3780 1651"));
+    assert!(!crate::eleitoral::validate("7735 3780 1650"));
+}
+
+#[cfg(feature = "eleitoral")]
+#[test]
+fn brado_eleitoral_reexport_2_document() {
+    use brado_core::Document;
+    use brado_eleitoral::Eleitoral;
+
+    assert_eq!(Eleitoral::NAME, "Título Eleitoral");
+    assert_eq!(Eleitoral::SIZE, 12);
+    assert!(Eleitoral::validate("7735 3780 1651"));
+}
+
+#[cfg(feature = "eleitoral")]
+#[test]
+fn docs_is_eleitoral_1_validate() {
+    assert!(crate::docs::is_eleitoral("773537801651"));
+    assert!(!crate::docs::is_eleitoral("773537801650"));
+}

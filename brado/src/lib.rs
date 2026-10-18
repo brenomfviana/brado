@@ -26,7 +26,6 @@
 //! ```
 pub mod certidao;
 pub mod docs;
-pub mod eleitoral;
 pub mod renavam;
 
 #[cfg(feature = "cnh")]
@@ -40,6 +39,9 @@ pub use brado_cns as cns;
 
 #[cfg(feature = "cpf")]
 pub use brado_cpf as cpf;
+
+#[cfg(feature = "eleitoral")]
+pub use brado_eleitoral as eleitoral;
 
 #[cfg(feature = "nis")]
 pub use brado_nis as nis;
