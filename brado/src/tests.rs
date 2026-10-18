@@ -77,3 +77,29 @@ fn docs_is_cnh_1_validate() {
     assert!(crate::docs::is_cnh("84718735264"));
     assert!(!crate::docs::is_cnh("84718735265"));
 }
+
+#[cfg(feature = "cns")]
+#[test]
+fn brado_cns_reexport_1_validate() {
+    assert!(crate::cns::validate("144082627260004"));
+    assert!(crate::cns::validate("144 0826 2726 0004"));
+    assert!(!crate::cns::validate("144 0826 2726 0005"));
+}
+
+#[cfg(feature = "cns")]
+#[test]
+fn brado_cns_reexport_2_document() {
+    use brado_cns::Cns;
+    use brado_core::Document;
+
+    assert_eq!(Cns::NAME, "CNS");
+    assert_eq!(Cns::SIZE, 15);
+    assert!(Cns::validate("144 0826 2726 0004"));
+}
+
+#[cfg(feature = "cns")]
+#[test]
+fn docs_is_cns_1_validate() {
+    assert!(crate::docs::is_cns("144082627260004"));
+    assert!(!crate::docs::is_cns("144082627260005"));
+}
