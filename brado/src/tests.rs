@@ -155,3 +155,29 @@ fn docs_is_eleitoral_1_validate() {
     assert!(crate::docs::is_eleitoral("773537801651"));
     assert!(!crate::docs::is_eleitoral("773537801650"));
 }
+
+#[cfg(feature = "renavam")]
+#[test]
+fn brado_renavam_reexport_1_validate() {
+    assert!(crate::renavam::validate("79072338363"));
+    assert!(crate::renavam::validate("7907233836-3"));
+    assert!(!crate::renavam::validate("7907233836-2"));
+}
+
+#[cfg(feature = "renavam")]
+#[test]
+fn brado_renavam_reexport_2_document() {
+    use brado_core::Document;
+    use brado_renavam::Renavam;
+
+    assert_eq!(Renavam::NAME, "RENAVAM");
+    assert_eq!(Renavam::SIZE, 11);
+    assert!(Renavam::validate("7907233836-3"));
+}
+
+#[cfg(feature = "renavam")]
+#[test]
+fn docs_is_renavam_1_validate() {
+    assert!(crate::docs::is_renavam("79072338363"));
+    assert!(!crate::docs::is_renavam("79072338362"));
+}

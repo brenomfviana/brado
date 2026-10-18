@@ -12,13 +12,14 @@ repository.workspace = true
 authors.workspace = true
 
 [features]
-default = ["cpf", "cnpj", "cnh", "cns", "nis", "eleitoral"]
+default = ["cpf", "cnpj", "cnh", "cns", "nis", "eleitoral", "renavam"]
 cpf = ["dep:brado_cpf"]
 cnpj = ["dep:brado_cnpj"]
 cnh = ["dep:brado_cnh"]
 cns = ["dep:brado_cns"]
 nis = ["dep:brado_nis"]
 eleitoral = ["dep:brado_eleitoral"]
+renavam = ["dep:brado_renavam"]
 
 [dependencies]
 brado_core.workspace = true
@@ -28,3 +29,4 @@ brado_cns = { workspace = true, optional = true }
 brado_cpf = { workspace = true, optional = true }
 brado_eleitoral = { workspace = true, optional = true }
 brado_nis = { workspace = true, optional = true }
+brado_renavam = { workspace = true, optional = true }
