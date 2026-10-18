@@ -51,3 +51,29 @@ fn docs_is_cnpj_1_validate() {
     assert!(crate::docs::is_cnpj("05200851000100"));
     assert!(!crate::docs::is_cnpj("05200851000101"));
 }
+
+#[cfg(feature = "cnh")]
+#[test]
+fn brado_cnh_reexport_1_validate() {
+    assert!(crate::cnh::validate("84718735264"));
+    assert!(crate::cnh::validate("847 187 352 64"));
+    assert!(!crate::cnh::validate("847 187 352 65"));
+}
+
+#[cfg(feature = "cnh")]
+#[test]
+fn brado_cnh_reexport_2_document() {
+    use brado_cnh::Cnh;
+    use brado_core::Document;
+
+    assert_eq!(Cnh::NAME, "CNH");
+    assert_eq!(Cnh::SIZE, 11);
+    assert!(Cnh::validate("847 187 352 64"));
+}
+
+#[cfg(feature = "cnh")]
+#[test]
+fn docs_is_cnh_1_validate() {
+    assert!(crate::docs::is_cnh("84718735264"));
+    assert!(!crate::docs::is_cnh("84718735265"));
+}

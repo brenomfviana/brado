@@ -1,5 +1,5 @@
 [workspace]
-members = ["brado", "brado_core", "brado_cnpj", "brado_cpf"]
+members = ["brado", "brado_core", "brado_cnh", "brado_cnpj", "brado_cpf"]
 resolver = "2"
 
 [workspace.package]
@@ -14,5 +14,6 @@ authors = ["Breno Viana", "Pedro Regis"]
 [workspace.dependencies]
 rand = "0.8.5"
 brado_core = { path = "brado_core", version = "1.1.0" }
+brado_cnh = { path = "brado_cnh", version = "1.1.0" }
 brado_cnpj = { path = "brado_cnpj", version = "1.1.0" }
 brado_cpf = { path = "brado_cpf", version = "1.1.0" }
