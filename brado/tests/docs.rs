@@ -408,48 +408,56 @@ mod docs_tests {
 
     /* Certidão */
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_cpf() {
         let cpf: &str = "63929247011";
         assert!(!brado::docs::is_certidao(cpf));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(!brado::docs::is_certidao(cnpj));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_certidao(cnh));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_cns() {
         let cns: &str = "144082627260004";
         assert!(!brado::docs::is_certidao(cns));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_nis() {
         let nis: &str = "40865658047";
         assert!(!brado::docs::is_certidao(nis));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_certidao(eleitoral));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_renavam() {
         let renavam: &str = "79072338363";
         assert!(!brado::docs::is_certidao(renavam));
     }
 
+    #[cfg(feature = "certidao")]
     #[test]
     fn docs_is_certidao_certidao() {
         let certidao: &str = "21924201552023106304243115818536";

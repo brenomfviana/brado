@@ -181,3 +181,39 @@ fn docs_is_renavam_1_validate() {
     assert!(crate::docs::is_renavam("79072338363"));
     assert!(!crate::docs::is_renavam("79072338362"));
 }
+
+#[cfg(feature = "certidao")]
+#[test]
+fn brado_certidao_reexport_1_validate() {
+    assert!(crate::certidao::validate(
+        "21924201552023106304243115818536"
+    ));
+    assert!(crate::certidao::validate(
+        "219242 01 55 2023 1 06304 243 1158185-36"
+    ));
+    assert!(!crate::certidao::validate(
+        "219242 01 55 2023 1 06304 243 1158185-35"
+    ));
+}
+
+#[cfg(feature = "certidao")]
+#[test]
+fn brado_certidao_reexport_2_document() {
+    use brado_certidao::Certidao;
+    use brado_core::Document;
+
+    assert_eq!(Certidao::NAME, "Certidão");
+    assert_eq!(Certidao::SIZE, 32);
+    assert!(Certidao::validate(
+        "219242 01 55 2023 1 06304 243 1158185-36"
+    ));
+}
+
+#[cfg(feature = "certidao")]
+#[test]
+fn docs_is_certidao_1_validate() {
+    assert!(crate::docs::is_certidao("21924201552023106304243115818536"));
+    assert!(!crate::docs::is_certidao(
+        "21924201552023106304243115818535"
+    ));
+}
