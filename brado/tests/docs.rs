@@ -2,48 +2,56 @@
 mod docs_tests {
     /* CPF */
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_cpf() {
         let cpf: &str = "63929247011";
         assert!(brado::docs::is_cpf(cpf));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(!brado::docs::is_cpf(cnpj));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_cpf(cnh));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_cns() {
         let cns: &str = "144082627260004";
         assert!(!brado::docs::is_cpf(cns));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_nis() {
         let nis: &str = "40865658047";
         assert!(!brado::docs::is_cpf(nis));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_cpf(eleitoral));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_renavam() {
         let renavam: &str = "79072338363";
         assert!(!brado::docs::is_cpf(renavam));
     }
 
+    #[cfg(feature = "cpf")]
     #[test]
     fn docs_is_cpf_certidao() {
         let certidao: &str = "21924201552023106304243115818536";

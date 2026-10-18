@@ -4,6 +4,7 @@ use crate::certidao;
 use crate::cnh;
 use crate::cnpj;
 use crate::cns;
+#[cfg(feature = "cpf")]
 use crate::cpf;
 use crate::eleitoral;
 use crate::nis;
@@ -36,6 +37,7 @@ use crate::renavam;
 /// let result = docs::is_cpf("639.292.470-10"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "cpf")]
 pub fn is_cpf(doc: &str) -> bool {
     cpf::validate(doc)
 }

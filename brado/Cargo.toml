@@ -11,6 +11,11 @@ documentation.workspace = true
 repository.workspace = true
 authors.workspace = true
 
+[features]
+default = ["cpf"]
+cpf = ["dep:brado_cpf"]
+
 [dependencies]
 brado_core.workspace = true
+brado_cpf = { workspace = true, optional = true }
 rand.workspace = true

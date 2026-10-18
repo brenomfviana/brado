@@ -17,18 +17,26 @@
 //! Por exemplo, para validar um CPF, basta utilizar o código a seguir:
 //!
 //! ```
+//! # #[cfg(feature = "cpf")]
+//! # {
 //! use brado;
 //! let result = brado::cpf::validate("639.292.470-11");
 //! assert!(result);
+//! # }
 //! ```
 pub mod certidao;
 pub mod cnh;
 pub mod cnpj;
 pub mod cns;
-pub mod cpf;
 pub mod docs;
 pub mod eleitoral;
 pub mod nis;
 pub mod renavam;
 
+#[cfg(feature = "cpf")]
+pub use brado_cpf as cpf;
+
 pub use brado_core::common;
+
+#[cfg(test)]
+mod tests;
