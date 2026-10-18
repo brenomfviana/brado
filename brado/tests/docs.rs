@@ -234,48 +234,56 @@ mod docs_tests {
 
     /* NIS/NIT/PIS/PASEP */
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_cpf() {
         let cpf: &str = "63929247011";
         assert!(!brado::docs::is_nis(cpf));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(!brado::docs::is_nis(cnpj));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_nis(cnh));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_cns() {
         let cns: &str = "144082627260004";
         assert!(!brado::docs::is_nis(cns));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_nis() {
         let nis: &str = "40865658047";
         assert!(brado::docs::is_nis(nis));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_nis(eleitoral));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_renavam() {
         let renavam: &str = "79072338363";
         assert!(brado::docs::is_nis(renavam));
     }
 
+    #[cfg(feature = "nis")]
     #[test]
     fn docs_is_nis_certidao() {
         let certidao: &str = "21924201552023106304243115818536";
