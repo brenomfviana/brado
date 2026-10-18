@@ -1,6 +1,7 @@
 //! Utilitários para identificação de documentos.
 
 use crate::certidao;
+#[cfg(feature = "cnh")]
 use crate::cnh;
 #[cfg(feature = "cnpj")]
 use crate::cnpj;
@@ -102,6 +103,7 @@ pub fn is_cnpj(doc: &str) -> bool {
 /// let result = docs::is_cnh("847 187 352 65"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "cnh")]
 pub fn is_cnh(doc: &str) -> bool {
     cnh::validate(doc)
 }
