@@ -1,0 +1,15 @@
+[package]
+name = "brado_cnh"
+description = "brado_cnh is the CNH (Carteira Nacional de Habilitação) module of the brado brazilian docs validator"
+readme = "../README.md"
+keywords = ["brazilian", "docs", "validator", "cnh"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+brado_core.workspace = true
