@@ -26,12 +26,14 @@
 //! ```
 pub mod certidao;
 pub mod cnh;
-pub mod cnpj;
 pub mod cns;
 pub mod docs;
 pub mod eleitoral;
 pub mod nis;
 pub mod renavam;
+
+#[cfg(feature = "cnpj")]
+pub use brado_cnpj as cnpj;
 
 #[cfg(feature = "cpf")]
 pub use brado_cpf as cpf;

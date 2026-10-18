@@ -101,11 +101,12 @@ cpf::validate("639.292.470-11");
 ## Estado Atual & Plano de Migração
 
 **Estado atual:** Fases 1 e 2 em andamento — o repositório é um **workspace
-Cargo** (raiz + `brado_core` + fachada `brado` + `brado_cpf`); `common.rs`
-vive em `brado_core::common` e o trait `Document` em `brado_core`. O CPF já
-foi extraído para a crate `brado_cpf` (testes em `brado_cpf/src/tests.rs` e
-re-export na fachada guiado pela feature `cpf`); os demais documentos ainda
-são módulos autocontidos da fachada (`brado/src/<doc>.rs` + `docs.rs`). A
+Cargo** (raiz + `brado_core` + fachada `brado` + `brado_cpf` + `brado_cnpj`);
+`common.rs` vive em `brado_core::common` e o trait `Document` em
+`brado_core`. O CPF e o CNPJ já foram extraídos para as crates `brado_cpf` e
+`brado_cnpj` (testes em `brado_<doc>/src/tests.rs` e re-export na fachada
+guiado pela feature `cpf`/`cnpj`); os demais documentos ainda são módulos
+autocontidos da fachada (`brado/src/<doc>.rs` + `docs.rs`). A
 arquitetura completa é o **alvo**; novos documentos devem seguir o padrão
 da `brado_cpf` (uma crate por documento, guiada por feature).
 

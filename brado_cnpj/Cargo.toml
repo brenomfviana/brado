@@ -1,0 +1,15 @@
+[package]
+name = "brado_cnpj"
+description = "brado_cnpj is the CNPJ (Cadastro Nacional de Pessoa Jurídica) module of the brado brazilian docs validator"
+readme = "../README.md"
+keywords = ["brazilian", "docs", "validator", "cnpj"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+brado_core.workspace = true

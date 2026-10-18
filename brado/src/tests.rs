@@ -25,3 +25,29 @@ fn docs_is_cpf_1_validate() {
     assert!(crate::docs::is_cpf("63929247011"));
     assert!(!crate::docs::is_cpf("63929247010"));
 }
+
+#[cfg(feature = "cnpj")]
+#[test]
+fn brado_cnpj_reexport_1_validate() {
+    assert!(crate::cnpj::validate("05200851000100"));
+    assert!(crate::cnpj::validate("05.200.851/0001-00"));
+    assert!(!crate::cnpj::validate("05.200.851/0001-01"));
+}
+
+#[cfg(feature = "cnpj")]
+#[test]
+fn brado_cnpj_reexport_2_document() {
+    use brado_cnpj::Cnpj;
+    use brado_core::Document;
+
+    assert_eq!(Cnpj::NAME, "CNPJ");
+    assert_eq!(Cnpj::SIZE, 14);
+    assert!(Cnpj::validate("05.200.851/0001-00"));
+}
+
+#[cfg(feature = "cnpj")]
+#[test]
+fn docs_is_cnpj_1_validate() {
+    assert!(crate::docs::is_cnpj("05200851000100"));
+    assert!(!crate::docs::is_cnpj("05200851000101"));
+}

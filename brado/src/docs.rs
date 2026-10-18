@@ -2,6 +2,7 @@
 
 use crate::certidao;
 use crate::cnh;
+#[cfg(feature = "cnpj")]
 use crate::cnpj;
 use crate::cns;
 #[cfg(feature = "cpf")]
@@ -69,6 +70,7 @@ pub fn is_cpf(doc: &str) -> bool {
 /// let result = docs::is_cnpj("05.200.851/0001-01"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "cnpj")]
 pub fn is_cnpj(doc: &str) -> bool {
     cnpj::validate(doc)
 }
