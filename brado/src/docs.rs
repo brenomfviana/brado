@@ -9,6 +9,7 @@ use crate::cnpj;
 use crate::cns;
 #[cfg(feature = "cpf")]
 use crate::cpf;
+#[cfg(feature = "eleitoral")]
 use crate::eleitoral;
 #[cfg(feature = "nis")]
 use crate::nis;
@@ -201,6 +202,7 @@ pub fn is_nis(doc: &str) -> bool {
 /// let result = docs::is_eleitoral("7735 3780 1650"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "eleitoral")]
 pub fn is_eleitoral(doc: &str) -> bool {
     eleitoral::validate(doc)
 }
