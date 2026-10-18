@@ -60,48 +60,56 @@ mod docs_tests {
 
     /* CNPJ */
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_cpf() {
         let cpf: &str = "63929247011";
         assert!(!brado::docs::is_cnpj(cpf));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(brado::docs::is_cnpj(cnpj));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_cnpj(cnh));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_cns() {
         let cns: &str = "144082627260004";
         assert!(!brado::docs::is_cnpj(cns));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_nis() {
         let nis: &str = "40865658047";
         assert!(!brado::docs::is_cnpj(nis));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_cnpj(eleitoral));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_renavam() {
         let renavam: &str = "79072338363";
         assert!(!brado::docs::is_cnpj(renavam));
     }
 
+    #[cfg(feature = "cnpj")]
     #[test]
     fn docs_is_cnpj_certidao() {
         let certidao: &str = "21924201552023106304243115818536";

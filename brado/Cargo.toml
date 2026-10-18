@@ -12,10 +12,12 @@ repository.workspace = true
 authors.workspace = true
 
 [features]
-default = ["cpf"]
+default = ["cpf", "cnpj"]
 cpf = ["dep:brado_cpf"]
+cnpj = ["dep:brado_cnpj"]
 
 [dependencies]
 brado_core.workspace = true
+brado_cnpj = { workspace = true, optional = true }
 brado_cpf = { workspace = true, optional = true }
 rand.workspace = true
