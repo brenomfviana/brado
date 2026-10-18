@@ -1,0 +1,15 @@
+[package]
+name = "brado_cns"
+description = "brado_cns is the CNS (Cartão Nacional de Saúde) module of the brado brazilian docs validator"
+readme = "../README.md"
+keywords = ["brazilian", "docs", "validator", "cns"]
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+homepage.workspace = true
+documentation.workspace = true
+repository.workspace = true
+authors.workspace = true
+
+[dependencies]
+brado_core.workspace = true
