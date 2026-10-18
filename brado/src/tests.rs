@@ -103,3 +103,29 @@ fn docs_is_cns_1_validate() {
     assert!(crate::docs::is_cns("144082627260004"));
     assert!(!crate::docs::is_cns("144082627260005"));
 }
+
+#[cfg(feature = "nis")]
+#[test]
+fn brado_nis_reexport_1_validate() {
+    assert!(crate::nis::validate("40865658047"));
+    assert!(crate::nis::validate("408.65658.04-7"));
+    assert!(!crate::nis::validate("408.65658.04-6"));
+}
+
+#[cfg(feature = "nis")]
+#[test]
+fn brado_nis_reexport_2_document() {
+    use brado_core::Document;
+    use brado_nis::Nis;
+
+    assert_eq!(Nis::NAME, "NIS");
+    assert_eq!(Nis::SIZE, 11);
+    assert!(Nis::validate("408.65658.04-7"));
+}
+
+#[cfg(feature = "nis")]
+#[test]
+fn docs_is_nis_1_validate() {
+    assert!(crate::docs::is_nis("40865658047"));
+    assert!(!crate::docs::is_nis("40865658046"));
+}

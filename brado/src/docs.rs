@@ -10,6 +10,7 @@ use crate::cns;
 #[cfg(feature = "cpf")]
 use crate::cpf;
 use crate::eleitoral;
+#[cfg(feature = "nis")]
 use crate::nis;
 use crate::renavam;
 
@@ -168,6 +169,7 @@ pub fn is_cns(doc: &str) -> bool {
 /// let result = docs::is_nis("408.65658.04-6"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "nis")]
 pub fn is_nis(doc: &str) -> bool {
     nis::validate(doc)
 }
