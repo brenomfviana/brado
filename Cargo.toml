@@ -9,6 +9,7 @@ members = [
     "brado_eleitoral",
     "brado_nis",
     "brado_renavam",
+    "brado_certidao",
 ]
 resolver = "2"
 
@@ -31,3 +32,4 @@ brado_cpf = { path = "brado_cpf", version = "1.1.0" }
 brado_eleitoral = { path = "brado_eleitoral", version = "1.1.0" }
 brado_nis = { path = "brado_nis", version = "1.1.0" }
 brado_renavam = { path = "brado_renavam", version = "1.1.0" }
+brado_certidao = { path = "brado_certidao", version = "1.1.0" }
