@@ -1,5 +1,6 @@
 //! Utilitários para identificação de documentos.
 
+#[cfg(feature = "certidao")]
 use crate::certidao;
 #[cfg(feature = "cnh")]
 use crate::cnh;
@@ -267,6 +268,7 @@ pub fn is_renavam(doc: &str) -> bool {
 /// let result = docs::is_certidao("219242 01 55 2023 1 06304 243 1158185-35"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "certidao")]
 pub fn is_certidao(doc: &str) -> bool {
     certidao::validate(doc)
 }

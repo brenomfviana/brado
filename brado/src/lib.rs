@@ -9,7 +9,7 @@
 //! Brado fornece funções para identificação, validação e geração de documentos
 //! brasileiros. O nome desta biblioteca (Brado) é um acronimo de BRAzilian
 //! DOcs validator (validador de DOcumentos BRAsileiros).
-//!  
+//!
 //! # Guia Rápido
 //!
 //! Para utilizar a biblioteca, basta importá-la no arquivo (`use brado`),
@@ -24,7 +24,7 @@
 //! assert!(result);
 //! # }
 //! ```
-pub mod certidao;
+
 pub mod docs;
 
 #[cfg(feature = "cnh")]
@@ -47,6 +47,9 @@ pub use brado_nis as nis;
 
 #[cfg(feature = "renavam")]
 pub use brado_renavam as renavam;
+
+#[cfg(feature = "certidao")]
+pub use brado_certidao as certidao;
 
 pub use brado_core::common;
 
