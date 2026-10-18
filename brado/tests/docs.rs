@@ -168,48 +168,56 @@ mod docs_tests {
 
     /* CNS */
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_cpf() {
         let cpf: &str = "63929247011";
         assert!(!brado::docs::is_cns(cpf));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_cnpj() {
         let cnpj: &str = "05200851000100";
         assert!(!brado::docs::is_cns(cnpj));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_cnh() {
         let cnh: &str = "84718735264";
         assert!(!brado::docs::is_cns(cnh));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_cns() {
         let cnh: &str = "144082627260004";
         assert!(brado::docs::is_cns(cnh));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_nis() {
         let nis: &str = "40865658047";
         assert!(!brado::docs::is_cns(nis));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_eleitoral() {
         let eleitoral: &str = "773537801651";
         assert!(!brado::docs::is_cns(eleitoral));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_renavam() {
         let renavam: &str = "79072338363";
         assert!(!brado::docs::is_cns(renavam));
     }
 
+    #[cfg(feature = "cns")]
     #[test]
     fn docs_is_cns_certidao() {
         let certidao: &str = "21924201552023106304243115818536";

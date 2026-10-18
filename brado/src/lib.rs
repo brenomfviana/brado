@@ -25,7 +25,6 @@
 //! # }
 //! ```
 pub mod certidao;
-pub mod cns;
 pub mod docs;
 pub mod eleitoral;
 pub mod nis;
@@ -36,6 +35,9 @@ pub use brado_cnh as cnh;
 
 #[cfg(feature = "cnpj")]
 pub use brado_cnpj as cnpj;
+
+#[cfg(feature = "cns")]
+pub use brado_cns as cns;
 
 #[cfg(feature = "cpf")]
 pub use brado_cpf as cpf;

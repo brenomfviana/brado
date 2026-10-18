@@ -5,6 +5,7 @@ use crate::certidao;
 use crate::cnh;
 #[cfg(feature = "cnpj")]
 use crate::cnpj;
+#[cfg(feature = "cns")]
 use crate::cns;
 #[cfg(feature = "cpf")]
 use crate::cpf;
@@ -135,6 +136,7 @@ pub fn is_cnh(doc: &str) -> bool {
 /// let result = docs::is_cns("144 0826 2726 0005"); // false
 /// assert!(!result);
 /// ```
+#[cfg(feature = "cns")]
 pub fn is_cns(doc: &str) -> bool {
     cns::validate(doc)
 }
