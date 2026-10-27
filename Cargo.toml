@@ -2,6 +2,7 @@
 members = [
     "brado",
     "brado_core",
+    "brado_derive",
     "brado_cnh",
     "brado_cnpj",
     "brado_cns",
@@ -10,6 +11,8 @@ members = [
     "brado_nis",
     "brado_renavam",
     "brado_certidao",
+    "examples/derive_struct",
+    "examples/derive_all_documents",
 ]
 resolver = "2"
 
@@ -25,6 +28,7 @@ authors = ["Breno Viana", "Pedro Regis"]
 [workspace.dependencies]
 rand = "0.8.5"
 brado_core = { path = "brado_core", version = "1.1.0" }
+brado_derive = { path = "brado_derive", version = "1.1.0" }
 brado_cnh = { path = "brado_cnh", version = "1.1.0" }
 brado_cnpj = { path = "brado_cnpj", version = "1.1.0" }
 brado_cns = { path = "brado_cns", version = "1.1.0" }

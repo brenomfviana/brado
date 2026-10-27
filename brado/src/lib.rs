@@ -27,6 +27,9 @@
 
 pub mod docs;
 
+#[cfg(feature = "derive")]
+pub use brado_derive::*;
+
 #[cfg(feature = "cnh")]
 pub use brado_cnh as cnh;
 

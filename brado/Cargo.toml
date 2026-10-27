@@ -21,9 +21,11 @@ nis = ["dep:brado_nis"]
 eleitoral = ["dep:brado_eleitoral"]
 renavam = ["dep:brado_renavam"]
 certidao = ["dep:brado_certidao"]
+derive = ["dep:brado_derive"]
 
 [dependencies]
 brado_core.workspace = true
+brado_derive = { workspace = true, optional = true }
 brado_cnh = { workspace = true, optional = true }
 brado_cnpj = { workspace = true, optional = true }
 brado_cns = { workspace = true, optional = true }
