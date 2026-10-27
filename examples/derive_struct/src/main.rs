@@ -6,12 +6,15 @@ struct Cadastro {
     cpf: String,
     #[brado(document = "cnpj")]
     cnpj: String,
+    #[brado(document = "cnh")]
+    cnh: String,
 }
 
 fn main() {
     let cadastro = Cadastro {
         cpf: "639.292.470-11".to_string(),
         cnpj: "11.222.333/0001-81".to_string(),
+        cnh: "84718735264".to_string(),
     };
 
     println!("válido: {}", cadastro.validate());
