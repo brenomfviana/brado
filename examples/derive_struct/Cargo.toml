@@ -4,4 +4,4 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-brado = { path = "../../brado", features = ["derive", "cpf", "cnpj", "cnh"] }
+brado = { path = "../../brado", features = ["derive", "cpf", "cnpj"] }
