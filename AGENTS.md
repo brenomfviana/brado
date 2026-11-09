@@ -141,7 +141,7 @@ clippy e a API `brado::<doc>::<fn>` verde):
 .
 ├── AGENTS.md
 ├── Cargo.toml            # raiz do workspace ([workspace], [workspace.package], [workspace.dependencies])
-├── Makefile              # atalhos de fmt / test / clippy no nível do workspace
+├── Justfile              # atalhos de fmt / test / clippy no nível do workspace
 ├── flake.nix             # shell de dev Nix (git, gnumake, cargo, rustc, rustfmt, clippy)
 ├── README.md             # documentação do usuário em pt-BR
 ├── brado_core/           # trait Document + auxiliares comuns
@@ -172,17 +172,17 @@ clippy e a API `brado::<doc>::<fn>` verde):
 ## Comandos
 
 Após a migração, todos os comandos rodam na **raiz do repositório** (raiz do
-workspace); o Makefile permanece como atalho:
+workspace); o `Justfile` permanece como atalho:
 
-| Tarefa | Makefile | Cargo direto |
-|--------|----------|--------------|
-| Formatar | `make fmt` | `cargo fmt --all` |
-| Testar (workspace) | `make test` | `cargo test --workspace` |
-| Testar (uma crate) | `make test mod=brado_cpf` | `cargo test -p brado-cpf` |
-| Lint | `make clippy` | `cargo clippy --workspace` |
+| Tarefa | Just | Cargo direto |
+|--------|------|--------------|
+| Formatar | `just fmt` | `cargo fmt --all` |
+| Testar (workspace) | `just test` | `cargo test --workspace` |
+| Testar (uma crate) | `just test brado_cpf` | `cargo test -p brado-cpf` |
+| Lint | `just clippy` | `cargo clippy --workspace` |
 
-Argumentos extras podem ser passados via `args="..."` (ex.:
-`make test args="-- --nocapture"`).
+Argumentos extras podem ser passados após a crate (ex.:
+`just test brado_cpf -- --nocapture` ou `just test "" -- --nocapture` para o workspace).
 
 O ambiente de desenvolvimento pode ser carregado com Nix + direnv
 (`use flake` no `.envrc`); ele fornece `cargo`, `rustc`, `rustfmt` e
@@ -267,6 +267,6 @@ na ordem de dependência: `brado_core` → crates de documento →
    feature.
 7. Adicione `brado_<doc>/src/tests.rs` cobrindo todas as funções públicas,
    declarado com `#[cfg(test)] mod tests;` no `lib.rs`.
-8. Atualize o `README.md` (lista de documentos), o `Makefile` se preciso, e
+8. Atualize o `README.md` (lista de documentos), o `Justfile` se preciso, e
    a documentação da fachada.
-9. Rode `make fmt`, `make clippy` e `make test` na raiz do workspace.
+9. Rode `just fmt`, `just clippy` e `just test` (ou `cargo fmt --all`, `cargo clippy --workspace` e `cargo test --workspace`) na raiz do workspace.

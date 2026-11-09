@@ -165,5 +165,5 @@ nix flake clone github:your-github-user/brado --dest ./brado \
 Para rodar os testes, basta executar o comando a seguir:
 
 ```bash
-make test
+just test
 ```
